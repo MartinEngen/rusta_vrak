@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block pageBasedStyle %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "cars/css/personal_carsStyle.css" %}"/>
+{% endblock pageBasedStyle %}
+
+
+{% block Content %}
+    {% if personal_cars %}
+    {% for car in personal_cars %}
+        <div class="col-lg-12 car_tab">
+            <div class="col-md-4 ">
+                <div class="thumbnail" style="border: none">
+                    <img src="{{ car.main_image }}">
+                </div>
+
+            </div>
+            <div class="col-md-8 car_info ">
+                <h1> {{ car.brand }} {{ car.model }}</h1>
+                 <p>Drivstoff: {{ car.fuel_type }}. Antall Seter: {{ car.seats }}. {% if car.year %} År: {{ car.year }} {% endif %}</p>
+                <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
+            </div>
+        </div>
+        <h1></h1>
+    {% endfor %}
+    {% endif %}
+{% endblock Content %}

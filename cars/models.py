@@ -1,0 +1,80 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.utils.encoding import python_2_unicode_compatible
+from django.core.validators import RegexValidator
+
+from django.db import models
+
+# Need to support python 2
+@python_2_unicode_compatible
+class Car(models.Model):
+
+    #Misc information
+    brand = models.CharField('Bilmerke', max_length=70)
+    model = models.CharField('Biltype', max_length=70)
+    year = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    seats = models.PositiveSmallIntegerField('Antall seter')
+    fuel_type = models.CharField('Type drivstoff', choices=[('Diesel', 'Diesel'), ('Bensin', 'Bensin'), ('Hybrid', 'Hybrid'), ('Elbil', 'Elbil')], max_length=20)
+
+    main_image = models.CharField('Lenke til hovedbilde', max_length=50, default='')
+    gallery_images = models.CharField('Bilder til galleri. Splitt lenkene via komma ","', max_length=255, blank=True, null=True)
+
+    transmission = models.CharField('Gir', choices=[('Manuell', 'Manuell'), ('Automatgir', 'Automatgir')], default='Manuell', max_length=15)
+
+    car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
+
+    def __str__(self):
+        return str(self.id) + " " + self.brand + " " + self.model + " " + str(self.year)
+
+    class Meta:
+        verbose_name = 'Bil'
+        verbose_name_plural = 'Biler'
+
+
+
+
+class Car_Booking(models.Model):
+    car = models.ForeignKey(Car, related_name='booking', on_delete=models.CASCADE)
+
+    initial_date = models.DateField()
+    final_date = models.DateField()
+
+    status = models.PositiveSmallIntegerField('1: Pending, 2: Approved, 3:Declined', choices={(1, 'Pending'), (2, 'Approved'), (3, 'Declined')})
+
+    def __str__(self):
+        return str(self.id) + " " + self.car.brand + " " + self.car.model + ": Fra " + str(self.initial_date) + " Til: " + str(self.final_date)
+
+    class Meta:
+        verbose_name = 'Booking'
+        verbose_name_plural = 'Bookinger'
+
+
+
+
+
+class Registration_Scheme(models.Model):
+    booking = models.ForeignKey(Car_Booking, related_name='booking', on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, related_name='Bil', on_delete=models.CASCADE)
+
+    # Information about the registrator
+    first_name = models.CharField('Fornavn', max_length=100)
+    last_name = models.CharField('Etternavn', max_length=100)
+
+    email = models.EmailField('Epost adresse', max_length=100)
+    phone_number = models.CharField('Telefonnummer', max_length=12, validators=[RegexValidator(r'^\d{1,10}$')])
+
+    # Additional information
+    misc_info = models.CharField('Ekstra informasjon', max_length=255, blank=True, null=True)
+
+    date_made = models.DateField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.car.brand + " " + self.car.model + ". " + str(self.date_made)
+
+
+    class Meta:
+        verbose_name = 'Kontakt Skjema'
+        verbose_name_plural = 'Kontakt Skjermaer'

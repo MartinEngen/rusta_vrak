@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAMA,QAAQ;EACN,MAAM,EAAE,KAAK;EACb,YAAY,EAPL,OAAO;EAQd,gBAAgB,EART,OAAO;EASd,WAAW,EAAE,IAAI;EACjB,aAAa,EAAE,IAAI;;AAInB,WAAC;EACC,SAAS,EAAE,OAAO",
+"sources": ["personal_carsStyle.sass"],
+"names": [],
+"file": "personal_carsStyle.css"
+}
