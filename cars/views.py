@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+
+from __future__ import unicode_literals
+
 from django.shortcuts import render, HttpResponse
 
 # Create your views here.
@@ -154,19 +159,31 @@ def booking_schema(request, booking_id, car_id):
                 from google.appengine.api import mail
 
                 mail.send_mail(sender='Nitrax92@gmail.com',
-                               to="Albert Johnson <Nitrax92@gmail.com>",
-                               subject="Your account has been approved",
-                               body="""Dear Albert:
-                Your example.com account has been approved.  You can now visit
-                http://www.example.com/ and sign in using your Google Account to
-                access new features.
-                Please let us know if you have any questions.
-                The example.com Team
-                """)
+                               to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
+                               subject="Kvittering. Rusta Vrak Bilutleige",
+                               body="""Hei %s,
+                Her kommer en kvittering.
+                Bookingnummer: %s.
+                Fra Dato: %s
+                Til Dato: %s
+                Pris: %s ,-
+
+
+                Epost: rusta.vrak@gmail.com
+                Telefon +47 400 49 489
+                """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d-%m-%Y')), str(current_booking.final_date.strftime('%Y-%m-%d')), "Ukjent."))
 
 
             else:
-                content = 'From: Martin \nTo: Reciever \nSubject: Subject. \n\nexample email stuff here.'
+                content = """From: Martin \nTo: Reciever \nSubject: Rusta Vrak Bilutleige. \n\nHei %s,
+    Her kommer en kvittering.
+    Bookingnummer: %s.
+    Fra Dato: %s
+    Til Dato: %s
+    Pris: %s
+    Epost: rusta.vrak@gmail.com
+    Telefon +47 400 49 489
+                """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')), str(current_booking.final_date.strftime('%d.%m.%Y')), "Ukjent.")
 
                 mail = smtplib.SMTP('smtp.gmail.com', 587)
                 mail.ehlo()

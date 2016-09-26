@@ -51,7 +51,9 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
     'polls',
     'frontpage',
     'cars',
@@ -66,6 +68,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'mysite.urls'
@@ -156,3 +159,5 @@ USE_TZ = True
 
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
+
+SITE_ID = 1
