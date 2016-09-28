@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
 from __future__ import unicode_literals
+
+
 
 from django.shortcuts import render, HttpResponse
 
@@ -20,8 +21,12 @@ from django.http import JsonResponse
 
 from frontpage.views import index
 
+# Mail API's
 import smtplib
 import os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 
 
 def personal_car(request):
@@ -175,15 +180,42 @@ def booking_schema(request, booking_id, car_id):
 
 
             else:
-                content = """From: Martin \nTo: Reciever \nSubject: Rusta Vrak Bilutleige. \n\nHei %s,
-    Her kommer en kvittering.
-    Bookingnummer: %s.
-    Fra Dato: %s
-    Til Dato: %s
-    Pris: %s
-    Epost: rusta.vrak@gmail.com
-    Telefon +47 400 49 489
-                """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')), str(current_booking.final_date.strftime('%d.%m.%Y')), "Ukjent.")
+
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = "Rusta Vrak Bilutleige. Kvittering."
+                msg['From'] = 'Nitrax92@gmail.com'
+                msg['To'] = new_form.email
+
+                text = "Hei!\nHer kommer en kvittering fra din bestilling."
+                html = """\
+                <html>
+                  <head></head>
+                  <body style="background-color: yellow;">
+                  <h1> Rusta Vrak Bilutleige </h1>
+                    <p><h3>Hei, %s.</h3><br>
+                    Her kommer en kvittering fra din reservasjon av leiebil. <br>
+                        <hr>
+                        <b>Bookingsnummer: %s </b><br>
+                        Fra Dato: %s <br>
+                        Til Dato: %s <br>
+                        Registert Telefonnummer: %s <br>
+                        Pris: (Under Arbeid.) <br>
+                    </p>
+                    <hr>
+                    <p style="font-size: 53px">
+                        <h3> Kontakt: </h3>
+                        Epost: Rusta.vrak@gmail.com <br>
+                        Telefon: +47 400 49 489
+                    </p>
+                  </body>
+                </html>
+                """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')), str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+
+                part1 = MIMEText(text, 'plain')
+                part2 = MIMEText(html, 'html')
+
+                msg.attach(part1)
+                msg.attach(part2)
 
                 mail = smtplib.SMTP('smtp.gmail.com', 587)
                 mail.ehlo()
@@ -192,7 +224,7 @@ def booking_schema(request, booking_id, car_id):
 
                 mail.login('Nitrax92@gmail.com', 'this.setPw(G)')
 
-                mail.sendmail('Nitrax92@gmail.com', new_form.email, content)
+                mail.sendmail('Nitrax92@gmail.com', new_form.email, msg.as_string())
 
                 mail.close()
 
