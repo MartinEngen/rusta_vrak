@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
-
 
 
 from django.shortcuts import render, HttpResponse
@@ -47,10 +45,12 @@ def personal_car(request):
 
 def car_availability(request, car_id):
 
+
     if request.method == 'POST':
 
         booking_form = BookingForm(request.POST)
-        #logging.info("Booking Requested.")
+
+        # logging.info("Booking Requested.")
         print ("Booking Requested.")
         car = get_object_or_404(Car, id=car_id)
         if booking_form.is_valid():
@@ -59,23 +59,39 @@ def car_availability(request, car_id):
             initial_date = booking_form.cleaned_data['initial_date']
             final_date = booking_form.cleaned_data['final_date']
 
-            # User tries to book from before today, this is illegal.
-            if(initial_date < datetime.date.today()):
-                print("Before today. Or TOday")
 
-
-
-            # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
 
             # Get all registered bookings for this car.
             car_bookings = Car_Booking.objects.filter(car=car).exclude(final_date__lte=datetime.date.today())
+
+
+            # User tries to book from before today, this is illegal.
+            if(initial_date < datetime.date.today()):
+                print("Before today. Or TOday")
+                print ("Error, not able to book")
+                logging.error("Error, not able to book.")
+                warning = True
+                message = "Kan ikke registerer en reservasjon som går tilbake i tid."
+                return render(request, 'cars/spesific_car.html',
+                              {'car': car, 'bookings': car_bookings, 'warning': warning, 'message': message}
+                              )
+
+            # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
             for booking in car_bookings:
-                if (booking.initial_date <= initial_date and booking.final_date >= initial_date) or (booking.initial_date <= final_date and booking.final_date >= final_date):
+                if (booking.initial_date <= initial_date and booking.final_date >= initial_date) or (booking.initial_date <= final_date and booking.final_date >= final_date) or initial_date < datetime.date.today():
                     print ("Error, not able to book")
                     logging.info("Error, not able to book.")
                     warning = True
                     message = "Overlapping av booking detektert."
-                    return render(request, 'cars/spesific_car.html', {'car': car, 'bookings': car_bookings, 'warning': warning, 'message': message})
+                    return render(request, 'cars/spesific_car.html',
+                                  {'car': car, 'bookings': car_bookings, 'warning': warning, 'message': message}
+                                  )
+
+
+
+
+
+
 
 
             new_booking = Car_Booking(car=car, initial_date=booking_form.cleaned_data['initial_date'], final_date=booking_form.cleaned_data['final_date'], status=2)
@@ -100,20 +116,17 @@ def car_availability(request, car_id):
             print(booking_form.errors)
 
         car_bookings = Car_Booking.objects.filter(car=car)
-
-
         return render(request, 'cars/spesific_car.html', {'car': car, 'bookings': car_bookings,})
 
     else:
 
         current_car = get_object_or_404(Car, id=car_id)
+
+        images_string = current_car.gallery_images
+        images = images_string.split(',')
+
+        # Gather the information required by the Calendar
         car_bookings = Car_Booking.objects.filter(car=current_car).exclude(final_date__lte=datetime.date.today()).order_by('initial_date')
-
-        imagesString = current_car.gallery_images
-
-        images = imagesString.split(',')
-
-
         data = []
 
         for booking in car_bookings:
@@ -122,7 +135,6 @@ def car_availability(request, car_id):
 
             event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background', 'color': 'black'}
             data.append(event)
-
 
         json_data_string = json.dumps(data)
 
@@ -160,73 +172,14 @@ def booking_schema(request, booking_id, car_id):
                                            last_name=last_name, misc_info=misc_info)
             new_form.save()
 
-            if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
-                from google.appengine.api import mail
-
-                mail.send_mail(sender='Nitrax92@gmail.com',
-                               to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
-                               subject="Kvittering. Rusta Vrak Bilutleige",
-                               body="""Hei %s,
-                Her kommer en kvittering.
-                Bookingnummer: %s.
-                Fra Dato: %s
-                Til Dato: %s
-                Pris: %s ,-
 
 
-                Epost: rusta.vrak@gmail.com
-                Telefon +47 400 49 489
-                """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d-%m-%Y')), str(current_booking.final_date.strftime('%Y-%m-%d')), "Ukjent."))
+
+            # Run the function that handles the sending of receipt.
+            send_mail_receipt(new_form, current_booking, booking_id)
 
 
-            else:
 
-                msg = MIMEMultipart('alternative')
-                msg['Subject'] = "Rusta Vrak Bilutleige. Kvittering."
-                msg['From'] = 'Nitrax92@gmail.com'
-                msg['To'] = new_form.email
-
-                text = "Hei!\nHer kommer en kvittering fra din bestilling."
-                html = """\
-                <html>
-                  <head></head>
-                  <body style="background-color: yellow;">
-                  <h1> Rusta Vrak Bilutleige </h1>
-                    <p><h3>Hei, %s.</h3><br>
-                    Her kommer en kvittering fra din reservasjon av leiebil. <br>
-                        <hr>
-                        <b>Bookingsnummer: %s </b><br>
-                        Fra Dato: %s <br>
-                        Til Dato: %s <br>
-                        Registert Telefonnummer: %s <br>
-                        Pris: (Under Arbeid.) <br>
-                    </p>
-                    <hr>
-                    <p style="font-size: 53px">
-                        <h3> Kontakt: </h3>
-                        Epost: Rusta.vrak@gmail.com <br>
-                        Telefon: +47 400 49 489
-                    </p>
-                  </body>
-                </html>
-                """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')), str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
-
-                part1 = MIMEText(text, 'plain')
-                part2 = MIMEText(html, 'html')
-
-                msg.attach(part1)
-                msg.attach(part2)
-
-                mail = smtplib.SMTP('smtp.gmail.com', 587)
-                mail.ehlo()
-
-                mail.starttls()
-
-                mail.login('Nitrax92@gmail.com', 'this.setPw(G)')
-
-                mail.sendmail('Nitrax92@gmail.com', new_form.email, msg.as_string())
-
-                mail.close()
 
 
 
@@ -246,3 +199,94 @@ def booking_schema(request, booking_id, car_id):
 
         return render(request, 'cars/booking_form.html', context)
 
+
+
+def send_mail_receipt(new_form, current_booking, booking_id):
+    if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
+        from google.appengine.api import mail
+
+        msg = MIMEMultipart('alternative')
+        html = """\
+                        <html>
+                          <body">
+                          <h1> Rusta Vrak Bilutleige </h1>
+                            <p><h3>Hei, %s.</h3><br>
+                            Her kommer en kvittering fra din reservasjon av leiebil. <br>
+                                <hr>
+                                <b>Bookingsnummer: %s </b><br>
+                                Fra Dato: %s <br>
+                                Til Dato: %s <br>
+                                Registert Telefonnummer: %s <br>
+                                Pris: (Under Arbeid.) <br>
+                            </p>
+                            <hr>
+                            <p style="font-size: 53px">
+                                <h4>Kontakt: </h4>
+                                Epost: Rusta.vrak@gmail.com <br>
+                                Telefon: +47 400 49 489
+                            </p>
+                          </body>
+                        </html>
+                        """ % (
+        new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+
+        msg.attach(MIMEText(html, 'html'))
+
+        logging.debug("Sending From Google Mail API")
+        mail.send_mail(sender='Nitrax92@gmail.com',
+                       to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
+                       subject="Kvittering. Rusta Vrak Bilutleige",
+                       body="Hei",
+                       html=html)
+
+        logging.debug("Sending, complete.")
+
+    else:
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = "Rusta Vrak Bilutleige. Kvittering."
+        msg['From'] = 'Nitrax92@gmail.com'
+        msg['To'] = new_form.email
+
+        text = "Hei!\nHer kommer en kvittering fra din bestilling."
+        html = """\
+        <html>
+          <head></head>
+          <body>
+          <h1> Rusta Vrak Bilutleige </h1>
+            <p><h3>Hei, %s.</h3><br>
+            Her kommer en kvittering fra din reservasjon av leiebil. <br>
+                <hr>
+                <b>Bookingsnummer: %s </b><br>
+                Fra Dato: %s <br>
+                Til Dato: %s <br>
+                Registert Telefonnummer: %s <br>
+                Pris: (Under Arbeid.) <br>
+            </p>
+            <hr>
+            <p style="font-size: 53px">
+                <h4>Kontakt: </h4>
+                Epost: Rusta.vrak@gmail.com <br>
+                Telefon: +47 400 49 489
+            </p>
+          </body>
+        </html>
+        """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+               str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+
+        part1 = MIMEText(text, 'plain')
+        part2 = MIMEText(html, 'html')
+
+        msg.attach(part1)
+        msg.attach(part2)
+
+        mail = smtplib.SMTP('smtp.gmail.com', 587)
+        mail.ehlo()
+
+        mail.starttls()
+
+        mail.login('Nitrax92@gmail.com', 'this.setPw(G)')
+
+        mail.sendmail('Nitrax92@gmail.com', new_form.email, msg.as_string())
+
+        mail.close()

@@ -2,6 +2,41 @@
 
 {% block Content %}
 
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-offset-1 col-md-4">
+            <h3> Reservasjon </h3>
+            <form method="post" >{% csrf_token %}
+
+
+                <div class="input-group" style="width: 250px;">
+                  <span class="input-group-addon" id="label_addon_initial_date" style="width: 80px;">Fra Dato</span>
+                  <input type="text" class="form-control" id="datepickerStart" name="initial_date" aria-describedby="label_addon_initial_date">
+                </div>
+
+                <div class="input-group" style="width: 250px;">
+                  <span class="input-group-addon" id="label_addon_final_date" style="width: 80px;">Til Dato</span>
+                  <input type="text" class="form-control" id="datepickerFinish" name="final_date" aria-describedby="label_addon_final_date" >
+                </div>
+
+                <button type="submit" class="btn btn-default">Fortsett</button>
+            </form>
+        </div>
+        <div class="col-md-offset-1 col-md-4 col-xs-12">
+            <h3> Ledighet </h3>
+            <div id='calendar' style="background-color: white; color: black; "></div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
     <h1>{{ car.brand }} {{ car.model }}</h1>
 
 
@@ -12,22 +47,17 @@
 
     <h1>Legg til ny: </h1>
 
-<form method="post" >{% csrf_token %}
-    <p>Fra Dato: <input type="text" id="datepickerStart" name="initial_date" style="font-size: large; color: black"></p>
-    <p>Til Dato: <input type="text" id="datepickerFinish" name="final_date" style="font-size: large; color: black"></p>
-    <button type="submit" class="btn btn-default">Fortsett</button>
-</form>
+
+
+
 <div class="container">
-
-
 {% if warning %}
 <div class="alert alert-danger" style="font-size: large">
   <strong>Advarsel!</strong> {{ message }}
 </div>
 {% endif %}
-
-    <h3>Litt-funksjonell kalender</h3>
 </div>
+
 
 <div id='calendar' style="background-color: white; color: black; width: 50%; height: 50%;"></div>
 
