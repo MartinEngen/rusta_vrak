@@ -1,5 +1,6 @@
 {
 "version": 3,
+"mappings": "AAAA,UAAU;EACR,MAAM,EAAE,KAAK;;AAKb,WAAE;EACA,UAAU,EAAE,MAAM;AAGpB,iBAAQ;EACN,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK",
 "sources": ["frontStyle.sass"],
 "names": [],
 "file": "frontStyle.css"

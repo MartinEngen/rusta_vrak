@@ -1,5 +1,10 @@
-.car_frame {
-  font-size: large;
-  height: 100px; }
+.thumbnail {
+  margin: 5 5px; }
+
+.caption h3 {
+  text-align: center; }
+.caption .car_img {
+  width: 320px;
+  height: 228px; }
 
 /*# sourceMappingURL=frontStyle.css.map */
