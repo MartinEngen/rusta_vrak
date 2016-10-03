@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 
 from django.shortcuts import render, HttpResponse
@@ -174,9 +173,24 @@ def booking_schema(request, booking_id, car_id):
 
 
 
+            number_of_days = (current_booking.final_date - current_booking.initial_date).days + 1
+            print("Dager: " + str(number_of_days))
 
+            print(number_of_days * 250)
             # Run the function that handles the sending of receipt.
-            send_mail_receipt(new_form, current_booking, booking_id)
+            #print("ååååå".decode('utf-8'))
+            #send_mail_receipt(new_form, current_booking, booking_id)
+
+
+            context = {
+                'car': current_car,
+                'booking': current_booking,
+                'filled_form': new_form
+            }
+
+            #Redirect the user to the final page, reciet is shown etc.
+            return render(request, 'cars/booking_receipt.html', context)
+            #return redirect(booking_receipt(request, current_booking, new_form))
 
 
 
@@ -198,6 +212,20 @@ def booking_schema(request, booking_id, car_id):
         }
 
         return render(request, 'cars/booking_form.html', context)
+
+
+
+
+def booking_receipt(request, booking_id, registration_id):
+
+
+
+
+    return render(request, 'cars/booking_receipt.html')
+
+
+
+
 
 
 
@@ -255,7 +283,7 @@ def send_mail_receipt(new_form, current_booking, booking_id):
           <body>
           <h1> Rusta Vrak Bilutleige </h1>
             <p><h3>Hei, %s.</h3><br>
-            Her kommer en kvittering fra din reservasjon av leiebil. <br>
+            Her Å kommer en kvittering fra din reservasjon av leiebil. <br>
                 <hr>
                 <b>Bookingsnummer: %s </b><br>
                 Fra Dato: %s <br>
@@ -271,7 +299,7 @@ def send_mail_receipt(new_form, current_booking, booking_id):
             </p>
           </body>
         </html>
-        """ % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        """.encode('ascii', 'xmlcharrefreplace') % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
                str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
 
         part1 = MIMEText(text, 'plain')
