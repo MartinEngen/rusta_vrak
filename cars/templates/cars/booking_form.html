@@ -2,6 +2,11 @@
 
 {% block Content %}
 
+<h2>Reservasjon:</h2>
+<h4>{{ car.brand }} {{ car.model }} </h4>
+<h4>Fra Dato: {{ booking.initial_date }}. Til Dato: {{ booking.final_date }}</h4>
+<h4>Antall Dager: {{ days }}</h4>
+<h4>Pris estimat: {{ price }}kr</h4>
 <h3>Kontakt Informasjon</h3>
 <form method="post" >{% csrf_token %}
     <div class="form-group">

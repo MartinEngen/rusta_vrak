@@ -26,23 +26,30 @@ from email.mime.text import MIMEText
 
 
 
+# TODO: Genereal Code Cleanup. This may entail moving some functions to new apps / files.
 def personal_car(request):
-
-
     personal_cars = Car.objects.filter(car_type=1)
-
-
     context = {
         'personal_cars': personal_cars,
     }
-
     return render(request, 'cars/personal_cars.html', context)
 
 
-
-
-
 def car_availability(request, car_id):
+
+
+    def abort(car, car_bookings, message):
+        calendar_data = generate_calendar_data(car_bookings)
+
+        context = {
+            'car': car,
+            'bookings': car_bookings,
+            'warning': True,
+            'message': message,
+            'json_data_string': calendar_data,
+        }
+        print("Abort!!! !! , Abort.")
+        return redirect(index)
 
 
     if request.method == 'POST':
@@ -58,64 +65,79 @@ def car_availability(request, car_id):
             initial_date = booking_form.cleaned_data['initial_date']
             final_date = booking_form.cleaned_data['final_date']
 
-
-
+            # Check if the number of days exeeds 30 days.
             # Get all registered bookings for this car.
-            car_bookings = Car_Booking.objects.filter(car=car).exclude(final_date__lte=datetime.date.today())
+            car_bookings = Car_Booking.objects.filter(car=car).exclude(final_date__lte=datetime.date.today()).order_by(
+                'initial_date')
+
+            if (final_date - initial_date).days > 30:
+                logging.error("Logging more than 30 days, Stop.")
+                message = "Kan ikke reservere mer enn 30 dager i gangen. Ta kontakt for en større reservasjon."
+
+                calendar_data = generate_calendar_data(car_bookings)
+
+                context = {
+                    'car': car,
+                    'bookings': car_bookings,
+                    'warning': True,
+                    'message': message,
+                    'json_data_string': calendar_data,
+                }
+
+                return render(request, 'cars/spesific_car.html', context)
+
+
 
 
             # User tries to book from before today, this is illegal.
-            if(initial_date < datetime.date.today()):
-                print("Before today. Or TOday")
-                print ("Error, not able to book")
+            if initial_date < datetime.date.today():
                 logging.error("Error, not able to book.")
-                warning = True
                 message = "Kan ikke registerer en reservasjon som går tilbake i tid."
-                return render(request, 'cars/spesific_car.html',
-                              {'car': car, 'bookings': car_bookings, 'warning': warning, 'message': message}
-                              )
+
+                calendar_data = generate_calendar_data(car_bookings)
+
+                context = {
+                    'car': car,
+                    'bookings': car_bookings,
+                    'warning': True,
+                    'message': message,
+                    'json_data_string': calendar_data,
+                }
+
+
+                return render(request, 'cars/spesific_car.html', context)
 
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
             for booking in car_bookings:
-                if (booking.initial_date <= initial_date and booking.final_date >= initial_date) or (booking.initial_date <= final_date and booking.final_date >= final_date) or initial_date < datetime.date.today():
-                    print ("Error, not able to book")
-                    logging.info("Error, not able to book.")
-                    warning = True
-                    message = "Overlapping av booking detektert."
-                    return render(request, 'cars/spesific_car.html',
-                                  {'car': car, 'bookings': car_bookings, 'warning': warning, 'message': message}
-                                  )
+                if booking.initial_date <= initial_date and booking.final_date >= initial_date or booking.initial_date <= final_date and booking.final_date >= final_date:
+                    logging.error("Error, not able to book.")
+                    message = "Reservasjon overlapper, velg en ledig periode."
 
+                    calendar_data = generate_calendar_data(car_bookings)
 
+                    context = {
+                        'car': car,
+                        'bookings': car_bookings,
+                        'warning': True,
+                        'message': message,
+                        'json_data_string': calendar_data,
+                    }
 
-
-
-
-
+                    return render(request, 'cars/spesific_car.html', context)
 
             new_booking = Car_Booking(car=car, initial_date=booking_form.cleaned_data['initial_date'], final_date=booking_form.cleaned_data['final_date'], status=2)
             new_booking.save()
 
             return redirect('cars:booking_scheme', booking_id=new_booking.id, car_id=car.id)
 
-
-
-
-
-
-            #return redirect(booking_schema(request, new_booking, car))
-            #new_booking.save()
-
-
-
-
         else:
+
             print("Not Valid.")
             logging.debug("Non valid form posted.")
             print(booking_form.errors)
 
-        car_bookings = Car_Booking.objects.filter(car=car)
-        return render(request, 'cars/spesific_car.html', {'car': car, 'bookings': car_bookings,})
+            car_bookings = Car_Booking.objects.filter(car=car)
+            return render(request, 'cars/spesific_car.html', {'car': car, 'bookings': car_bookings, 'errors': booking_form.errors})
 
     else:
 
@@ -126,26 +148,35 @@ def car_availability(request, car_id):
 
         # Gather the information required by the Calendar
         car_bookings = Car_Booking.objects.filter(car=current_car).exclude(final_date__lte=datetime.date.today()).order_by('initial_date')
-        data = []
 
-        for booking in car_bookings:
-            start_date = booking.initial_date
-            end_date = booking.final_date
-
-            event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background', 'color': 'black'}
-            data.append(event)
-
-        json_data_string = json.dumps(data)
-
+        calendar_data = generate_calendar_data(car_bookings)
 
         context = {
             'car': current_car,
             'bookings': car_bookings,
-            'json_data_string': json_data_string,
+            'json_data_string': calendar_data,
             'bilder': images
         }
 
         return render(request, 'cars/spesific_car.html', context)
+
+
+
+
+def generate_calendar_data(car_bookings):
+    data = []
+
+    for booking in car_bookings:
+        start_date = booking.initial_date
+        end_date = booking.final_date
+
+        event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background',
+                 'color': 'black'}
+        data.append(event)
+
+    json_data_string = json.dumps(data)
+    return json_data_string
+
 
 
 def booking_schema(request, booking_id, car_id):
@@ -203,21 +234,44 @@ def booking_schema(request, booking_id, car_id):
     else:
         car = get_object_or_404(Car, id=car_id)
         booking = get_object_or_404(Car_Booking, id=booking_id)
-        booking_form = BookingRegistrationForm()
+        #booking_form = BookingRegistrationForm()
+
+        number_of_days = (booking.final_date - booking.initial_date).days
+        price = price_calculator(number_of_days)
+
 
         context = {
             'car': car,
             'booking': booking,
-            'booking_form': booking_form,
+            'days': number_of_days,
+            'price': price
+            #'booking_form': booking_form,
         }
 
         return render(request, 'cars/booking_form.html', context)
 
 
 
+def abort_booking_with_error(request,car, car_bookings, message):
+    calendar_data = generate_calendar_data(car_bookings)
+
+    context = {
+        'car': car,
+        'bookings': car_bookings,
+        'warning': True,
+        'message': message,
+        'json_data_string': calendar_data,
+    }
+    print("Abort, Abort.")
+    return redirect(index)
+    return render(request, 'cars/spesific_car.html', context)
+
+
+
+
 
 def booking_receipt(request, booking_id, registration_id):
-
+    # TODO: Get the information required for the receipt page. Send this to the view and display it.
 
 
 
@@ -225,11 +279,20 @@ def booking_receipt(request, booking_id, registration_id):
 
 
 
+def price_calculator(days):
+    start_price = 250
+
+    # TODO: Add functionality to set correct number after longer rent discount.
+
+    return start_price * days
 
 
 
 
 def send_mail_receipt(new_form, current_booking, booking_id):
+    # TODO: Ascii casuing issues with norwegian letters when sending an email.
+
+
     if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         from google.appengine.api import mail
 
