@@ -3,7 +3,7 @@
 
 from django.shortcuts import render, HttpResponse
 
-# Create your views here.
+
 from django.shortcuts import get_object_or_404, redirect
 
 
@@ -24,10 +24,13 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-
+#Uniqueness
+import hashlib
 
 # TODO: Genereal Code Cleanup. This may entail moving some functions to new apps / files.
 def personal_car(request):
+
+    print(hash)
     personal_cars = Car.objects.filter(car_type=1)
     context = {
         'personal_cars': personal_cars,
@@ -36,21 +39,6 @@ def personal_car(request):
 
 
 def car_availability(request, car_id):
-
-
-    def abort(car, car_bookings, message):
-        calendar_data = generate_calendar_data(car_bookings)
-
-        context = {
-            'car': car,
-            'bookings': car_bookings,
-            'warning': True,
-            'message': message,
-            'json_data_string': calendar_data,
-        }
-        print("Abort!!! !! , Abort.")
-        return redirect(index)
-
 
     if request.method == 'POST':
 
@@ -83,6 +71,8 @@ def car_availability(request, car_id):
                     'message': message,
                     'json_data_string': calendar_data,
                 }
+
+
 
                 return render(request, 'cars/spesific_car.html', context)
 
@@ -128,7 +118,9 @@ def car_availability(request, car_id):
             new_booking = Car_Booking(car=car, initial_date=booking_form.cleaned_data['initial_date'], final_date=booking_form.cleaned_data['final_date'], status=2)
             new_booking.save()
 
+
             return redirect('cars:booking_scheme', booking_id=new_booking.id, car_id=car.id)
+
 
         else:
 
@@ -161,24 +153,6 @@ def car_availability(request, car_id):
         return render(request, 'cars/spesific_car.html', context)
 
 
-
-
-def generate_calendar_data(car_bookings):
-    data = []
-
-    for booking in car_bookings:
-        start_date = booking.initial_date
-        end_date = booking.final_date
-
-        event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background',
-                 'color': 'black'}
-        data.append(event)
-
-    json_data_string = json.dumps(data)
-    return json_data_string
-
-
-
 def booking_schema(request, booking_id, car_id):
 
     if request.method == 'POST':
@@ -208,15 +182,17 @@ def booking_schema(request, booking_id, car_id):
             print("Dager: " + str(number_of_days))
 
             print(number_of_days * 250)
+
+
             # Run the function that handles the sending of receipt.
-            #print("ååååå".decode('utf-8'))
             #send_mail_receipt(new_form, current_booking, booking_id)
 
-
+            price = price_calculator(number_of_days)
             context = {
                 'car': current_car,
                 'booking': current_booking,
-                'filled_form': new_form
+                'filled_form': new_form,
+                'price': price,
             }
 
             #Redirect the user to the final page, reciet is shown etc.
@@ -251,6 +227,21 @@ def booking_schema(request, booking_id, car_id):
         return render(request, 'cars/booking_form.html', context)
 
 
+def generate_calendar_data(car_bookings):
+    data = []
+
+    for booking in car_bookings:
+        start_date = booking.initial_date
+        end_date = booking.final_date
+
+        event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background',
+                 'color': 'black'}
+        data.append(event)
+
+    json_data_string = json.dumps(data)
+    return json_data_string
+
+
 
 def abort_booking_with_error(request,car, car_bookings, message):
     calendar_data = generate_calendar_data(car_bookings)
@@ -282,7 +273,7 @@ def booking_receipt(request, booking_id, registration_id):
 def price_calculator(days):
     start_price = 250
 
-    # TODO: Add functionality to set correct number after longer rent discount.
+    # TODO: Add functionality to set correct number after longer rent discoun
 
     return start_price * days
 

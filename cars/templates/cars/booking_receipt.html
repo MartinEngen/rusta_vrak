@@ -2,5 +2,29 @@
 
 
 {% block Content %}
-Her kommer en kvittering.
+<div class="container">
+    <div class="jumbotron" style="color: black;">
+        <h1>Kvittering</h1>
+        <hr>
+        <h2>Bil</h2>
+        <p>
+        Booking Nr.: {{ booking.id }} <br>
+        Bil: {{ car.brand }} {{ car.model }} <br>
+        Hentes Dato: {{ booking.initial_date }} <br>
+        Levers Dato: {{ booking.final_date }} <br>
+        Pris: {{ price }}
+        </p>
+        <hr>
+        <h2>Kunde </h2>
+        <p>Navn: {{ filled_form.first_name }} {{ filled_form.last_name }} <br>
+        Epost: {{ filled_form.email }} <br>
+        Telefon: {{ filled_form.phone_number }} <br>
+        </p>
+
+        <hr>
+        <p>
+        Ekstra Informasjon {{ filled_form.misc_info }}
+        </p>
+    </div>
+</div>
 {% endblock Content %}
