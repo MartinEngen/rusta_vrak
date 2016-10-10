@@ -3,16 +3,12 @@
 {% block Content %}
 
 
+
+
+
+
+<div class="container">
 <h1>{{ car.brand }} {{ car.model }}</h1>
-
-
-<div>
-
-</div>
-
-
-
-<div class="container-fluid">
     <div class="row">
 
         <div class="col-md-offset-1 col-md-4">
@@ -21,12 +17,12 @@
 
 
                 <div class="input-group" style="width: 250px;">
-                  <span class="input-group-addon" id="label_addon_initial_date" style="width: 80px;">Fra Dato</span>
+                  <span class="input-group-addon" id="label_addon_initial_date" style="width: 80px;">Hentes</span>
                   <input type="text" class="form-control" id="datepickerStart" name="initial_date" aria-describedby="label_addon_initial_date">
                 </div>
 
                 <div class="input-group" style="width: 250px;">
-                  <span class="input-group-addon" id="label_addon_final_date" style="width: 80px;">Til Dato</span>
+                  <span class="input-group-addon" id="label_addon_final_date" style="width: 80px;">Leveres</span>
                   <input type="text" class="form-control" id="datepickerFinish" name="final_date" aria-describedby="label_addon_final_date" >
                 </div>
 
@@ -86,9 +82,8 @@
    }
 
     $(document).ready(( function() {
-        console.log("Hei");
-        $( "#datepickerStart" ).datepicker();
-        $( "#datepickerFinish" ).datepicker();
+        $( "#datepickerStart" ).datepicker({minDate: 0});
+        $( "#datepickerFinish" ).datepicker({minDate: 0});
 
 
         $('#calendar').fullCalendar({

@@ -8,6 +8,7 @@
 
 
 {% block Content %}
+<div class="container">
     {% if personal_cars %}
     {% for car in personal_cars %}
         <div class="col-lg-12 car_tab">
@@ -26,4 +27,5 @@
         <h1></h1>
     {% endfor %}
     {% endif %}
+</div>
 {% endblock Content %}

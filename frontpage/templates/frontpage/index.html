@@ -6,49 +6,130 @@
 
     {% block pageBasedStyle %}
     <link rel="stylesheet" href="{% static "frontPage/css/frontStyle.css" %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     {% endblock pageBasedStyle %}
 
 {% block Content %}
+
+
+<div class="container">
     <div class="row">
-      <div class="col-md-4 car_frame">
-          <a href="{% url 'cars:personal_car' %}">
-          <div class="thumbnail">
-            <img src="static/frontpage/pic/personbil.JPG" alt="..." style="width:320px;height:228px;" />
-            <div class="caption post-content">
-                <h3>Personbil</h3>
-                <p>Litt tekst</p>
-            </div>
-        </div>
-       </a>
-
-
-
-
-
-      </div>
-      <div class="col-md-4 car_frame">
-
-          <div class="thumbnail">
-            <img src="static/frontpage/pic/Citroen_Jumpy_varebil.JPG" alt="..." style="width:320px;height:228px;"/>
-            <div class="caption post-content">
-                <h3>Varebil</h3>
-                <p>Litt tekst</p>
-            </div>
-        </div>
-      </div>
-      <div class="col-md-4 car_frame">
-
-              <div class="thumbnail">
-                <img src="static/frontpage/pic/IMG_5578.JPG" alt="..." style="width:320px;height:228px;"/>
-                <div class="caption post-content">
-                    <h3>Kombinertbil</h3>
-                    <p>Litt tekst</p>
-                </div>
-            </div>
-
+      <div class="col-md-12" id="welcome">
+          <h1>Velkommen til Rusta Vrak Bilutleige</h1>
       </div>
     </div>
 
+</div>
 
+<section id="seach_section">
+    <div class="container">
+        <div class="row">
+            <h3>Finn ledige biler fra tidsperiode</h3>
+            <form method="post" action="bil/" >{% csrf_token %}
+
+                <div class="checkbox">
+                  <label><input type="checkbox" name="personal" id="personal">Personbil</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" name="van" id="van">Varebil</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
+                </div>
+
+
+                <div class="input-group" style="width: 250px;">
+                  <span class="input-group-addon" id="label_addon_initial_date" style="width: 80px;">Hentes</span>
+                  <input type="text" class="form-control" id="datepickerStart" name="initial_date" aria-describedby="label_addon_initial_date">
+                </div>
+
+                <div class="input-group" style="width: 250px;">
+                  <span class="input-group-addon" id="label_addon_final_date" style="width: 80px;">Leveres</span>
+                  <input type="text" class="form-control" id="datepickerFinish" name="final_date" aria-describedby="label_addon_final_date" >
+                </div>
+
+
+                <button type="submit" class="btn btn-default">Søk</button>
+
+                {% if errors %}
+                {{ errors }}
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+
+</section>
+
+<section id="car_types">
+    <div class="container">
+    <h3>Se alle biler</h3>
+        <div class="row">
+            <div class="col-md-4 car_frame">
+              <a href="{% url 'cars:personal_car' %}" class="thumbnail">
+                <img src="static/frontpage/pic/personbil.JPG" alt="Pulpit Rock">
+                <h3>Personbil</h3>
+              </a>
+            </div>
+            <div class="col-md-4 car_frame">
+              <a href="#" class="thumbnail">
+                <img src="static/frontpage/pic/Citroen_Jumpy_varebil.JPG" alt="Moustiers Sainte Marie">
+                <h3>Varebil</h3>
+              </a>
+            </div>
+            <div class="col-md-4 car_frame">
+              <a href="#" class="thumbnail">
+
+                <img src="static/frontpage/pic/IMG_5578.JPG" alt="Cinque Terre">
+                <h3>Kombinertbil</h3>
+
+              </a>
+            </div>
+      </div>
+    </div>
+</section>
+
+
+<section id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Vi tilbyr</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <span class="fa-stack fa-5x">
+                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="service-heading">Langtidsleie</h3>
+                <p>For å leie en bil i lengre perioder ber vi deg ta kontakt.</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-5x">
+                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fa fa-money fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="service-heading">Billig</h3>
+                <p>Utleie av en bil vil koste 250kr per døgn.</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-5x">
+                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fa fa-hourglass-end fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="service-heading">Jo lengre, jo billigere</h3>
+                <p>Man vil få billigere ved å leie i lengre perioder av gangens</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock Content %}
+
+
+
+{% block siteSpesificJs %}
+<script src="{% static "frontPage/js/frontScript.js" %}"></script>
+{% endblock siteSpesificJs %}
