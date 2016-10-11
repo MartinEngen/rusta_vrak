@@ -185,7 +185,7 @@ def booking_schema(request, booking_id, car_id):
 
 
             # Run the function that handles the sending of receipt.
-            #send_mail_receipt(new_form, current_booking, booking_id)
+            send_mail_receipt(new_form, current_booking, booking_id)
 
             price = price_calculator(number_of_days)
             context = {
@@ -287,57 +287,13 @@ def send_mail_receipt(new_form, current_booking, booking_id):
     if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         from google.appengine.api import mail
 
-        msg = MIMEMultipart('alternative')
-        html = """\
-                        <html>
-                          <body">
-                          <h1> Rusta Vrak Bilutleige </h1>
-                            <p><h3>Hei, %s.</h3><br>
-                            Her kommer en kvittering fra din reservasjon av leiebil. <br>
-                                <hr>
-                                <b>Bookingsnummer: %s </b><br>
-                                Fra Dato: %s <br>
-                                Til Dato: %s <br>
-                                Registert Telefonnummer: %s <br>
-                                Pris: (Under Arbeid.) <br>
-                            </p>
-                            <hr>
-                            <p style="font-size: 53px">
-                                <h4>Kontakt: </h4>
-                                Epost: Rusta.vrak@gmail.com <br>
-                                Telefon: +47 400 49 489
-                            </p>
-                          </body>
-                        </html>
-                        """ % (
-        new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
-        str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
-
-        msg.attach(MIMEText(html, 'html'))
-
-        logging.debug("Sending From Google Mail API")
-        mail.send_mail(sender='Nitrax92@gmail.com',
-                       to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
-                       subject="Kvittering. Rusta Vrak Bilutleige",
-                       body="Hei",
-                       html=html)
-
-        logging.debug("Sending, complete.")
-
-    else:
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = "Rusta Vrak Bilutleige. Kvittering."
-        msg['From'] = 'Nitrax92@gmail.com'
-        msg['To'] = new_form.email
-
-        text = "Hei!\nHer kommer en kvittering fra din bestilling."
-        html = """\
-        <html>
+        content = """\
+                <html>
           <head></head>
           <body>
-          <h1> Rusta Vrak Bilutleige </h1>
+          <h1> Å RRusta Vrak Bilutleige </h1>
             <p><h3>Hei, %s.</h3><br>
-            Her Å kommer en kvittering fra din reservasjon av leiebil. <br>
+            Her kommer en kvittering fra din reservasjon av leiebil. <br>
                 <hr>
                 <b>Bookingsnummer: %s </b><br>
                 Fra Dato: %s <br>
@@ -353,14 +309,55 @@ def send_mail_receipt(new_form, current_booking, booking_id):
             </p>
           </body>
         </html>
-        """.encode('ascii', 'xmlcharrefreplace') % (new_form.first_name, str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        """ % (
+        new_form.first_name.encode('utf8'), str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+
+        msg = MIMEText(content, 'html')
+
+
+        logging.debug("Sending From Google Mail API")
+        mail.send_mail(sender='Nitrax92@gmail.com',
+                       to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
+                       subject="Kvittering. Rusta Vrak Bilutleige",
+                       body="Hei",
+                       html=msg)
+
+        logging.debug("Sending, complete.")
+
+    else:
+
+        content = """\
+                <html>
+          <head></head>
+          <body>
+          <h1> Å RRusta Vrak Bilutleige </h1>
+            <p><h3>Hei, %s.</h3><br>
+            Her kommer en kvittering fra din reservasjon av leiebil. <br>
+                <hr>
+                <b>Bookingsnummer: %s </b><br>
+                Fra Dato: %s <br>
+                Til Dato: %s <br>
+                Registert Telefonnummer: %s <br>
+                Pris: (Under Arbeid.) <br>
+            </p>
+            <hr>
+            <p style="font-size: 53px">
+                <h4>Kontakt: </h4>
+                Epost: Rusta.vrak@gmail.com <br>
+                Telefon: +47 400 49 489
+            </p>
+          </body>
+        </html>
+        """ % (new_form.first_name.encode('utf8'), str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
                str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+        msg = MIMEText(content, 'html')
 
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-
-        msg.attach(part1)
-        msg.attach(part2)
+        msg['Subject'] = 'Rusta Vrak Bilutleige. Kvittering.'
+        msg['From'] = 'Nitrax92@gmail.com'
+        msg['To'] = new_form.email
+        msg['Content-Type'] = "text/html; charset=UTF-8"
+        msg['Content-Transfer-Encoding'] = "quoted-printable"
 
         mail = smtplib.SMTP('smtp.gmail.com', 587)
         mail.ehlo()

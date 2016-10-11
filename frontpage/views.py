@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
@@ -9,42 +9,21 @@ from .forms import SearchForm
 
 
 def index(request):
-    #return HttpResponse("Hello, world. You're at the polls index.")
 
-    if request.method == 'POST':
+    """
+    context = {
+        'personal_cars': '',
+        'van': '',
+        'combi_car': '',
+    }
+    """
 
-        search = SearchForm(request.POST)
-
-        if search.is_valid():
-            print("Valid Search :))")
-            print(search.cleaned_data['personal'])
-            print(search.cleaned_data['van'])
-            print(search.cleaned_data['combi_car'])
-
-
-
-
-
-
-        return render(request, 'frontpage/index.html')
-    else:
-
-        """
-        context = {
-            'personal_cars': '',
-            'van': '',
-            'combi_car': '',
-        }
-        """
-
-        return render(request, 'frontpage/index.html')
+    return render(request, 'frontpage/index.html')
 
 
 
 def search_funciton(request):
     if request.method == 'POST':
-        print('Posted info')
-
         search_form = SearchForm(request.POST)
 
         if search_form.is_valid():
@@ -61,33 +40,38 @@ def search_funciton(request):
             if search_form.cleaned_data['combi_car']:
                 searched_types.append(3)
 
-            print(searched_types)
-            # Gather all the cars with the correct car type. car__car_type__in=searched_types
-            #available_cars = Car_Booking.objects.filter(car__car_type=1)
+            # Gather all the cars with the correct car type.
             cars = Car.objects.filter(car_type__in=searched_types)
-            print(cars)
+
             # Exclude any cars with initial date greater than final date searched.
-            available_cars = Car_Booking.objects.filter(car=cars)
-            available_cars = available_cars.exclude(final_date__lte=final_date)
-            available_cars = available_cars.exclude(initial_date__gte=inital_date)
+            car_bookings = Car_Booking.objects.filter(car=cars)
+            print(car_bookings.values("car_id"))
+            the_cars = car_bookings.values("car_id")
+            print(the_cars)
+            print(car_bookings.count())
+            car_bookings = car_bookings.exclude(final_date__range=(inital_date, final_date))
+            print(car_bookings.count())
+            car_bookings = car_bookings.exclude(initial_date__range=(inital_date, final_date))
+            print(car_bookings.count())
+            cars = cars.filter(booking__booking__car_id__in=car_bookings.values("car_id"))
 
 
+            print(car_bookings.values("car_id"))
+            # List containing all avalable cars
             available = []
 
-            for car in available_cars:
+            for car in car_bookings:
                 print("Adding car. + " + str(car.car))
                 available.append(car.car)
-            #available_cars = available_cars.exclude(final_date__gt=inital_date)
-            #available_cars = available_cars.exclude(initial_date__lt=final_date)
 
 
+            context = {
+                'cars': cars
+            }
+            return render(request, 'cars/search_cars.html', context)
 
-
-
-            print available
-
-        return render(request, 'cars/search_cars.html')
+        else:
+            return redirect('/')
 
     else:
-
-        return render(request, 'frontpage/index.html')
+        return redirect('/')
