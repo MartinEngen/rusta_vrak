@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAA,IAAI;EACF,gBAAgB,EAAE,OAAO",
+"sources": ["spesific_carStyle.sass"],
 "names": [],
 "file": "spesific_carStyle.css"
 }

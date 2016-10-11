@@ -185,7 +185,7 @@ def booking_schema(request, booking_id, car_id):
 
 
             # Run the function that handles the sending of receipt.
-            send_mail_receipt(new_form, current_booking, booking_id)
+            send_mail_receipt(new_form, current_booking, booking_id, current_car)
 
             price = price_calculator(number_of_days)
             context = {
@@ -280,24 +280,23 @@ def price_calculator(days):
 
 
 
-def send_mail_receipt(new_form, current_booking, booking_id):
-    # TODO: Ascii casuing issues with norwegian letters when sending an email.
-
+def send_mail_receipt(new_form, current_booking, booking_id, current_car):
 
     if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         from google.appengine.api import mail
 
         content = """\
-                <html>
-          <head></head>
+        <html>
+          <head>Rusta Vrak Bilutleige</head>
           <body>
-          <h1> Å RRusta Vrak Bilutleige </h1>
+          <h1> Rusta Vrak Bilutleige </h1>
             <p><h3>Hei, %s.</h3><br>
             Her kommer en kvittering fra din reservasjon av leiebil. <br>
                 <hr>
                 <b>Bookingsnummer: %s </b><br>
-                Fra Dato: %s <br>
-                Til Dato: %s <br>
+                %s %s <br>
+                Hentes dato: %s <br>
+                Leveres dato: %s <br>
                 Registert Telefonnummer: %s <br>
                 Pris: (Under Arbeid.) <br>
             </p>
@@ -310,18 +309,20 @@ def send_mail_receipt(new_form, current_booking, booking_id):
           </body>
         </html>
         """ % (
-        new_form.first_name.encode('utf8'), str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        new_form.first_name.encode('utf8'), str(booking_id),str(current_car.brand), str(current_car.model), str(current_booking.initial_date.strftime('%d.%m.%Y')),
         str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
 
         msg = MIMEText(content, 'html')
+
+
 
 
         logging.debug("Sending From Google Mail API")
         mail.send_mail(sender='Nitrax92@gmail.com',
                        to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
                        subject="Kvittering. Rusta Vrak Bilutleige",
-                       body="Hei",
-                       html=msg)
+                       body="",
+                       html=msg.as_string())
 
         logging.debug("Sending, complete.")
 
