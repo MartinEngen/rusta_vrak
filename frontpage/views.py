@@ -40,29 +40,22 @@ def search_funciton(request):
             if search_form.cleaned_data['combi_car']:
                 searched_types.append(3)
 
-            # Gather all the cars with the correct car type.
+
+            # All cars of wanted Car Type
             cars = Car.objects.filter(car_type__in=searched_types)
 
-            # Exclude any cars with initial date greater than final date searched.
-            car_bookings = Car_Booking.objects.filter(car=cars)
-            print(car_bookings.values("car_id"))
-            the_cars = car_bookings.values("car_id")
-            print(the_cars)
-            print(car_bookings.count())
-            car_bookings = car_bookings.exclude(final_date__range=(inital_date, final_date))
-            print(car_bookings.count())
-            car_bookings = car_bookings.exclude(initial_date__range=(inital_date, final_date))
-            print(car_bookings.count())
-            cars = cars.filter(booking__booking__car_id__in=car_bookings.values("car_id"))
+            # All bookings of current cars
+            car_bookings = Car_Booking.objects.filter(car__in=cars)
 
 
-            print(car_bookings.values("car_id"))
-            # List containing all avalable cars
-            available = []
+            # Overlapping by final date
+            final_date_booking_overlap = car_bookings.filter(final_date__range=(inital_date, final_date))
 
-            for car in car_bookings:
-                print("Adding car. + " + str(car.car))
-                available.append(car.car)
+            # Overlapping by inital date
+            initial_date_booking_overlap = car_bookings.filter(initial_date__range=(inital_date, final_date))
+
+            # Remove the cars with overlapping dates
+            cars = cars.exclude(booking__booking__car__in=final_date_booking_overlap.values("car")).exclude(booking__booking__car__in=initial_date_booking_overlap.values("car"))
 
 
             context = {
