@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
 
+{% block pageBasedStyle %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "cars/css/personal_carsStyle.css" %}"/>
+{% endblock pageBasedStyle %}
+
 {% block Content %}
 <div class="container">
 {% if cars %}
-{% for car in cars %}
-<h1>{{ car.brand }}</h1>
-<a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
-{% endfor %}
+    {% for car in cars %}
+        <div class="col-lg-12 car_tab" style="margin-top: 30px; margin-bottom: 30px;">
+            <div class="col-md-4 ">
+                <div class="thumbnail" style="border: none">
+                    <img src="{{ car.main_image }}">
+                </div>
+
+            </div>
+            <div class="col-md-8 car_info ">
+                <h1> {{ car.brand }} {{ car.model }}</h1>
+                 <p>Drivstoff: {{ car.fuel_type }}. Antall Seter: {{ car.seats }}. {% if car.year %} År: {{ car.year }} {% endif %}</p>
+                <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
+            </div>
+        </div>
+        <h1></h1>
+    {% endfor %}
 {% else %}
-<h1> Fant ingen biler i den oppgitte periode</h1>
+<h1> Fant ingen ledige biler i den oppgitte periode</h1>
 {% endif %}
 </div>
 {% endblock Content %}

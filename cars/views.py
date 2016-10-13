@@ -309,7 +309,7 @@ def send_mail_receipt(new_form, current_booking, booking_id, current_car):
           </body>
         </html>
         """ % (
-        new_form.first_name.encode('utf8'), str(booking_id),str(current_car.brand), str(current_car.model), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        new_form.first_name.encode('utf8'), str(booking_id),str(current_car.brand.encode('utf8')), str(current_car.model.encode('utf8')), str(current_booking.initial_date.strftime('%d.%m.%Y')),
         str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
 
         msg = MIMEText(content, 'html')
