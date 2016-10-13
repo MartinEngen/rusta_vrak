@@ -2,6 +2,9 @@
 
 {% block Content %}
 <div class="container">
-
+{% for car in cars %}
+<h1>{{ car.brand }}</h1>
+<a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
+{% endfor %}
 </div>
 {% endblock Content %}

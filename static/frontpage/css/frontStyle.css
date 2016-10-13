@@ -1,5 +1,15 @@
-.car_frame {
-  font-size: large;
-  height: 100px; }
+.car_frame .thumbnail {
+  background-color: #FCEEDE;
+  border-color: #FCEEDE; }
+  .car_frame .thumbnail img {
+    padding: 15px;
+    width: 320px;
+    height: 228px; }
+.car_frame h3 {
+  color: black;
+  text-align: center; }
+
+#services {
+  background-color: #D19D74; }
 
 /*# sourceMappingURL=frontStyle.css.map */

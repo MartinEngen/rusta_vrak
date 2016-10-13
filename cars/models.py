@@ -25,6 +25,8 @@ class Car(models.Model):
 
     car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
 
+    bookings = models.ManyToOneRel
+
     def __str__(self):
         return str(self.id) + " " + self.brand + " " + self.model + " " + str(self.year)
 
