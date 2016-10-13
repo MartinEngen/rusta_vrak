@@ -2,9 +2,13 @@
 
 {% block Content %}
 <div class="container">
+{% if cars %}
 {% for car in cars %}
 <h1>{{ car.brand }}</h1>
 <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
 {% endfor %}
+{% else %}
+<h1> Fant ingen biler i den oppgitte periode</h1>
+{% endif %}
 </div>
 {% endblock Content %}
