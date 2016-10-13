@@ -6,6 +6,10 @@ $color3: #D19D74
 $color4: #F4A209
 $color5: #FCEEDE
 
+
+html
+  height: 100%
+
 body
   font: 100% $font-stack
   color: $color5
@@ -13,9 +17,28 @@ body
   height: 100%
 
 
+
 #wrap
   min-height: 100%
-  margin: 0 auto -60px
+  height: auto !important
+  height: 100%
+  margin: 0 auto -100px
+
+#push
+  height: 100px
+
+.footer
+  background-color: dimgrey
+  height: 100px
+
+  .navbar-static-bottom
+    background-color: dimgray
+
+  li
+    font-size: larger
+    a
+      color: white
+
 
 
 .navbar-default
@@ -23,11 +46,6 @@ body
   //border-radius: 20px
   background-color: #000000
   border-color: #1F6075
-
-.footer
-  position: relative
-  clear: both
-  background-color: dimgrey
 
 
 
