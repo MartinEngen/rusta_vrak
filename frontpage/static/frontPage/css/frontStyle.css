@@ -1,3 +1,9 @@
+.date-label {
+  font-size: xx-large; }
+
+.datefield {
+  font-size: x-large; }
+
 .car_frame .thumbnail {
   background-color: #FCEEDE;
   border-color: #FCEEDE; }
@@ -9,7 +15,31 @@
   color: black;
   text-align: center; }
 
+#car_types {
+  margin-top: 25px;
+  margin-bottom: 50px; }
+
+#search_section .container {
+  background-color: #7291A5;
+  border-radius: 12px;
+  padding-left: 20px; }
+#search_section input[type=checkbox] {
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  padding: 10px; }
+#search_section .checkbox label {
+  margin: 5px;
+  font-size: x-large; }
+#search_section .container {
+  padding-bottom: 50px; }
+
 #services {
-  background-color: #D19D74; }
+  background-color: #7291A5;
+  padding-bottom: 50px; }
+  #services .text-center p {
+    font-size: 175%; }
 
 /*# sourceMappingURL=frontStyle.css.map */
