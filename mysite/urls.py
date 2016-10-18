@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$', index),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('cars.urls', namespace='cars')),
+    url(r'^', include('booking.urls', namespace='booking')),
     url(r'^', include('frontpage.urls', namespace='frontpage'))
     #url(r'^Om/', include('django.contrib.flatpages.urls')),
 ]

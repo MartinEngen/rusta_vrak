@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'polls',
     'frontpage',
     'cars',
+    'booking',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,10 +117,10 @@ elif os.getenv('SETTINGS_MODE') == 'prod':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'rustadatabase',
+            'NAME': 'rustadb',
             'USER': 'mello',
             'PASSWORD': '123',
-            'HOST': '173.194.86.185',
+            'HOST': '173.194.86.5',
             #'HOST': '2001:4860:4864:1:4767:db93:73d2:48fc',
             'PORT': '3306',
         }

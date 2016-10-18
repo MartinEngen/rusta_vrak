@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 
 from django.http import HttpResponse
 
-from cars.models import Car, Car_Booking
+from cars.models import Car
+from booking.models import Car_Date_Reservation, Registration_Schema
 from .forms import SearchForm
 
 
@@ -45,17 +46,15 @@ def search_funciton(request):
             cars = Car.objects.filter(car_type__in=searched_types)
 
             # All bookings of current cars
-            car_bookings = Car_Booking.objects.filter(car__in=cars)
+            car_bookings = Registration_Schema.objects.filter(car__in=cars)
 
 
             # Overlapping by final date
-            final_date_booking_overlap = car_bookings.filter(final_date__range=(inital_date, final_date))
-
+            final_date_booking_overlap = car_bookings.filter(car_date_reservation__final_date__range=(inital_date, final_date))
             # Overlapping by inital date
-            initial_date_booking_overlap = car_bookings.filter(initial_date__range=(inital_date, final_date))
-
+            initial_date_booking_overlap = car_bookings.filter(car_date_reservation__initial_date__range=(inital_date, final_date))
             # Remove the cars with overlapping dates
-            cars = cars.exclude(booking__booking__car__in=final_date_booking_overlap.values("car")).exclude(booking__booking__car__in=initial_date_booking_overlap.values("car"))
+            cars = cars.exclude(reserved_car__booking__car__in=final_date_booking_overlap.values("car")).exclude(reserved_car__booking__car__in=initial_date_booking_overlap.values("car"))
 
 
             context = {

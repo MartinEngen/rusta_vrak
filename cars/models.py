@@ -28,55 +28,8 @@ class Car(models.Model):
     bookings = models.ManyToOneRel
 
     def __str__(self):
-        return str(self.id) + " " + self.brand + " " + self.model + " " + str(self.year)
+        return str(self.id) + " " + self.brand + " " + self.model
 
     class Meta:
         verbose_name = 'Bil'
         verbose_name_plural = 'Biler'
-
-
-
-
-class Car_Booking(models.Model):
-    car = models.ForeignKey(Car, related_name='booking', on_delete=models.CASCADE)
-
-    initial_date = models.DateField()
-    final_date = models.DateField()
-
-    status = models.PositiveSmallIntegerField('1: Pending, 2: Approved, 3:Declined', choices={(1, 'Pending'), (2, 'Approved'), (3, 'Declined')})
-
-    def __str__(self):
-        return str(self.id) + " " + self.car.brand + " " + self.car.model + ": Fra " + str(self.initial_date) + " Til: " + str(self.final_date)
-
-    class Meta:
-        verbose_name = 'Booking'
-        verbose_name_plural = 'Bookinger'
-
-
-
-
-
-class Registration_Scheme(models.Model):
-    booking = models.ForeignKey(Car_Booking, related_name='booking', on_delete=models.CASCADE)
-    car = models.ForeignKey(Car, related_name='Bil', on_delete=models.CASCADE)
-
-    # Information about the registrator
-    first_name = models.CharField('Fornavn', max_length=100)
-    last_name = models.CharField('Etternavn', max_length=100)
-
-    email = models.EmailField('Epost adresse', max_length=100)
-    phone_number = models.CharField('Telefonnummer', max_length=12, validators=[RegexValidator(r'^\d{1,10}$')])
-
-    # Additional information
-    misc_info = models.CharField('Ekstra informasjon', max_length=255, blank=True, null=True)
-
-    date_made = models.DateField(auto_now_add=True)
-
-
-    def __str__(self):
-        return self.car.brand + " " + self.car.model + ". " + str(self.date_made)
-
-
-    class Meta:
-        verbose_name = 'Kontakt Skjema'
-        verbose_name_plural = 'Kontakt Skjermaer'

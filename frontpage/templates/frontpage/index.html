@@ -69,19 +69,19 @@
     <h1>Se alle biler</h1>
         <div class="row">
             <div class="col-md-4 car_frame">
-              <a href="{% url 'cars:personal_car' %}" class="thumbnail">
+              <a href="{% url 'cars:car_list'%}?type=1" class="thumbnail">
                 <img src="static/frontpage/pic/personbil.JPG" alt="Pulpit Rock">
                 <h3>Personbil</h3>
               </a>
             </div>
             <div class="col-md-4 car_frame">
-              <a href="#" class="thumbnail">
+              <a href="{% url 'cars:car_list'%}?type=2" class="thumbnail">
                 <img src="static/frontpage/pic/Citroen_Jumpy_varebil.JPG" alt="Moustiers Sainte Marie">
                 <h3>Varebil</h3>
               </a>
             </div>
             <div class="col-md-4 car_frame">
-              <a href="#" class="thumbnail">
+              <a href="{% url 'cars:car_list'%}?type=3" class="thumbnail">
 
                 <img src="static/frontpage/pic/IMG_5578.JPG" alt="Cinque Terre">
                 <h3>Kombinertbil</h3>
