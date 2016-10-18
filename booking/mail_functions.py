@@ -5,6 +5,7 @@ import smtplib
 import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import logging
 
 
 def send_mail_receipt(new_form, current_booking, booking_id, current_car):

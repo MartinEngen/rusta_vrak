@@ -104,7 +104,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/rusta-vrak:rustadatabaseinstance',
-            'NAME': 'rustadatabase',
+            'NAME': 'rustadb',
             'USER': 'root',
         }
     }
@@ -132,9 +132,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'rustalocal',
-            'USER': 'user',
-            'PASSWORD': 'password1',
+            'NAME': 'rustadblocal',
+            'USER': 'app',
+            'PASSWORD': '123',
         }
     }
 # [END db_setup]
