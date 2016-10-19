@@ -8,4 +8,9 @@
 .car_info p {
   font-size: x-large; }
 
+.car_images a img {
+  width: 360px;
+  height: 240px;
+  border: none; }
+
 /*# sourceMappingURL=personal_carsStyle.css.map */

@@ -4,6 +4,7 @@
 {% block pageBasedStyle %}
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static "cars/css/personal_carsStyle.css" %}"/>
+<link rel="stylesheet" href="{% static "packages/lightbox/css/lightbox.css" %}"/>
 {% endblock pageBasedStyle %}
 
 
@@ -13,14 +14,20 @@
     {% for car in cars %}
         <div class="col-lg-12 car_tab" style="margin-top: 30px; margin-bottom: 30px;">
             <div class="col-md-4 ">
-                <div class="thumbnail" style="border: none">
-                    <img src="{{ car.main_image }}">
+                <div class="thumbnail car_images" style="border: none">
+
+                    <a href="{{ car.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}"><img src="{{ car.main_image }}"></a>
                 </div>
 
             </div>
-            <div class="col-md-8 car_info ">
+            <div class="col-md-4 car_info ">
                 <h1> {{ car.brand }} {{ car.model }}</h1>
-                 <p>Drivstoff: {{ car.fuel_type }}. Antall Seter: {{ car.seats }}. {% if car.year %} År: {{ car.year }} {% endif %}</p>
+                 <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
+                {% if car.extra_accessories %}
+                    Tilbehør: {{ car.extra_accessories }}
+                {% endif %}
+                </p>
+                <p><b>Pris:</b> {{ car.price }}</p>
                 <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
             </div>
         </div>
@@ -31,4 +38,18 @@
         <h1>Fant ingen biler.</h1>
     {% endif %}
 </div>
+
+
 {% endblock Content %}
+
+
+{% block siteSpesificJs %}
+<script src="{% static "packages/lightbox/js/lightbox.js" %}"></script>
+
+<script>
+    lightbox.option({
+      'showImageNumberLabel': false,
+    })
+</script>
+{% endblock siteSpesificJs %}
+

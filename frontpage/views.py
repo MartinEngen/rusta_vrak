@@ -60,7 +60,7 @@ def search_funciton(request):
             context = {
                 'cars': cars
             }
-            return render(request, 'cars/search_cars.html', context)
+            return render(request, 'cars/car_list.html', context)
 
         else:
             return redirect('/')

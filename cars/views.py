@@ -31,7 +31,6 @@ import hashlib
 # TODO: Genereal Code Cleanup. This may entail moving some functions to new apps / files.
 
 def car_list(request):
-
     car_type = request.GET.get('type')
 
     types = car_type.split(',')
@@ -39,6 +38,9 @@ def car_list(request):
     print(types)
 
     cars = Car.objects.filter(car_type__in=types)
+
+    for car in cars:
+        print (car.extra_accessories)
     context = {
         'cars': cars,
     }

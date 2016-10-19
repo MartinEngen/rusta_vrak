@@ -91,3 +91,9 @@ def booking_schema(request, booking_id, car_id):
         }
 
         return render(request, 'booking/booking_form.html', context)
+
+
+
+def prisTest(request):
+
+    return render(request, 'booking/pristest.html')
