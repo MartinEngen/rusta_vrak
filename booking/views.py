@@ -2,13 +2,10 @@
 
 
 from django.shortcuts import render, HttpResponse
-
-
 from django.shortcuts import get_object_or_404, redirect
 
 
 from .forms import BookingForm, BookingRegistrationForm
-
 from .models import Car, Car_Date_Reservation, Registration_Schema
 
 
@@ -16,8 +13,12 @@ from frontpage.views import index
 
 
 #custom functions
-from data_functions import generate_calendar_data, price_calculator
+from data_functions import generate_calendar_data, price_calculator, generate_pdf
 from mail_functions import send_mail_receipt
+
+#PDF generator
+from reportlab.pdfgen import canvas
+import datetime
 
 
 
@@ -92,6 +93,68 @@ def booking_schema(request, booking_id, car_id):
 
         return render(request, 'booking/booking_form.html', context)
 
+
+
+def download_pdf(request, reservation_id):
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Kvittering.pdf"'
+
+    booking = get_object_or_404(Registration_Schema, id=reservation_id)
+
+    booking_nr = str(booking.id)
+    initial_date = str(booking.car_date_reservation.initial_date)
+    final_date = str(booking.car_date_reservation.final_date)
+    bil = str(booking.car.brand + ' ' + booking.car.model)
+    pris = str(99999)
+    fornavn  = booking.first_name
+    etternavn = booking.last_name
+    kunde = str(fornavn + ' ' + etternavn)
+
+    epost = str(booking.email)
+    tlf = str(booking.phone_number)
+
+
+    p = canvas.Canvas(response)
+    p.setLineWidth(.5)
+    p.setFont('Helvetica', 34)
+    p.drawString(100, 750, 'Rusta Vrak Bilutleige')
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 24)
+    p.drawString(100, 720, 'Kvittering')
+    p.line(20, 710, 580, 710)
+    p.setLineWidth(.5)
+    p.setFont('Helvetica', 16)
+    p.drawString(100, 680, 'Booking Nr. ')
+    p.setLineWidth(.3)
+    p.drawString(350, 680, booking_nr)
+    p.drawString(100, 650, 'Hentes: ')
+    p.drawString(350, 650, initial_date)
+
+    p.drawString(100, 620, 'Leveres: ')
+    p.drawString(350, 620, final_date)
+
+    p.line(20, 600, 580, 600)
+    p.drawString(100, 570, 'Bil:..')
+    p.drawString(350, 570, bil)
+
+    p.drawString(100, 550, 'Pris')
+    p.drawString(350, 550, pris)
+
+    p.line(20, 530, 580, 530)
+    p.drawString(100, 510, 'Kunde')
+    p.drawString(350, 510, kunde)
+
+    p.drawString(100, 480, 'Epost')
+    p.drawString(350, 480, epost)
+
+    p.drawString(100, 450, 'Telefon Nummer')
+    p.drawString(350, 450, tlf)
+
+
+    p.showPage()
+    p.save()
+    return response
 
 
 def prisTest(request):

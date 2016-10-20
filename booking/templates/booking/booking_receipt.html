@@ -26,5 +26,9 @@
         Ekstra Informasjon {{ filled_form.misc_info }}
         </p>
     </div>
+
+    <a href="{% url 'booking:pdf' filled_form.id %}">
+    <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn btn-primary btn-md">Last ned kvittering på PDF</button>
+    </a>
 </div>
 {% endblock Content %}
