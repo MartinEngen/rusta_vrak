@@ -199,8 +199,10 @@ def specific_car(request, car_id):
     else:
         current_car = get_object_or_404(Car, id=car_id)
 
-        images_string = current_car.gallery_images
+        images_string = current_car.gallery_images.encode('utf-8')
         images = images_string.split(',')
+
+        print(images)
 
         # Gather the information required by the Calendar
         finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(

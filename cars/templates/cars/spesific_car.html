@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 
+
+{% block pageBasedStyle %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "packages/lightbox/css/lightbox.css" %}"/>
+<link rel="stylesheet" href="{% static "cars/css/spesific_carStyle.css" %}"/>
+{% endblock pageBasedStyle %}
+
+
+
+
+
 {% block Content %}
 
 
@@ -8,13 +19,29 @@
 
 
 <div class="container">
-<h1>{{ car.brand }} {{ car.model }}</h1>
+
     <div class="row">
-        <div class="col-md-6">
-            <h1>Bilinfo</h1>
+        <div class="col-md-4">
+            <a href="{{ car.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
+                <img src="{{ car.main_image }}" class="img-rounded" alt="{{ car.brand }} {{ car.model }}" width="304" height="236">
+            </a>
+
+
+            {% for image in bilder %}
+                <a href="{{ image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
+                <img src="{{ image }}" class="img-rounded" alt="{{ car.brand }} {{ car.model }}" width="101" height="78">
+
+                </a>
+            {% endfor %}
         </div>
-        <div class="col-md-6">
-            <h1>Booking</h1>
+        <div class="col-md-8">
+            <h1>{{ car.brand }} {{ car.model }}</h1>
+             <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
+                {% if car.extra_accessories %}
+                    Tilbehør: {{ car.extra_accessories }}
+                {% endif %}
+                </p>
+                <p><b>Pris:</b> {{ car.price }}</p>
         </div>
     </div>
 
@@ -24,12 +51,10 @@
             <h3> Reservasjon </h3>
             <form method="post" >{% csrf_token %}
 
-
                 <div class="input-group" style="width: 250px;">
                   <span class="input-group-addon" id="label_addon_initial_date" style="width: 80px;">Hentes</span>
                   <input type="text" class="form-control" id="datepickerStart" name="initial_date" aria-describedby="label_addon_initial_date">
                 </div>
-
                 <div class="input-group" style="width: 250px;">
                   <span class="input-group-addon" id="label_addon_final_date" style="width: 80px;">Leveres</span>
                   <input type="text" class="form-control" id="datepickerFinish" name="final_date" aria-describedby="label_addon_final_date" >
@@ -50,14 +75,6 @@
 
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Informasjon om bilen + evt. galleri kommer </h3>
-            <img src="http://emccochin.com/wp-content/uploads/2016/04/work-in-progress_01.png">
-
-        </div>
-
-    </div>
 </div>
 
 
@@ -78,18 +95,13 @@
 <div id='calendar' style="background-color: white; color: black; width: 50%; height: 50%;"></div>
 
 
-
-    {% for bilde in bilder %}
-        <img src="{{ bilde }}">
-    {% endfor %}
-
 {% endblock Content %}
 
 
 
 
 {% block testBlock %}
-
+    <script src="{% static "packages/lightbox/js/lightbox.js" %}"></script>
    <script>
    //var event1 = {{ event|safe }}
    var json_data_string = {{ json_data_string | safe }}
