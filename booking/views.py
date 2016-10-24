@@ -105,10 +105,10 @@ def download_pdf(request, reservation_id):
     booking_nr = str(booking.id)
     initial_date = str(booking.car_date_reservation.initial_date)
     final_date = str(booking.car_date_reservation.final_date)
-    bil = str(booking.car.brand + ' ' + booking.car.model)
+    bil = str(booking.car.brand.encode('utf8') + ' ' + booking.car.model.encode('utf8'))
     pris = str(99999)
-    fornavn  = booking.first_name
-    etternavn = booking.last_name
+    fornavn  = booking.first_name.encode('utf8')
+    etternavn = booking.last_name.encode('utf8')
     kunde = str(fornavn + ' ' + etternavn)
 
     epost = str(booking.email)

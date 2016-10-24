@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAAA,IAAI;EACF,gBAAgB,EAAE,OAAO;;AAG3B,CAAC;EACC,SAAS,EAAE,OAAO",
+"mappings": "AAMA,IAAI;EACF,gBAAgB,EAAE,OAAO;;AAE3B,cAAc;EACZ,gBAAgB,EART,OAAO;EASd,OAAO,EAAE,IAAI;EACb,aAAa,EAAE,GAAG;;AAGpB,CAAC;EACC,SAAS,EAAE,OAAO",
 "sources": ["spesific_carStyle.sass"],
 "names": [],
 "file": "spesific_carStyle.css"

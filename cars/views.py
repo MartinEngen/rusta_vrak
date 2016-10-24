@@ -192,17 +192,31 @@ def specific_car(request, car_id):
             logging.debug("Non valid form posted.")
             print(booking_form.errors)
 
+            finalized_bookings = Registration_Schema.objects.filter(car=car).exclude(
+                car__reserved_car__final_date__lte=datetime.date.today()).order_by('car_date_reservation__initial_date')
+            calendar_data = generate_calendar_data(finalized_bookings)
+            message = "Mangler Informasjon, prøv igjen."
+            context = {
+                'car': car,
+                'warning': True,
+                'message': message,
+                'json_data_string': calendar_data,
+            }
 
-            return render(request, 'cars/spesific_car.html',
-                          {'car': car,'errors': booking_form.errors})
+            return render(request, 'cars/spesific_car.html',context)
 
     else:
         current_car = get_object_or_404(Car, id=car_id)
 
         images_string = current_car.gallery_images.encode('utf-8')
-        images = images_string.split(',')
 
-        print(images)
+
+        if images_string:
+            print(images_string)
+            images = images_string.split(',')
+        else:
+            images = False
+
 
         # Gather the information required by the Calendar
         finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(

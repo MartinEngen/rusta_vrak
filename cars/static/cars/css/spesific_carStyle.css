@@ -1,6 +1,11 @@
 body {
   background-color: #1b6d85; }
 
+#car_container {
+  background-color: #D19D74;
+  padding: 50px;
+  border-radius: 5px; }
+
 p {
   font-size: x-large; }
 
