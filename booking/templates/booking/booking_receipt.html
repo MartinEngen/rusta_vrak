@@ -4,7 +4,8 @@
 {% block Content %}
 <div class="container">
     <div class="jumbotron" style="color: black;">
-        <h1>Kvittering</h1>
+        <h1>Takk for reservasjonen!</h1>
+        <h2>Din Kvittering</h2>
         <hr>
         <h2>Bil</h2>
         <p>
@@ -23,12 +24,14 @@
 
         <hr>
         <p>
-        Ekstra Informasjon {{ filled_form.misc_info }}
+        Ekstra Informasjon
+            <p>{{ filled_form.misc_info }} </p>
         </p>
+         <a href="{% url 'booking:pdf' filled_form.id %}">
+            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn btn-primary btn-md">Last ned kvittering på PDF</button>
+        </a>
     </div>
 
-    <a href="{% url 'booking:pdf' filled_form.id %}">
-    <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn btn-primary btn-md">Last ned kvittering på PDF</button>
-    </a>
+
 </div>
 {% endblock Content %}

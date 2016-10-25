@@ -16,6 +16,6 @@ class BookingRegistrationForm(forms.Form):
     last_name = forms.CharField(label='Etternavn', max_length=100)
 
     email = forms.EmailField(label='Epost adresse', max_length=100)
-    phone_number = forms.CharField(max_length=12, validators=[RegexValidator(r'^\d{1,10}$')])
+    phone_number = forms.CharField(max_length=12)#, validators=[RegexValidator(r'^\d{1,10}$')]
 
     misc_info = forms.CharField(label='Ekstra informasjon (Maks 255 Karakterer)', max_length=255, required=False)

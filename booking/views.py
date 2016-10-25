@@ -22,7 +22,14 @@ import datetime
 
 
 
-def booking_schema(request, booking_id, car_id):
+def booking_schema(request, car_id):
+
+
+    current_booking_id = request.session['current_booking_id']
+
+    if not current_booking_id:
+        # Session has no booking ID, return to frontpage..
+        return redirect('/')
 
     if request.method == 'POST':
 
@@ -38,9 +45,9 @@ def booking_schema(request, booking_id, car_id):
             misc_info = booking_scheme_form.cleaned_data['misc_info']
 
             current_car = get_object_or_404(Car, id=car_id)
-            current_booking = get_object_or_404(Car_Date_Reservation, id=booking_id)
+            current_booking = get_object_or_404(Car_Date_Reservation, id=current_booking_id)
 
-            new_form = Registration_Schema(car_id=car_id, car_date_reservation_id=booking_id,
+            new_form = Registration_Schema(car_id=car_id, car_date_reservation_id=current_booking_id,
                                            email=email, phone_number=phone_number, first_name=first_name,
                                            last_name=last_name, misc_info=misc_info)
             new_form.save()
@@ -48,15 +55,11 @@ def booking_schema(request, booking_id, car_id):
 
 
             number_of_days = (current_booking.final_date - current_booking.initial_date).days + 1
-            print("Dager: " + str(number_of_days))
-
-            print(number_of_days * 250)
-
 
             # Run the function that handles the sending of receipt.
-            send_mail_receipt(new_form, current_booking, booking_id, current_car)
+            send_mail_receipt(new_form, current_booking, current_booking_id, current_car)
 
-            price = price_calculator(number_of_days)
+            price = price_calculator(number_of_days, current_car)
             context = {
                 'car': current_car,
                 'booking': current_booking,
@@ -78,10 +81,10 @@ def booking_schema(request, booking_id, car_id):
 
     else:
         car = get_object_or_404(Car, id=car_id)
-        booking = get_object_or_404(Car_Date_Reservation, id=booking_id)
+        booking = get_object_or_404(Car_Date_Reservation, id=current_booking_id)
 
-        number_of_days = (booking.final_date - booking.initial_date).days
-        price = price_calculator(number_of_days)
+        number_of_days = (booking.final_date - booking.initial_date).days + 1
+        price = price_calculator(number_of_days, car)
 
 
         context = {
@@ -105,8 +108,10 @@ def download_pdf(request, reservation_id):
     booking_nr = str(booking.id)
     initial_date = str(booking.car_date_reservation.initial_date)
     final_date = str(booking.car_date_reservation.final_date)
-    bil = str(booking.car.brand + ' ' + booking.car.model)
-    pris = str(99999)
+    bil = str(booking.car.brand.encode('utf8') + ' ' + booking.car.model.encode('utf8'))
+    days = (booking.car_date_reservation.final_date - booking.car_date_reservation.initial_date).days
+    calculated_price = price_calculator(days, booking.car)
+    pris = str(calculated_price)
     fornavn  = booking.first_name
     etternavn = booking.last_name
     kunde = str(fornavn + ' ' + etternavn)

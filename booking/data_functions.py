@@ -104,11 +104,12 @@ def generate_pdf():
 
 
 
-def price_calculator(days):
-    start_price = 250
+def price_calculator(days, car):
+    start_price = car.price
 
     price = 250
 
+    """
     if days < 4:
         price = 250 * days
 
@@ -128,6 +129,6 @@ def price_calculator(days):
         price = (250 * days) * 0.35
     else:
         price = 2500
-
+    """
     # TODO: Add functionality to set correct number after longer rent discount
-    return price
+    return start_price*days

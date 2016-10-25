@@ -3,40 +3,48 @@
 {% block Content %}
 <div class="container">
 
+    <div class="row">
+        <div class="col-md-offset-1 col-md-5">
+            <h3>Kontakt Informasjon</h3>
+            <form method="post" >{% csrf_token %}
+                <div class="form-group">
+                    <label for="email">Epost adresse</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Epost">
+                </div>
+                <div class="form-group">
+                    <label for="first_name">Fornavn</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Fornavn">
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Etternavn</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Fornavn">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone_number">Telefonnummer</label>
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Telefonnummer">
+                </div>
 
 
-<h2>Reservasjon:</h2>
-<h4>{{ car.brand }} {{ car.model }} </h4>
-<h4>Fra Dato: {{ booking.initial_date }}. Til Dato: {{ booking.final_date }}</h4>
-<h4>Antall Dager: {{ days }}</h4>
-<h4>Pris estimat: {{ price }}kr</h4>
-<h3>Kontakt Informasjon</h3>
-<form method="post" >{% csrf_token %}
-    <div class="form-group">
-        <label for="email">Epost adresse</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Epost">
+                <div class="form-group">
+                    <label for="misc_info">Annen Informasjon</label>
+                    <textarea class="form-control" id="misc_info" name="misc_info" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-default">Fullfør bestilling</button>
+            </form>
+        </div>
+
+        <div class="col-md-offset-1 col-md-5">
+           <h2>Reservasjon:</h2>
+            <h4>{{ car.brand }} {{ car.model }} </h4>
+            <h4>Fra Dato: {{ booking.initial_date }}. Til Dato: {{ booking.final_date }}</h4>
+            <h4>Antall Dager: {{ days }}</h4>
+            <h4>Pris estimat: {{ price }}kr</h4>
+        </div>
+
     </div>
-    <div class="form-group">
-        <label for="first_name">Fornavn</label>
-        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Fornavn">
-    </div>
-    <div class="form-group">
-        <label for="last_name">Etternavn</label>
-        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Fornavn">
-    </div>
 
-    <div class="form-group">
-        <label for="phone_number">Telefonnummer</label>
-        <input type="number" class="form-control" id="phone_number" name="phone_number" placeholder="Telefonnummer">
-    </div>
-
-
-    <div class="form-group">
-        <label for="misc_info">Annen Informasjon</label>
-        <textarea class="form-control" id="misc_info" name="misc_info" rows="3"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-default">Fullfør bestilling</button>
-</form>
 </div>
+
 {% endblock Content %}
