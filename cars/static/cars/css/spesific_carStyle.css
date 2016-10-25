@@ -1,12 +1,17 @@
-body {
-  background-color: #1b6d85; }
-
 #car_container {
-  background-color: #D19D74;
+  background-color: #7291A5;
   padding: 50px;
   border-radius: 5px; }
 
 p {
   font-size: x-large; }
+
+.gallery-images {
+  padding-right: 5px; }
+  .gallery-images img {
+    margin-top: 5px; }
+
+.gallery-image-holder {
+  padding-top: 10px; }
 
 /*# sourceMappingURL=spesific_carStyle.css.map */

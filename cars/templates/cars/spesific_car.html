@@ -19,7 +19,6 @@
 
 
 <div class="container" id="car_container">
-
     <div class="row">
         <div class="col-md-4">
             <a href="{{ car.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
@@ -27,15 +26,36 @@
             </a>
 
             {% if bilder %}
-            {% for image in bilder %}
-                <a href="{{ image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
-                <img src="{{ image }}" class="img-rounded" alt="{{ car.brand }} {{ car.model }}" width="101" height="78">
+            <div class="gallery-image-holder">
+                {% for image in bilder %}
 
-                </a>
-            {% endfor %}
+                    <a href="{{ image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}" class="gallery-images">
+                    <img src="{{ image }}" class="img-rounded" alt="{{ car.brand }} {{ car.model }}" width="101" height="78">
+
+                    </a>
+                {% endfor %}
+            </div>
             {% endif %}
         </div>
-        <div class="col-md-offset-2 col-md-6">
+        <div class="col-md-offset-1 col-md-6">
+            <h1>{{ car.brand }} {{ car.model }}</h1>
+             <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
+                {% if car.extra_accessories %}
+                    Tilbehør: {{ car.extra_accessories }}
+                {% endif %}
+                </p>
+                <p><b>Pris per døgn:</b> {{ car.price }}</p>
+        </div>
+
+    <div class="row">
+
+        <div class="col-md-offset-1 col-md-4 col-xs-12">
+            <h3> Ledighet </h3>
+            <div id='calendar' style="background-color: white; color: black; "></div>
+        </div>
+
+
+        <div class="col-md-6">
             <h3> Reservasjon </h3>
             <form method="post" >{% csrf_token %}
 
@@ -61,28 +81,11 @@
             {% endif %}
 
             </form>
-
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-offset-1 col-md-4">
-            <h1>{{ car.brand }} {{ car.model }}</h1>
-             <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
-                {% if car.extra_accessories %}
-                    Tilbehør: {{ car.extra_accessories }}
-                {% endif %}
-                </p>
-                <p><b>Pris per døgn:</b> {{ car.price }}</p>
-        </div>
-        <div class="col-md-offset-1 col-md-4 col-xs-12">
-            <h3> Ledighet </h3>
-            <div id='calendar' style="background-color: white; color: black; "></div>
         </div>
 
     </div>
 
+</div>
 </div>
 
 
