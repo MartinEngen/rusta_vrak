@@ -11,8 +11,8 @@ from cars.models import Car
 class Car_Date_Reservation(models.Model):
     car = models.ForeignKey(Car, related_name='reserved_car', on_delete=models.CASCADE)
 
-    initial_date = models.DateField()
-    final_date = models.DateField()
+    initial_date = models.DateField('Hente Dato')
+    final_date = models.DateField('Leverings Dato')
 
     status = models.PositiveSmallIntegerField('1: Pending, 2: Approved, 3:Declined', choices={(1, 'Pending'), (2, 'Approved'), (3, 'Declined')})
 
@@ -41,7 +41,7 @@ class Registration_Schema(models.Model):
     # Additional information
     misc_info = models.CharField('Ekstra informasjon', max_length=255, blank=True, null=True)
 
-    date_made = models.DateField(auto_now_add=True)
+    date_made = models.DateField('Bestilligns dato', auto_now_add=True)
 
 
     def __str__(self):
@@ -50,4 +50,4 @@ class Registration_Schema(models.Model):
 
     class Meta:
         verbose_name = 'kontakt_skjema'
-        verbose_name_plural = 'kontakt_skjermaer'
+        verbose_name_plural = 'Ferdigstilte Bestillinger'

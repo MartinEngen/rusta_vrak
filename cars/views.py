@@ -35,6 +35,11 @@ def car_list(request):
 
     types = car_type.split(',')
     types = map(int, types)
+
+    # IF not any type(s) given, show them all.
+    if not types:
+        types = [1,2,3]
+
     print(types)
 
     cars = Car.objects.filter(car_type__in=types)
@@ -84,7 +89,7 @@ def specific_car(request, car_id):
             # User set final date before the inital date, abort.
             if(final_date<initial_date):
                 logging.info("Final date is before initial date")
-                message = "Leveringsdagen er satt før 'Hente' dagen, prøv på nytt."
+                message = "Leveringsdagen er satt før Hente dagen, prøv på nytt."
                 calendar_data = generate_calendar_data(finalized_bookings)
 
                 return abort_function(car, message, finalized_bookings)
@@ -106,11 +111,10 @@ def specific_car(request, car_id):
             # User tries to book from before today, this is illegal.
             if initial_date < datetime.date.today():
                 logging.error("Error, not able to book.")
-                message = "Kan ikke registerer en reservasjon som går tilbake i tid."
+                message = "Kan ikke registerer en reservasjon tilbake i tid."
                 return abort_function(car, message, finalized_bookings)
 
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
-            # TODO: Change to look at the finalized bookings, not the halfass ones.
             for finalized_booking in finalized_bookings:
                 print("Checking for overlap")
                 if finalized_booking.car_date_reservation.initial_date <= initial_date and finalized_booking.car_date_reservation.final_date >= initial_date or finalized_booking.car_date_reservation.initial_date <= final_date and finalized_booking.car_date_reservation.final_date >= final_date:
@@ -174,6 +178,11 @@ def image_generator(car):
         images = False
 
     return images
+
+
+
+
+
 
 
 def booking_receipt(request, booking_id, registration_id):

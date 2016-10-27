@@ -26,6 +26,9 @@ body {
     .footer li a {
       color: white; }
 
+.navbar-default-color {
+  color: blue; }
+
 .navbar-default {
   background-color: brown;
   border-color: brown; }

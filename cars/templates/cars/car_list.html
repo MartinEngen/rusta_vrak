@@ -27,8 +27,8 @@
                     Tilbehør: {{ car.extra_accessories }}
                 {% endif %}
                 </p>
-                <p><b>Pris:</b> {{ car.price }}</p>
-                <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Ledighet </a>
+                <p><b>Pris per dag:</b> {{ car.price }}</p>
+                <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Tilgjengelighet </a>
             </div>
         </div>
         <h1></h1>

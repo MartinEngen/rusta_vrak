@@ -27,18 +27,19 @@
             <hr>
             <form method="post" action="bil/" >{% csrf_token %}
                 <div class="row">
-                    <div class="col-md-3 col-sm-6 col-xs-12 ">
-                        <label for="datepickerStart" class="control-label date-label">Hentes</label>
+                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label for="datepickerStart" class="control-label date-label">Ønsket hentes</label>
                         <input type="text" value='' class="form-control datefield" id="datepickerStart" name="initial_date">
+                        <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                     </div>
-                    <div class="col-md-3 col-sm-6 col-xs-12 ">
-                        <label for="name" class="control-label date-label">Leveres</label>
+                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label for="name" class="control-label date-label">Ønsket levering</label>
                         <input type="text" value='' class="form-control datefield" id="datepickerFinish" name="final_date">
+                        <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                     </div>
                 </div>
 
                 <h3>Biltype</h3>
-
 
 
 
@@ -70,20 +71,20 @@
         <div class="row">
             <div class="col-md-4 car_frame">
               <a href="{% url 'cars:car_list'%}?type=1" class="thumbnail">
-                <img src="static/frontpage/pic/personbil.JPG" alt="Pulpit Rock">
+                <img src="{% static "frontpage/pic/personbil.JPG" %}" alt="Pulpit Rock">
                 <h3>Personbil</h3>
               </a>
             </div>
             <div class="col-md-4 car_frame">
               <a href="{% url 'cars:car_list'%}?type=2" class="thumbnail">
-                <img src="static/frontpage/pic/Citroen_Jumpy_varebil.JPG" alt="Moustiers Sainte Marie">
+                <img src="{% static "frontpage/pic/Citroen_Jumpy_varebil.JPG" %}" alt="Moustiers Sainte Marie"> <!-- src="static/frontpage/pic/Citroen_Jumpy_varebil.JPG" -->
                 <h3>Varebil</h3>
               </a>
             </div>
             <div class="col-md-4 car_frame">
               <a href="{% url 'cars:car_list'%}?type=3" class="thumbnail">
 
-                <img src="static/frontpage/pic/IMG_5578.JPG" alt="Cinque Terre">
+                <img src="{% static "frontpage/pic/IMG_5578.JPG" %}" alt="Cinque Terre">
                 <h3>Kombinertbil</h3>
 
               </a>
@@ -106,7 +107,7 @@
                     <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Langtidsleie</h2>
-                <p>For å leie en bil over 30 dager, ber vi deg ta <a href="/Kontakt/">Kontakt</a>.</p>
+                <p>For å leie en bil over 30 dager, ber vi deg ta <a href="/Kontakt/">Kontakt</a></p>
             </div>
             <div class="col-md-4">
                 <span class="fa-stack fa-5x">
@@ -114,7 +115,7 @@
                     <i class="fa fa-road fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Kjørelengde</h2>
-                <p>Per døgn i leien inneholder 50 km. <br> Utover dette koster det 1kr per km.</p>
+                <p>Per døgn i leien inneholder 50 km. <br> Utover dette koster det 1kr per km</p>
             </div>
             <div class="col-md-4">
                 <span class="fa-stack fa-5x">
@@ -122,7 +123,7 @@
                     <i class="fa fa-hourglass-end fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Jo lengre, jo billigere</h2>
-                <p>Ved lengre leieperider vil prisen synke.</p>
+                <p>Ved lengre leieperider vil prisen synke</p>
             </div>
         </div>
     </div>

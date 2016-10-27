@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AACA,UAAU;EACR,SAAS,EAAE,KAAK;EAChB,MAAM,EAAE,KAAK",
-"sources": ["frontStyle.sass"],
-"names": [],
-"file": "frontStyle.css"
-}

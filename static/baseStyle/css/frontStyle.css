@@ -2,4 +2,53 @@
   font-size: large;
   height: 100px; }
 
+.date_icon {
+  color: black;
+  font-size: x-large;
+  padding-right: 15px; }
+
+.date-label {
+  font-size: x-large; }
+
+.datefield {
+  font-size: large; }
+
+.car_frame .thumbnail {
+  background-color: #FCEEDE;
+  border-color: #FCEEDE; }
+  .car_frame .thumbnail img {
+    padding: 15px;
+    width: 320px;
+    height: 228px; }
+.car_frame h3 {
+  color: black;
+  text-align: center; }
+
+#car_types {
+  margin-top: 25px;
+  margin-bottom: 50px; }
+
+#search_section .container {
+  background-color: #7291A5;
+  border-radius: 12px;
+  padding-left: 20px; }
+#search_section input[type=checkbox] {
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  padding: 10px; }
+#search_section .checkbox label {
+  margin: 5px;
+  font-size: x-large; }
+#search_section .container {
+  padding-bottom: 50px; }
+
+#services {
+  background-color: #7291A5;
+  padding-bottom: 50px; }
+  #services .text-center p {
+    font-size: 175%; }
+
 /*# sourceMappingURL=frontStyle.css.map */

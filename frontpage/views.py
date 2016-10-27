@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -7,6 +9,10 @@ from django.http import HttpResponse
 from cars.models import Car
 from booking.models import Car_Date_Reservation, Registration_Schema
 from .forms import SearchForm
+
+import logging
+import datetime
+
 
 
 def index(request):
@@ -23,7 +29,7 @@ def index(request):
 
 
 
-def search_funciton(request):
+def search_function(request):
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
 
@@ -33,6 +39,13 @@ def search_funciton(request):
             inital_date = search_form.cleaned_data['initial_date']
             final_date = search_form.cleaned_data['final_date']
 
+
+
+
+
+
+
+
             searched_types = []
             if search_form.cleaned_data['personal']:
                 searched_types.append(1)
@@ -41,6 +54,9 @@ def search_funciton(request):
             if search_form.cleaned_data['combi_car']:
                 searched_types.append(3)
 
+
+            if not searched_types:
+                searched_types = [1, 2, 3]
 
             # All cars of wanted Car Type
             cars = Car.objects.filter(car_type__in=searched_types)
@@ -63,7 +79,45 @@ def search_funciton(request):
             return render(request, 'cars/car_list.html', context)
 
         else:
-            return redirect('/')
+
+            # TODO: Generate Error, same as booking input errors.
+            message = "Informasjon mangler, prøv på nytt. <br> <p> Dato skal ha format: 'DD.MM.ÅÅÅÅ' </p>"
+            search_error = True
+
+            context = {
+                'search_message_error': message,
+                'search_error': search_error
+            }
+            return render(request, 'frontpage/index.html')
 
     else:
         return redirect('/')
+
+
+
+def validate_date(initial_date, final_date):
+
+    message = ""
+    error = False
+
+    if (final_date < initial_date):
+        logging.info("Final date is before initial date")
+        message = "Leveringsdagen er satt før Hente dagen, prøv på nytt."
+        error = True
+
+
+    # Less than 1 day searched, abort.
+    if (final_date - initial_date).days < 1:
+        logging.error("Less than 1 day, stop")
+        message = "For liten leieperiode."
+        error = True
+
+
+    # User tries to search from before today, this is illegal.
+    if initial_date < datetime.date.today():
+        logging.error("Error, not able to search back in time.")
+        message = "Kan ikke søke på dato tilbake i tid."
+        error = True
+
+
+    return True
