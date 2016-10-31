@@ -57,7 +57,7 @@ def specific_car(request, car_id):
 
     def abort_function(car, message, finalized_bookings):
         calendar_data = generate_calendar_data(finalized_bookings)
-
+        print("Calendar data ERROR size: " + str(finalized_bookings.count()))
         context = {
             'car': car,
             # 'bookings': car_bookings,
@@ -86,11 +86,16 @@ def specific_car(request, car_id):
             finalized_bookings = Registration_Schema.objects.filter(car=car).exclude(car_date_reservation__final_date__lte=(datetime.date.today()))\
                 .order_by('car_date_reservation__initial_date')
 
+
+            print("0: " + str(finalized_bookings.count()))
+
+            print(finalized_bookings)
+
             # User set final date before the inital date, abort.
             if(final_date<initial_date):
                 logging.info("Final date is before initial date")
                 message = "Leveringsdagen er satt før Hente dagen, prøv på nytt."
-                calendar_data = generate_calendar_data(finalized_bookings)
+                #calendar_data = generate_calendar_data(finalized_bookings)
 
                 return abort_function(car, message, finalized_bookings)
 
@@ -135,7 +140,7 @@ def specific_car(request, car_id):
             print("Not Valid.")
             logging.debug("Non valid form posted.")
             print(booking_form.errors)
-            car = get_object_or_404(Car, id=car_id)
+            #car = get_object_or_404(Car, id=car_id)
             finalized_bookings = Registration_Schema.objects.filter(car=car).exclude(
                 car_date_reservation__final_date__lte=(datetime.date.today())) \
                 .order_by('car_date_reservation__initial_date')
@@ -153,10 +158,15 @@ def specific_car(request, car_id):
         images = image_generator(current_car)
 
         # Gather the information required by the Calendar
-        finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(car_date_reservation__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
+        #finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(car_date_reservation__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
+        finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(
+            car_date_reservation__final_date__lte=(datetime.date.today())) \
+            .order_by('car_date_reservation__initial_date')
 
-        print(finalized_bookings.count())
+        print("GET bookings: " + str(finalized_bookings.count()))
+        print(finalized_bookings)
         calendar_data = generate_calendar_data(finalized_bookings)
+        #print("Calendar data GET size: " + str(finalized_bookings.count()))
 
         context = {
             'car': current_car,

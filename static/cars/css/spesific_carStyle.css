@@ -14,7 +14,6 @@ p {
   padding-top: 5px; }
 
 #price_p {
-  text-decoration: underline;
   font-size: xx-large;
   padding-top: 20px; }
 
@@ -30,6 +29,12 @@ p {
   border-radius: 10px;
   margin-bottom: 20px;
   margin-top: 20px; }
+
+#car_images {
+  background-color: #7291A5; }
+
+#car_info {
+  background-color: #D19D74; }
 
 #calendar_box {
   padding-bottom: 30px; }

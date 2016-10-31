@@ -1,10 +1,14 @@
 .date-label {
   font-size: x-large; }
 
+a {
+  color: white; }
+
 .date_icon {
-  color: black;
+  color: #1F6075;
   font-size: x-large;
-  padding-right: 15px; }
+  padding-right: 50px;
+  padding-top: 7px; }
 
 .datefield {
   font-size: large; }

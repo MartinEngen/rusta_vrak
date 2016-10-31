@@ -19,18 +19,10 @@ def generate_calendar_data(finalized_bookings):
 
         data.append(event)
 
-    """
-    for booking in car_bookings:
-        start_date = booking.initial_date
-        end_date = booking.final_date
-
-        event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background',
-                 'color': 'black'}
-        data.append(event)
-    """
-
 
     json_data_string = json.dumps(data)
+
+    print("Current length of json: " + str(len(json_data_string)))
     return json_data_string
 
 
@@ -106,7 +98,7 @@ def generate_pdf():
 
 def price_calculator(days, start_price):
     price = 250
-    
+
 
     if days >= 30:
         price = 2500
