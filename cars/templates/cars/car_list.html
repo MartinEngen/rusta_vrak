@@ -11,8 +11,9 @@
 {% block Content %}
 <div class="container">
     {% if cars %}
+    <div class="row car_tab">
     {% for car in cars %}
-        <div class="col-lg-12 car_tab" style="margin-top: 30px; margin-bottom: 30px;">
+        <div class="col-lg-12 " style="margin-top: 30px; margin-bottom: 30px;">
             <div class="col-md-4 ">
                 <div class="thumbnail car_images" style="border: none">
 
@@ -20,20 +21,27 @@
                 </div>
 
             </div>
-            <div class="col-md-4 car_info ">
+            <div class="col-md-8 car_info ">
                 <h1> {{ car.brand }} {{ car.model }}</h1>
-                 <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
-                {% if car.extra_accessories %}
-                    Tilbehør: {{ car.extra_accessories }}
-                {% endif %}
-                </p>
-                <p><b>Pris per dag:</b> {{ car.price }}</p>
-                <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}">Se Tilgjengelighet </a>
+                <div class="col-md-6">
+                     <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
+                    {% if car.extra_accessories %}
+                        Tilbehør: {{ car.extra_accessories }}
+                    {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6 car_price_info">
+                    <p id="price_p"><b>Pris per dag:</b> {{ car.price }}</p>
+                    <br>
+                    <br>
+                    <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}" style="vertical-align: middle;">Se Tilgjengelighet </a>
+                </div>
             </div>
         </div>
         <h1></h1>
     {% endfor %}
 
+    </div>
     {% else %}
         <h1>Fant ingen biler.</h1>
     {% endif %}

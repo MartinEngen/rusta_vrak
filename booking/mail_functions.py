@@ -37,7 +37,7 @@ def send_mail_receipt(new_form, current_booking, booking_id, current_car):
           </body>
         </html>
         """ % (
-        new_form.first_name.encode('utf8'), str(booking_id),str(current_car.brand.encode('utf8')), str(current_car.model.encode('utf8')), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+        new_form.customer.first_name.encode('utf8'), str(booking_id),str(current_car.brand.encode('utf8')), str(current_car.model.encode('utf8')), str(current_booking.initial_date.strftime('%d.%m.%Y')),
         str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
 
         msg = MIMEText(content, 'html')
@@ -78,13 +78,13 @@ def send_mail_receipt(new_form, current_booking, booking_id, current_car):
             </p>
           </body>
         </html>
-        """ % (new_form.first_name.encode('utf8'), str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
-               str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+        """ % (new_form.customer.first_name.encode('utf8'), str(booking_id), str(current_booking.initial_date.strftime('%d.%m.%Y')),
+               str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.customer.phone_number))
         msg = MIMEText(content, 'html')
 
         msg['Subject'] = 'Rusta Vrak Bilutleige. Kvittering.'
         msg['From'] = 'Nitrax92@gmail.com'
-        msg['To'] = new_form.email
+        msg['To'] = new_form.customer.email
         msg['Content-Type'] = "text/html; charset=UTF-8"
         msg['Content-Transfer-Encoding'] = "quoted-printable"
 
@@ -95,6 +95,6 @@ def send_mail_receipt(new_form, current_booking, booking_id, current_car):
 
         mail.login('Nitrax92@gmail.com', 'this.setPw(G)')
 
-        mail.sendmail('Nitrax92@gmail.com', new_form.email, msg.as_string())
+        mail.sendmail('Nitrax92@gmail.com', new_form.customer.email, msg.as_string())
 
         mail.close()

@@ -10,8 +10,8 @@ def generate_calendar_data(finalized_bookings):
     data = []
 
     for finalized_bookings in finalized_bookings:
-        start_date = finalized_bookings.car_date_reservation.initial_date
-        end_date = finalized_bookings.car_date_reservation.final_date
+        start_date = finalized_bookings.dates_reserved.initial_date
+        end_date = finalized_bookings.dates_reserved.final_date
 
         event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background',
                  'color': 'black'}

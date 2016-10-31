@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect
 from .forms import BookingForm
 
 from .models import Car
-from booking.models import Car_Date_Reservation, Registration_Schema
+from booking.models import Dates_Reserved, Reservation
 
 import logging
 import datetime
@@ -36,9 +36,9 @@ def car_list(request):
     types = car_type.split(',')
     types = map(int, types)
 
-    # IF not any type(s) given, show them all.
+    # IF not any type(s) given, show the user them all.
     if not types:
-        types = [1,2,3]
+        types = [1, 2, 3]
 
     print(types)
 
@@ -83,8 +83,8 @@ def specific_car(request, car_id):
 
             # Check if the number of days exeeds 30 days.
             # Get all registered bookings for this car.
-            finalized_bookings = Registration_Schema.objects.filter(car=car).exclude(car_date_reservation__final_date__lte=(datetime.date.today()))\
-                .order_by('car_date_reservation__initial_date')
+            finalized_bookings = Reservation.objects.filter(car=car).exclude(dates_reserved__final_date__lte=(datetime.date.today()))\
+                .order_by('dates_reserved__initial_date')
 
 
             print("0: " + str(finalized_bookings.count()))
@@ -122,13 +122,13 @@ def specific_car(request, car_id):
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
             for finalized_booking in finalized_bookings:
                 print("Checking for overlap")
-                if finalized_booking.car_date_reservation.initial_date <= initial_date and finalized_booking.car_date_reservation.final_date >= initial_date or finalized_booking.car_date_reservation.initial_date <= final_date and finalized_booking.car_date_reservation.final_date >= final_date:
+                if finalized_booking.dates_reserved.initial_date <= initial_date and finalized_booking.dates_reserved.final_date >= initial_date or finalized_booking.dates_reserved.initial_date <= final_date and finalized_booking.dates_reserved.final_date >= final_date:
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
 
-            new_booking = Car_Date_Reservation(car=car, initial_date=booking_form.cleaned_data['initial_date'],
-                                      final_date=booking_form.cleaned_data['final_date'], status=2)
+            new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
+                                      final_date=booking_form.cleaned_data['final_date'])
             new_booking.save()
 
             request.session['current_booking_id'] = new_booking.id
@@ -141,9 +141,9 @@ def specific_car(request, car_id):
             logging.debug("Non valid form posted.")
             print(booking_form.errors)
             #car = get_object_or_404(Car, id=car_id)
-            finalized_bookings = Registration_Schema.objects.filter(car=car).exclude(
-                car_date_reservation__final_date__lte=(datetime.date.today())) \
-                .order_by('car_date_reservation__initial_date')
+            finalized_bookings = Reservation.objects.filter(car=car).exclude(
+                dates_reserved__final_date__lte=(datetime.date.today())) \
+                .order_by('dates_reserved__initial_date')
 
             message = "Informasjon mangler, prøv å fyll ut feltene på nytt. Dato må være DD.MM.ÅÅÅÅ"
 
@@ -158,10 +158,10 @@ def specific_car(request, car_id):
         images = image_generator(current_car)
 
         # Gather the information required by the Calendar
-        #finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(car_date_reservation__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
-        finalized_bookings = Registration_Schema.objects.filter(car=current_car).exclude(
-            car_date_reservation__final_date__lte=(datetime.date.today())) \
-            .order_by('car_date_reservation__initial_date')
+        #finalized_bookings = Reservation.objects.filter(car=current_car).exclude(dates_reserved__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
+        finalized_bookings = Reservation.objects.filter(car=current_car).exclude(
+            dates_reserved__final_date__lte=(datetime.date.today())) \
+            .order_by('dates_reserved__initial_date')
 
         print("GET bookings: " + str(finalized_bookings.count()))
         print(finalized_bookings)

@@ -1,6 +1,3 @@
-body {
-  background-color: #1b6d85; }
-
 p {
   font-size: x-large; }
 
@@ -14,6 +11,7 @@ p {
   padding-top: 5px; }
 
 #price_p {
+  text-decoration: underline;
   font-size: xx-large;
   padding-top: 20px; }
 
@@ -25,18 +23,22 @@ p {
   padding-bottom: 20px; }
 
 #reservation_box {
-  background-color: #7291A5;
+  background-color: #143840;
   border-radius: 10px;
   margin-bottom: 20px;
   margin-top: 20px; }
 
-#car_images {
-  background-color: #7291A5; }
-
-#car_info {
-  background-color: #D19D74; }
+#car_info_container {
+  background-color: #143840;
+  border-radius: 5px; }
 
 #calendar_box {
   padding-bottom: 30px; }
+
+.date_icon {
+  color: #143840;
+  font-size: x-large;
+  padding-right: 50px;
+  padding-top: 7px; }
 
 /*# sourceMappingURL=spesific_carStyle.css.map */

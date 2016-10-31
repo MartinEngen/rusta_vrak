@@ -2,9 +2,9 @@ html {
   height: 100%; }
 
 body {
-  font: 100% Helvetica, sans-serif;
+  font: 100% "Roboto", sans-serif;
   color: #FCEEDE;
-  background-color: #1F6075;
+  background-color: #5C6B63;
   height: 100%; }
 
 #wrap {
@@ -25,19 +25,5 @@ body {
     font-size: larger; }
     .footer li a {
       color: white; }
-
-.navbar-default-color {
-  color: blue; }
-
-.navbar-default {
-  background-color: brown;
-  border-color: brown; }
-
-.navbar-default .navbar-nav li a {
-  color: brown; }
-
-.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-default .navbar-nav > .active > a:focus {
-  background-color: brown;
-  color: brown; }
 
 /*# sourceMappingURL=baseStyle.css.map */

@@ -1,5 +1,11 @@
+#car_image_container {
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  background-color: #5C6B63;
+  padding-bottom: 20px; }
+
 body {
-  background-color: #1b6d85; }
+  background-color: #143840; }
 
 p {
   font-size: x-large; }
@@ -26,16 +32,27 @@ p {
   padding-bottom: 20px; }
 
 #reservation_box {
-  background-color: #7291A5;
-  border-radius: 10px;
+  background-color: #143840;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
   margin-bottom: 20px;
   margin-top: 20px; }
 
 #car_info_container {
-  background-color: #7291A5;
-  border-radius: 5px; }
+  background-color: #5C6B63;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px; }
+
+#car_info_section {
+  margin: 20px; }
 
 #calendar_box {
   padding-bottom: 30px; }
+
+.date_icon {
+  color: #143840;
+  font-size: x-large;
+  padding-right: 50px;
+  padding-top: 7px; }
 
 /*# sourceMappingURL=spesific_carStyle.css.map */

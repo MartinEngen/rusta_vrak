@@ -5,7 +5,7 @@ a {
   color: white; }
 
 .date_icon {
-  color: #1F6075;
+  color: #E0C297;
   font-size: x-large;
   padding-right: 50px;
   padding-top: 7px; }
@@ -14,8 +14,8 @@ a {
   font-size: large; }
 
 .car_frame .thumbnail {
-  background-color: #FCEEDE;
-  border-color: #FCEEDE; }
+  background-color: #A69E89;
+  border-color: #A69E89; }
   .car_frame .thumbnail img {
     padding: 15px;
     width: 320px;
@@ -29,7 +29,7 @@ a {
   margin-bottom: 50px; }
 
 #search_section .container {
-  background-color: #7291A5;
+  background-color: #143840;
   border-radius: 12px;
   padding-left: 20px; }
 #search_section input[type=checkbox] {
@@ -46,7 +46,7 @@ a {
   padding-bottom: 50px; }
 
 #services {
-  background-color: #7291A5;
+  background-color: #143840;
   padding-bottom: 50px; }
   #services .text-center p {
     font-size: 175%; }

@@ -5,8 +5,9 @@ from django.shortcuts import render, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 
 
+
 from .forms import BookingForm, BookingRegistrationForm
-from .models import Car, Car_Date_Reservation, Registration_Schema
+from .models import Car, Dates_Reserved, Reservation, Customer
 
 
 from frontpage.views import index
@@ -36,30 +37,38 @@ def booking_schema(request, car_id):
         booking_scheme_form = BookingRegistrationForm(request.POST)
 
         if booking_scheme_form.is_valid():
-            print("Valid")
+
+            # Clean the information from the POST request
             first_name = booking_scheme_form.cleaned_data['first_name']
             last_name = booking_scheme_form.cleaned_data['last_name']
-
             email = booking_scheme_form.cleaned_data['email']
             phone_number = booking_scheme_form.cleaned_data['phone_number']
             misc_info = booking_scheme_form.cleaned_data['misc_info']
 
             current_car = get_object_or_404(Car, id=car_id)
-            current_booking = get_object_or_404(Car_Date_Reservation, id=current_booking_id)
+            current_booking = get_object_or_404(Dates_Reserved, id=current_booking_id)
 
-            new_form = Registration_Schema(car_id=car_id, car_date_reservation_id=current_booking_id,
-                                           email=email, phone_number=phone_number, first_name=first_name,
-                                           last_name=last_name, misc_info=misc_info)
+            customer, created = Customer.objects.update_or_create(pk=email,
+                                                               defaults={'first_name': first_name,
+                                                                         'last_name': last_name,
+                                                                         'phone_number': phone_number})
+
+            # Increment orders by this user
+            customer.num_orders += 1
+            customer.save()
+
+
+            new_form = Reservation(car_id=car_id, dates_reserved_id=current_booking_id,
+                                   customer=customer, misc_info=misc_info, status=2)
+
             new_form.save()
-
-
 
             number_of_days = (current_booking.final_date - current_booking.initial_date).days + 1
 
             # Run the function that handles the sending of receipt.
             send_mail_receipt(new_form, current_booking, current_booking_id, current_car)
 
-            price = price_calculator(number_of_days, current_car)
+            price = price_calculator(number_of_days, current_car.price)
             context = {
                 'car': current_car,
                 'booking': current_booking,
@@ -69,22 +78,19 @@ def booking_schema(request, car_id):
 
             #Redirect the user to the final page, reciet is shown etc.
             return render(request, 'booking/booking_receipt.html', context)
-            #return redirect(booking_receipt(request, current_booking, new_form))
 
 
 
-
-
-
-
-        return redirect(index)
+        # User posted a form which was not valid.
+        else:
+            return redirect(index)
 
     else:
         car = get_object_or_404(Car, id=car_id)
-        booking = get_object_or_404(Car_Date_Reservation, id=current_booking_id)
+        booking = get_object_or_404(Dates_Reserved, id=current_booking_id)
 
         number_of_days = (booking.final_date - booking.initial_date).days + 1
-        price = price_calculator(number_of_days, car)
+        price = price_calculator(number_of_days, car.price)
 
 
         context = {
@@ -103,14 +109,14 @@ def download_pdf(request, reservation_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Kvittering.pdf"'
 
-    booking = get_object_or_404(Registration_Schema, id=reservation_id)
+    booking = get_object_or_404(Reservation, id=reservation_id)
 
     booking_nr = str(booking.id)
     initial_date = str(booking.car_date_reservation.initial_date)
     final_date = str(booking.car_date_reservation.final_date)
     bil = str(booking.car.brand.encode('utf8') + ' ' + booking.car.model.encode('utf8'))
     days = (booking.car_date_reservation.final_date - booking.car_date_reservation.initial_date).days
-    calculated_price = price_calculator(days, booking.car)
+    calculated_price = price_calculator(days, booking.car.price)
     pris = str(calculated_price)
     fornavn  = booking.first_name
     etternavn = booking.last_name

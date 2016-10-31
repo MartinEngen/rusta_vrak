@@ -1,12 +1,19 @@
 .car_tab {
   border: solid;
-  border-color: #7291A5;
-  background-color: #7291A5;
-  padding-top: 20px;
-  border-radius: 20px; }
+  border-color: #D96523;
+  background-color: #E0C297;
+  border-radius: 5px; }
 
 .car_info p {
   font-size: x-large; }
+
+.car_price_info p {
+  font-size: xx-large; }
+.car_price_info div {
+  display: inline-block;
+  vertical-align: bottom;
+  float: none;
+  margin: -2px; }
 
 .car_images a img {
   width: 360px;

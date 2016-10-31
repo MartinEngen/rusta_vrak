@@ -58,5 +58,6 @@ class CarAdmin(admin.ModelAdmin):
 """
 
 
-admin.site.register(models.Car_Date_Reservation)
-admin.site.register(models.Registration_Schema, FinalizedBookings)
+admin.site.register(models.Dates_Reserved)
+admin.site.register(models.Reservation)
+admin.site.register(models.Customer)

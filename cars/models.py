@@ -25,7 +25,7 @@ class Car(models.Model):
 
     car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
 
-    price = models.IntegerField('Dagspris leie',default=250)
+    price = models.IntegerField('Dagspris leie', default=250)
 
     extra_accessories = models.CharField('Ekstra informasjon, splitt med komma (",")', blank=True, null=True, max_length=255)
 
