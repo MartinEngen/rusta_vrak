@@ -38,7 +38,7 @@ def send_mail_receipt(new_form, current_booking, booking_id, current_car):
         </html>
         """ % (
         new_form.customer.first_name.encode('utf8'), str(booking_id),str(current_car.brand.encode('utf8')), str(current_car.model.encode('utf8')), str(current_booking.initial_date.strftime('%d.%m.%Y')),
-        str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.phone_number))
+        str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.customer.phone_number))
 
         msg = MIMEText(content, 'html')
 
@@ -47,7 +47,7 @@ def send_mail_receipt(new_form, current_booking, booking_id, current_car):
 
         logging.debug("Sending From Google Mail API")
         mail.send_mail(sender='Nitrax92@gmail.com',
-                       to="%s %s <%s>" % (new_form.first_name, new_form.last_name, new_form.email),
+                       to="%s %s <%s>" % (new_form.customer.first_name, new_form.customer.last_name, new_form.customer.email),
                        subject="Kvittering. Rusta Vrak Bilutleige",
                        body="",
                        html=msg.as_string())
