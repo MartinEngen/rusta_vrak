@@ -50,6 +50,11 @@
         <div class="row">
             <div class="col-md-offset-1 col-md-5">
             <h1> <b>{{ car.brand }} {{ car.model }}</b></h1>
+
+                <!-- Car Info Table -->
+                <div id="car_info_table">
+
+                <h3>Informasjon</h3>
                   <table class="table">
                     <tbody>
                       <tr>
@@ -61,32 +66,42 @@
                         <td>{{ car.fuel_type }}</td>
                       </tr>
                       <tr>
-                        <td>Antall Seter</td>
+                        <td>Seter</td>
                         <td>{{ car.seats }}</td>
                       </tr>
 
                     {% if car.year %}
+                      <tr>
+                        <td>År</td>
+                        <td>{{ car.year }}</td>
+                      </tr>
 
                     {% endif %}
 
                     {% if car.extra_accessories %}
-
-
+                      <tr>
+                        <td>Tilbehør</td>
+                        <td>{{ car.extra_accessories }}</td>
+                      </tr>
                     {% endif %}
+                      <tr>
+                        <td>Gratis Inkludert. kjørelengde</td>
+                        <td>50Km / Døgn</td>
+                      </tr>
 
+                      <tr>
+                        <td>Pris pr Km.</td>
+                        <td> 1.00 kr</td>
+                      </tr>
 
                     </tbody>
                   </table>
 
+                <!-- Table Div END -->
+                </div>
                 <div>
-                    <p>Girkasse: {{ car.transmission }} <br>Drivstoff: {{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
-                        {% if car.extra_accessories %}
-                            Tilbehør: {{ car.extra_accessories }}
-                        {% endif %}
-                        </p>
-
-
                     <p id="price_p"><b>Pris per dag:</b> {{ car.price }}</p>
+
                 </div>
             <!-- Info column End -->
             </div>
