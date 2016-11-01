@@ -39,24 +39,24 @@ def search_function(request):
             inital_date = search_form.cleaned_data['initial_date']
             final_date = search_form.cleaned_data['final_date']
 
-
-
-
-
-
-
-
             searched_types = []
+            categories = ''
             if search_form.cleaned_data['personal']:
                 searched_types.append(1)
+                categories += 'Personbil, '
             if search_form.cleaned_data['van']:
                 searched_types.append(2)
+                categories += 'Varebil, '
             if search_form.cleaned_data['combi_car']:
                 searched_types.append(3)
+                categories += 'Kombinertbil, '
 
+            if categories:
+                categories = categories.strip(", ")
 
             if not searched_types:
                 searched_types = [1, 2, 3]
+                categories = "Personbil, Varebil, Kombinertbil"
 
             # All cars of wanted Car Type
             cars = Car.objects.filter(car_type__in=searched_types)
@@ -72,9 +72,17 @@ def search_function(request):
             # Remove the cars with overlapping dates
             cars = cars.exclude(reserved_car__booking__car__in=final_date_booking_overlap.values("car")).exclude(reserved_car__booking__car__in=initial_date_booking_overlap.values("car"))
 
+            dates = {
+                'initial_date': inital_date,
+                'final_date': final_date
+            }
 
+            print(inital_date)
             context = {
-                'cars': cars
+                'cars': cars,
+                'initial_date': inital_date,
+                'dates': dates,
+                'categories': categories
             }
             return render(request, 'cars/car_list.html', context)
 

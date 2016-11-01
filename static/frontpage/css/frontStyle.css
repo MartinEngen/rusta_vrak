@@ -2,10 +2,10 @@
   font-size: x-large; }
 
 a {
-  color: white; }
+  color: #FCEEDE; }
 
 .date_icon {
-  color: #E0C297;
+  color: #5C6B63;
   font-size: x-large;
   padding-right: 50px;
   padding-top: 7px; }
@@ -14,14 +14,17 @@ a {
   font-size: large; }
 
 .car_frame .thumbnail {
-  background-color: #A69E89;
-  border-color: #A69E89; }
+  background-color: #143840;
+  border-color: #143840;
+  color: white; }
   .car_frame .thumbnail img {
     padding: 15px;
     width: 320px;
     height: 228px; }
+.car_frame a:hover {
+  border-color: #D96523; }
 .car_frame h3 {
-  color: black;
+  color: #FCEEDE;
   text-align: center; }
 
 #car_types {
@@ -47,8 +50,17 @@ a {
 
 #services {
   background-color: #143840;
+  padding-top: 30px;
   padding-bottom: 50px; }
+  #services .text-primary {
+    color: #5C6B63; }
+  #services .fa-inverse {
+    color: #E0C297; }
   #services .text-center p {
     font-size: 175%; }
+
+.section-body {
+  padding-top: 30px;
+  padding-bottom: 30px; }
 
 /*# sourceMappingURL=frontStyle.css.map */

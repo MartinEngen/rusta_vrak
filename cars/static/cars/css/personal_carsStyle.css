@@ -2,7 +2,16 @@
   border: solid;
   border-color: #143840;
   background-color: #143840;
-  border-radius: 5px; }
+  border-radius: 5px;
+  padding-top: 20px;
+  margin-top: 20px; }
+  .car_tab .btn {
+    background-color: #E0C297;
+    color: #5C6B63;
+    vertical-align: middle; }
+  .car_tab .btn:hover, .car_tab .btn:focus {
+    color: black;
+    background-color: #D96523; }
 
 #price_p {
   text-decoration: underline;

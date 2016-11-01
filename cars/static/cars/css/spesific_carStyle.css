@@ -59,4 +59,8 @@ p {
   font-size: large;
   padding-top: 20px; }
 
+#datepickerStart, #datepickerFinish {
+  font-size: x-large;
+  color: black; }
+
 /*# sourceMappingURL=spesific_carStyle.css.map */

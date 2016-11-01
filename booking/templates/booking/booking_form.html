@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+
+{% block pageBasedStyle %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "booking/css/bookingstyle.css" %}">
+<link rel="stylesheet" href="{% static "booking/css/booking_form_style.css" %}">
+{% endblock pageBasedStyle %}
+
+
 {% block Content %}
 <div class="container">
 

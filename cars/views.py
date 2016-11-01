@@ -157,6 +157,27 @@ def specific_car(request, car_id):
 
         images = image_generator(current_car)
 
+
+
+        from_date = request.GET.values()
+
+        if from_date:
+            initial_date = from_date[1].encode('utf8')
+            final_date = from_date[0].encode('utf8')
+
+            # This is the one I need.
+            print(initial_date)
+            print(final_date)
+            dates = {
+                'initial_date': initial_date,
+                'final_date': final_date
+            }
+        else:
+            dates = 'false'
+
+
+        print(from_date)
+
         # Gather the information required by the Calendar
         #finalized_bookings = Reservation.objects.filter(car=current_car).exclude(dates_reserved__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
         finalized_bookings = Reservation.objects.filter(car=current_car).exclude(
@@ -171,7 +192,8 @@ def specific_car(request, car_id):
         context = {
             'car': current_car,
             'json_data_string': calendar_data,
-            'images': images
+            'images': images,
+            'dates': dates
         }
 
         return render(request, 'cars/spesific_car.html', context)

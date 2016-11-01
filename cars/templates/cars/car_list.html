@@ -11,9 +11,16 @@
 {% block Content %}
 <div class="container">
     {% if cars %}
-    <div class="row car_tab">
+    <div class="row">
+
+        <div class="col-lg-12 col-md-12">
+            <h3>Kategorier: {{ categories }}</h3>
+            {% if dates %}
+            <p>Biler ledig fra : {{ initial_date |date:'d.m.y'}} til {{ dates.final_date }} </p>
+            {% endif %}
+        </div>
     {% for car in cars %}
-        <div class="col-lg-12 " style="margin-top: 30px; margin-bottom: 30px;">
+        <div class="col-lg-12 car_tab" >
             <div class="col-md-4 ">
                 <div class="thumbnail car_images" style="border: none">
 
@@ -21,7 +28,7 @@
                 </div>
 
             </div>
-            <div class="col-md-8 car_info ">
+            <div class="col-md-8 car_info">
                 <h1> {{ car.brand }} {{ car.model }}</h1>
                 <div class="col-md-6">
                      <p>{{ car.transmission }} <br>{{ car.fuel_type }}<br> Antall Seter: {{ car.seats }} <br> {% if car.year %} År: {{ car.year }} {% endif %}
@@ -34,7 +41,13 @@
                     <p id="price_p"><b>Pris per dag:</b> {{ car.price }}</p>
                     <br>
                     <br>
-                    <a class="btn btn-primary" href="{% url 'cars:car_availability' car.id %}" style="vertical-align: middle;">Se Tilgjengelighet </a>
+                    {% if dates %}
+                        <a class="btn" href="{% url 'cars:car_availability' car.id %}?fra={{ dates.initial_date|date:'d.m.Y' }}&til={{ dates.final_date|date:'d.m.Y'}}" style="vertical-align: middle;"  ><b>Se Tilgjengelighet </b></a>
+
+                    {% else %}
+                        <a class="btn" href="{% url 'cars:car_availability' car.id %}" style="vertical-align: middle;"  ><b>Se Tilgjengelighet </b></a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>

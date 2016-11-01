@@ -199,6 +199,20 @@
 
         $("#calendar").fullCalendar('removeEvents');
         $("#calendar").fullCalendar('addEventSource', events);
+
+
+        var dates = {{ dates | safe }}
+
+        if(dates){
+            console.log("Dato Oppgitt");
+            $("#datepickerStart").val(dates.initial_date);
+            $("#datepickerFinish").val(dates.final_date);
+        }
+        else{
+            console.log("Ingen Dato");
+        }
+
+
     }
 
     ));

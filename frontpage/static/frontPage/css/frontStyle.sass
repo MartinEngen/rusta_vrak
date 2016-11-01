@@ -18,10 +18,10 @@ $color5: #D96523
   font-size: x-large
 
 a
-  color: white
+  color: #FCEEDE
 
 .date_icon
-  color: $color4
+  color: $color2
   font-size: x-large
   padding-right: 50px
   padding-top: 7px
@@ -36,11 +36,17 @@ a
       width: 320px
       height: 228px
 
-    background-color: $color3
-    border-color: $color3
+    background-color: $color1
+    border-color: $color1
+    color: white
+
+  a:hover
+    //border: solid
+
+    border-color: $color5
 
   h3
-    color: black
+    color: #FCEEDE
     text-align: center
 
 #car_types
@@ -73,8 +79,19 @@ a
     padding-bottom: 50px
 #services
   background-color: $color1
+  padding-top: 30px
   padding-bottom: 50px
+
+  .text-primary
+    color: $color2
+
+  .fa-inverse
+    color: $color4
 
   .text-center
     p
       font-size: 175%
+
+.section-body
+  padding-top: 30px
+  padding-bottom: 30px
