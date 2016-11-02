@@ -33,24 +33,87 @@ import hashlib
 def car_list(request):
     car_type = request.GET.get('type')
 
-    types = car_type.split(',')
-    types = map(int, types)
+    if car_type:
+        types = car_type.split(',')
+        types = map(int, types)
+    else:
+        types = []
+
+
+    categories = ''
+    if 1 in types:
+        categories += 'Personbiler, '
+    if 2 in types:
+        categories += 'Varebiler, '
+    if 3 in types:
+        categories += 'Kombinertbiler, '
+
+    categories = categories.strip(", ")
+
 
     # IF not any type(s) given, show the user them all.
     if not types:
         types = [1, 2, 3]
+        categories = 'Personbiler, Varebiler og Kombinertbiler'
 
-    print(types)
+
+
 
     cars = Car.objects.filter(car_type__in=types)
 
     for car in cars:
         print (car.extra_accessories)
     context = {
+        'categories': categories,
         'cars': cars,
     }
 
     return render(request, 'cars/car_list.html', context)
+
+
+
+
+def validate_date(initial_date, final_date):
+
+    message = ''
+    error = False
+
+
+      # Less than 1 day booked, abort.
+    if (final_date - initial_date).days < 1:
+        logging.error("Less than 1 day, stop")
+        message = "For liten leieperiode."
+        error = True
+
+
+    # Final date before the inital date.
+    if (final_date < initial_date):
+        logging.info("Final date is before initial date")
+        message = "Leveringsdagen er satt før Hente dagen, gjør om og prøv på nytt."
+        error = True
+        # calendar_data = generate_calendar_data(finalized_bookings)
+
+
+        # More than 30 days booked, abort.
+    if (final_date - initial_date).days > 30:
+        logging.error("Logging more than 30 days, Stop.")
+        message = "Kan ikke reservere mer enn 30 dager i gangen. Ta kontakt for en større reservasjon."
+        error = True
+
+
+        # User tries to book from before today, this is illegal.
+    if initial_date < datetime.date.today():
+        logging.error("Error, not able to book.")
+        message = "Kan ikke registerer en reservasjon tilbake i tid."
+        error = True
+
+
+    context = {
+        'message': message,
+        'error': error
+    }
+
+    return context
 
 
 def specific_car(request, car_id):
@@ -61,6 +124,7 @@ def specific_car(request, car_id):
         context = {
             'car': car,
             # 'bookings': car_bookings,
+            'dates': 'false',
             'warning': True,
             'message': message,
             'json_data_string': calendar_data,
@@ -87,45 +151,47 @@ def specific_car(request, car_id):
                 .order_by('dates_reserved__initial_date')
 
 
-            print("0: " + str(finalized_bookings.count()))
 
-            print(finalized_bookings)
+            # Run function to validate the dates searched.
+            validated_dates = validate_date(initial_date, final_date)
 
-            # User set final date before the inital date, abort.
-            if(final_date<initial_date):
-                logging.info("Final date is before initial date")
-                message = "Leveringsdagen er satt før Hente dagen, prøv på nytt."
-                #calendar_data = generate_calendar_data(finalized_bookings)
-
-                return abort_function(car, message, finalized_bookings)
-
-            # Less than 1 day booked, abort.
-            if(final_date - initial_date).days < 1:
-                logging.error("Less than 1 day, stop")
-                message = "For liten leieperiode."
-                return abort_function(car, message, finalized_bookings)
+            if validated_dates['error']:
+                return abort_function(car, validated_dates['message'], finalized_bookings)
 
 
-
-            # More than 30 days booked, abort.
-            if (final_date - initial_date).days > 30:
-                logging.error("Logging more than 30 days, Stop.")
-                message = "Kan ikke reservere mer enn 30 dager i gangen. Ta kontakt for en større reservasjon."
-                return abort_function(car, message, finalized_bookings)
-
-            # User tries to book from before today, this is illegal.
-            if initial_date < datetime.date.today():
-                logging.error("Error, not able to book.")
-                message = "Kan ikke registerer en reservasjon tilbake i tid."
-                return abort_function(car, message, finalized_bookings)
 
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
             for finalized_booking in finalized_bookings:
-                print("Checking for overlap")
-                if finalized_booking.dates_reserved.initial_date <= initial_date and finalized_booking.dates_reserved.final_date >= initial_date or finalized_booking.dates_reserved.initial_date <= final_date and finalized_booking.dates_reserved.final_date >= final_date:
+
+
+                # Checks if the date is placed within a range of already booked.
+                if finalized_booking.dates_reserved.initial_date <= initial_date <= finalized_booking.dates_reserved.final_date or finalized_booking.dates_reserved.initial_date <= final_date <= finalized_booking.dates_reserved.final_date:
+                    print("Complicated working..")
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
+
+
+                # Check if there is an exisiting booking within this new entry.
+                if initial_date <= finalized_booking.dates_reserved.initial_date <= final_date or initial_date <= finalized_booking.dates_reserved.final_date <= final_date:
+                    print("Complicated working..")
+                    logging.error("Error, not able to book. Overlapping")
+                    message = "Reservasjon overlapper, velg en ledig periode."
+                    return abort_function(car, message, finalized_bookings)
+
+
+
+
+                """
+                if (finalized_booking.dates_reserved.initial_date <= initial_date and finalized_booking.dates_reserved.final_date >= initial_date) or (finalized_booking.dates_reserved.initial_date <= final_date and finalized_booking.dates_reserved.final_date >= final_date):
+                    print("Complicated working..")
+                    logging.error("Error, not able to book. Overlapping")
+                    message = "Reservasjon overlapper, velg en ledig periode."
+                    return abort_function(car, message, finalized_bookings)
+                """
+
+
+
 
             new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
                                       final_date=booking_form.cleaned_data['final_date'])

@@ -9,11 +9,13 @@
 
 
 {% block Content %}
-<div class="container">
+<div class="container" id="form_container">
 
     <div class="row">
-        <div class="col-md-offset-1 col-md-5">
+        <div class="col-md-offset-1 col-md-6">
             <h3>Kontakt Informasjon</h3>
+
+            <p>Steg 2 av prossessen. For å fulføre reservasjonen, vennligst fyll ut det føgende skjema. Husk å dobbelsjekk informasjon om bestillingen før du går videre.</p>
             <form method="post" >{% csrf_token %}
                 <div class="form-group">
                     <label for="email">Epost adresse</label>
@@ -43,12 +45,85 @@
             </form>
         </div>
 
-        <div class="col-md-offset-1 col-md-5">
-           <h2>Reservasjon:</h2>
-            <h4>{{ car.brand }} {{ car.model }} </h4>
-            <h4>Fra Dato: {{ booking.initial_date }}. Til Dato: {{ booking.final_date }}</h4>
-            <h4>Antall Dager: {{ days }}</h4>
-            <h4>Pris estimat: {{ price }}kr</h4>
+        <div class="col-md-offset-1 col-md-10">
+                <h1>Informasjon</h1>
+                <div id="car_info_table">
+                    <h3>Reservasjonen</h3>
+                        <table class="table">
+                            <tbody>
+                              <tr>
+                                <td>Hente Dato</td>
+                                <td>{{ booking.initial_date }}</td>
+                              </tr>
+                              <tr>
+                                <td>Leverers Dato</td>
+                                <td>{{ booking.final_date }}</td>
+                              </tr>
+                              <tr>
+                                <td>Antall Dager</td>
+                                <td> {{ days }}</td>
+                              </tr>
+                              <tr>
+                                <td>Pris ({{ car.price }} Pr. Døgn)</td>
+                                <td>{{ price }}</td>
+                              </tr>
+
+                              <tr>
+                                <td>Pris pr Km.</td>
+                                <td> 1.00 kr</td>
+                              </tr>
+
+                            </tbody>
+                        </table>
+
+                <!-- Table Div END -->
+                </div>
+                <div id="car_info_table">
+                    <h3>{{ car.brand }} {{ car.model }} </h3>
+                        <table class="table">
+                            <tbody>
+                              <tr>
+                                <td>Girkasse</td>
+                                <td>{{ car.transmission }}</td>
+                              </tr>
+                              <tr>
+                                <td>Drivstoff</td>
+                                <td>{{ car.fuel_type }}</td>
+                              </tr>
+                              <tr>
+                                <td>Seter</td>
+                                <td>{{ car.seats }}</td>
+                              </tr>
+
+                            {% if car.year %}
+                              <tr>
+                                <td>År</td>
+                                <td>{{ car.year }}</td>
+                              </tr>
+
+                            {% endif %}
+
+                            {% if car.extra_accessories %}
+                              <tr>
+                                <td>Tilbehør</td>
+                                <td>{{ car.extra_accessories }}</td>
+                              </tr>
+                            {% endif %}
+                              <tr>
+                                <td>Gratis Inkludert. kjørelengde</td>
+                                <td>50Km / Døgn</td>
+                              </tr>
+
+                              <tr>
+                                <td>Pris pr Km.</td>
+                                <td> 1.00 kr</td>
+                              </tr>
+
+                            </tbody>
+                        </table>
+
+                <!-- Table Div END -->
+                </div>
         </div>
 
     </div>

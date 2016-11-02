@@ -25,7 +25,19 @@ def index(request):
     }
     """
 
-    return render(request, 'frontpage/index.html')
+    if 'search_car_error_message' in request.session:
+        message = request.session['search_car_error_message']
+        print(message)
+        context = {
+            'error': True,
+            'message': message
+        }
+
+    else:
+        context = {
+            'error': False,
+        }
+    return render(request, 'frontpage/index.html', context)
 
 
 
@@ -72,6 +84,15 @@ def search_function(request):
             # Remove the cars with overlapping dates
             cars = cars.exclude(reserved_car__booking__car__in=final_date_booking_overlap.values("car")).exclude(reserved_car__booking__car__in=initial_date_booking_overlap.values("car"))
 
+
+            # The chosen dates did not find any cars. Redirect back to front with an error.
+            if not cars:
+                message = "Fant ingen ledige biler av kategori: %s i oppgitt periopde. Prøv igjen med ny kategori / periode, eller kontakt oss." % (categories)
+                request.session['search_car_error_message'] = message
+
+                return redirect(index)
+
+            print("There are cars!!")
             dates = {
                 'initial_date': inital_date,
                 'final_date': final_date

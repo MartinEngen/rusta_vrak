@@ -16,6 +16,9 @@ body {
 #push {
   height: 100px; }
 
+.navbar {
+  background-color: #143840; }
+
 .footer {
   background-color: dimgrey;
   height: 100px; }

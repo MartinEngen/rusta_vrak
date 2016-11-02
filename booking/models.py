@@ -22,8 +22,6 @@ class Dates_Reserved(models.Model):
         verbose_name_plural = 'dato_reservasjoner'
 
 
-
-
 @python_2_unicode_compatible
 class Customer(models.Model):
     email = models.EmailField('Epost Adresse', primary_key=True, max_length=100)
@@ -43,6 +41,7 @@ class Customer(models.Model):
     class Meta:
         verbose_name = 'Kunde'
         verbose_name_plural = 'Kunder'
+
 
 @python_2_unicode_compatible
 class Reservation(models.Model):
@@ -65,8 +64,5 @@ class Reservation(models.Model):
 
 
     class Meta:
-        verbose_name = 'kontakt_skjema'
-        verbose_name_plural = 'Ferdigstilte Bestillinger'
-
-
-
+        verbose_name = 'Reservasjon'
+        verbose_name_plural = 'Fullførte Bestillinger'
