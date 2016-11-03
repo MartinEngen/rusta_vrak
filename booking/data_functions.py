@@ -26,7 +26,7 @@ def generate_calendar_data(finalized_bookings):
     return json_data_string
 
 
-def generate_pdf():
+def generate_pdf(customer, filled_form):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Kvittering.pdf"'
 

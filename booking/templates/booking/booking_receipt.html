@@ -1,32 +1,71 @@
 {% extends 'base.html' %}
 
 
+
+{% block pageBasedStyle %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "booking/css/receipt_style.css" %}">
+{% endblock pageBasedStyle %}
+
+
 {% block Content %}
 <div class="container">
     <div class="jumbotron" style="color: black;">
-        <h1>Takk for reservasjonen!</h1>
-        <h2>Din Kvittering</h2>
+        <h2>Takk for reservasjonen!</h2>
+        <h3>Informasjon om bestillingen</h3>
         <hr>
-        <h2>Bil</h2>
+        <h4>Reservasjonen</h4>
         <p>
-        Booking Nr.: {{ booking.id }} <br>
-        Bil: {{ car.brand }} {{ car.model }} <br>
-        Hentes Dato: {{ booking.initial_date }} <br>
-        Levers Dato: {{ booking.final_date }} <br>
-        Pris: {{ price }}
-        </p>
-        <hr>
-        <h2>Kunde </h2>
-        <p>Navn: {{ filled_form.first_name }} {{ filled_form.last_name }} <br>
-        Epost: {{ filled_form.email }} <br>
-        Telefon: {{ filled_form.phone_number }} <br>
-        </p>
+        <table class="table">
+         <tbody>
+            <tr>
+                <td>Reservasjon Nr.</td>
+                <td>{{ filled_form.id }}</td>
+            </tr>
+            <tr>
+                <td>Bil</td>
+                <td>{{ car.brand }} {{ car.model }}, {{ car.seats }} seter, {{ car.fuel_type }}</td>
+            </tr>
+            <tr>
+                <td>Hentes Dato</td>
+                <td>{{ booking.initial_date }}</td>
+            </tr>
+            <tr>
+                <td>Levers Dato</td>
+                <td>{{ booking.final_date }}</td>
+            </tr>
 
-        <hr>
-        <p>
-        Ekstra Informasjon
-            <p>{{ filled_form.misc_info }} </p>
-        </p>
+            <tr>
+                <td>Pris</td>
+                <td>{{ price }}</td>
+            </tr>
+            {%   if filled_form.misc_info %}
+            <tr>
+                <td>Ekstra Informasjon</td>
+                <td>"{{ filled_form.misc_info }}"</td>
+            </tr>
+            {% endif %}
+            <tr>
+
+            </tr>
+            <tr>
+                <td><h4>Bestiller</h4></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Navn</td>
+                <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+            </tr>
+            <tr>
+                <td>Epost</td>
+                <td>{{ customer.email }}</td>
+            </tr>
+            <tr>
+                <td>Telefon</td>
+                <td>{{ customer.phone_number }}</td>
+            </tr>
+        </tbody>
+        </table>
          <a href="{% url 'booking:pdf' filled_form.id %}">
             <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn btn-primary btn-md">Last ned kvittering på PDF</button>
         </a>

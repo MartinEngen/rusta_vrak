@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAOE,SAAE;EACA,SAAS,EAAE,IAAI",
+"sources": ["receipt_style.sass"],
+"names": [],
+"file": "receipt_style.css"
+}

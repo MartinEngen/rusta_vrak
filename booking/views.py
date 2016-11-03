@@ -25,12 +25,11 @@ import datetime
 
 def booking_schema(request, car_id):
 
-
-    current_booking_id = request.session['current_booking_id']
-
-    if not current_booking_id:
+    if 'current_booking_id' in request.session:
+        current_booking_id = request.session['current_booking_id']
+    else:
         # Session has no booking ID, return to frontpage..
-        return redirect('/')
+        return redirect(index)
 
     if request.method == 'POST':
 
@@ -63,7 +62,7 @@ def booking_schema(request, car_id):
 
             new_form.save()
 
-            number_of_days = (current_booking.final_date - current_booking.initial_date).days + 1
+            number_of_days = (current_booking.final_date - current_booking.initial_date).days
 
             # Run the function that handles the sending of receipt.
             send_mail_receipt(new_form, current_booking, current_booking_id, current_car)
@@ -72,11 +71,12 @@ def booking_schema(request, car_id):
             context = {
                 'car': current_car,
                 'booking': current_booking,
+                'customer': customer,
                 'filled_form': new_form,
                 'price': price,
             }
 
-            #Redirect the user to the final page, reciet is shown etc.
+            #Redirect the user to the final page, reciept is shown etc.
             return render(request, 'booking/booking_receipt.html', context)
 
 
@@ -89,7 +89,7 @@ def booking_schema(request, car_id):
         car = get_object_or_404(Car, id=car_id)
         booking = get_object_or_404(Dates_Reserved, id=current_booking_id)
 
-        number_of_days = (booking.final_date - booking.initial_date).days + 1
+        number_of_days = (booking.final_date - booking.initial_date).days
         price = price_calculator(number_of_days, car.price)
 
 
@@ -107,43 +107,46 @@ def booking_schema(request, car_id):
 def download_pdf(request, reservation_id):
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Kvittering.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="Rusta_vrak_reservasjon.pdf"'
 
     booking = get_object_or_404(Reservation, id=reservation_id)
 
     booking_nr = str(booking.id)
-    initial_date = str(booking.car_date_reservation.initial_date)
-    final_date = str(booking.car_date_reservation.final_date)
+    initial_date = str(booking.dates_reserved.initial_date)
+    final_date = str(booking.dates_reserved.final_date)
     bil = str(booking.car.brand.encode('utf8') + ' ' + booking.car.model.encode('utf8'))
-    days = (booking.car_date_reservation.final_date - booking.car_date_reservation.initial_date).days
+    days = (booking.dates_reserved.final_date - booking.dates_reserved.initial_date).days
     calculated_price = price_calculator(days, booking.car.price)
     pris = str(calculated_price)
-    fornavn  = booking.first_name
-    etternavn = booking.last_name
+    fornavn  = booking.customer.first_name
+    etternavn = booking.customer.last_name
     kunde = str(fornavn + ' ' + etternavn)
 
-    epost = str(booking.email)
-    tlf = str(booking.phone_number)
+    epost = str(booking.customer.email)
+    tlf = str(booking.customer.phone_number)
 
 
     p = canvas.Canvas(response)
     p.setLineWidth(.5)
-    p.setFont('Helvetica', 34)
-    p.drawString(100, 750, 'Rusta Vrak Bilutleige')
-    p.setLineWidth(.3)
     p.setFont('Helvetica', 24)
-    p.drawString(100, 720, 'Kvittering')
-    p.line(20, 710, 580, 710)
+    p.drawString(100, 750, 'Rusta Vrak Bilutleige')
+    #p.setLineWidth(.3)
+    #p.setFont('Helvetica', 18)
+    #p.drawString(100, 720, 'Bestilling')
+    #p.line(20, 710, 580, 710)
     p.setLineWidth(.5)
-    p.setFont('Helvetica', 16)
-    p.drawString(100, 680, 'Booking Nr. ')
-    p.setLineWidth(.3)
-    p.drawString(350, 680, booking_nr)
-    p.drawString(100, 650, 'Hentes: ')
-    p.drawString(350, 650, initial_date)
 
-    p.drawString(100, 620, 'Leveres: ')
-    p.drawString(350, 620, final_date)
+    p.setFont('Helvetica', 16)
+    p.drawString(100, 700, 'Reservasjonen')
+    p.setFont('Helvetica', 13)
+    p.drawString(90, 675, 'Nr')
+    p.setLineWidth(.3)
+    p.drawString(350, 675, booking_nr)
+    p.drawString(90, 655, 'Hentes: ')
+    p.drawString(350, 655, initial_date)
+
+    p.drawString(90, 630, 'Leveres: ')
+    p.drawString(350, 630, final_date)
 
     p.line(20, 600, 580, 600)
     p.drawString(100, 570, 'Bil:..')
@@ -166,8 +169,3 @@ def download_pdf(request, reservation_id):
     p.showPage()
     p.save()
     return response
-
-
-def prisTest(request):
-
-    return render(request, 'booking/pristest.html')

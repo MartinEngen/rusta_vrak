@@ -12,7 +12,7 @@
 <div class="container" id="form_container">
 
     <div class="row">
-        <div class="col-md-offset-1 col-md-6">
+        <div class="col-md-offset-3 col-md-6">
             <h3>Kontakt Informasjon</h3>
 
             <p>Steg 2 av prossessen. For å fulføre reservasjonen, vennligst fyll ut det føgende skjema. Husk å dobbelsjekk informasjon om bestillingen før du går videre.</p>
@@ -63,14 +63,9 @@
                                 <td>Antall Dager</td>
                                 <td> {{ days }}</td>
                               </tr>
-                              <tr>
+                              <tr id="total">
                                 <td>Pris ({{ car.price }} Pr. Døgn)</td>
                                 <td>{{ price }}</td>
-                              </tr>
-
-                              <tr>
-                                <td>Pris pr Km.</td>
-                                <td> 1.00 kr</td>
                               </tr>
 
                             </tbody>
