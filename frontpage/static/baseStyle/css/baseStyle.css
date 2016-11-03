@@ -18,6 +18,8 @@ body {
 
 .navbar {
   background-color: #143840; }
+  .navbar a {
+    color: white; }
 
 .footer {
   background-color: dimgrey;

@@ -133,7 +133,7 @@ def specific_car(request, car_id):
 
 
 
-
+    # POST Request
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
 
@@ -191,11 +191,10 @@ def specific_car(request, car_id):
                 """
 
 
-
-
             new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
                                       final_date=booking_form.cleaned_data['final_date'])
             new_booking.save()
+
 
             request.session['current_booking_id'] = new_booking.id
             return redirect('booking:reservation_schema', car_id=car.id)
@@ -215,6 +214,8 @@ def specific_car(request, car_id):
 
             return abort_function(car, message, finalized_bookings)
 
+
+    # GET request
     else:
         current_car = get_object_or_404(Car, id=car_id)
 

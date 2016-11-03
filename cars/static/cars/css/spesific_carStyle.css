@@ -15,6 +15,9 @@ p {
   .navbar-static-top a {
     color: white; }
 
+.navbar-static-top a {
+  color: white; }
+
 #car_container {
   padding-top: 40px; }
 
@@ -35,6 +38,14 @@ p {
 #button_box {
   padding-top: 20px;
   padding-bottom: 20px; }
+
+.btn {
+  background-color: #143840;
+  color: white; }
+
+.btn:hover {
+  background-color: #143840;
+  color: #D96523; }
 
 #reservation_box {
   background-color: #143840;

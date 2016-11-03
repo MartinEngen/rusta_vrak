@@ -33,6 +33,9 @@ def index(request):
             'message': message
         }
 
+        del request.session['search_car_error_message']
+
+
     else:
         context = {
             'error': False,

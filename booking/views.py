@@ -21,6 +21,7 @@ from mail_functions import send_mail_receipt
 from reportlab.pdfgen import canvas
 import datetime
 
+import logging
 
 
 def booking_schema(request, car_id):
@@ -56,23 +57,39 @@ def booking_schema(request, car_id):
             customer.num_orders += 1
             customer.save()
 
+            new_reservation, updated_reservation = Reservation.objects.update_or_create(car_id=car_id,
+                                                                   dates_reserved_id=current_booking_id,
+                                                                   customer=customer,
+                                                                   defaults={
+                                                                       'misc_info': misc_info,
+                                                                       'status': 2, #Status 2 is defined as approved
+                                                                   })
 
+
+
+            if updated_reservation:
+                logging.warning("User has tried to update an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
+
+
+            """
             new_form = Reservation(car_id=car_id, dates_reserved_id=current_booking_id,
                                    customer=customer, misc_info=misc_info, status=2)
 
             new_form.save()
+            """
+            print("----------------New Reservation Saved---------------------")
 
             number_of_days = (current_booking.final_date - current_booking.initial_date).days
 
             # Run the function that handles the sending of receipt.
-            send_mail_receipt(new_form, current_booking, current_booking_id, current_car)
+            send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car)
 
             price = price_calculator(number_of_days, current_car.price)
             context = {
                 'car': current_car,
                 'booking': current_booking,
                 'customer': customer,
-                'filled_form': new_form,
+                'filled_form': new_reservation,
                 'price': price,
             }
 
