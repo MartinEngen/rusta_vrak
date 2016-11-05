@@ -54,7 +54,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
-    'polls',
     'frontpage',
     'cars',
     'booking',

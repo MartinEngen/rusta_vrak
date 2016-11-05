@@ -68,15 +68,10 @@ def booking_schema(request, car_id):
 
 
             if updated_reservation:
-                logging.warning("User has tried to update an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
+                logging.warning("User has updated an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
 
 
-            """
-            new_form = Reservation(car_id=car_id, dates_reserved_id=current_booking_id,
-                                   customer=customer, misc_info=misc_info, status=2)
 
-            new_form.save()
-            """
             print("----------------New Reservation Saved---------------------")
 
             number_of_days = (current_booking.final_date - current_booking.initial_date).days
@@ -102,6 +97,7 @@ def booking_schema(request, car_id):
         else:
             return redirect(index)
 
+    # GET request.
     else:
         car = get_object_or_404(Car, id=car_id)
         booking = get_object_or_404(Dates_Reserved, id=current_booking_id)

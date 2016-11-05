@@ -1,6 +1,0 @@
-Modern Classic
-$color1: #143840
-$color2: #5C6B63
-$color3: #A69E89
-$color4: #E0C297
-$color5: #D96523

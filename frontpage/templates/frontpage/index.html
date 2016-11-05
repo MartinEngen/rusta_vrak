@@ -15,8 +15,8 @@
 <div class="container">
     <div class="row">
       <div class="col-md-12" id="welcome">
-          <h1>Velkommen til Rusta Vrak Bilutleige</h1>
-          <h3>Du finner oss i Førde</h3>
+          <h1>Rusta Vrak Bilutleige</h1>
+          <h3>Du finn oss i Førde og Jølster</h3>
 
       </div>
     </div>
@@ -30,7 +30,7 @@
             <form method="post" action="bil/" >{% csrf_token %}
                 <div class="row">
                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label for="datepickerStart" class="control-label date-label">Ønsket hentes</label>
+                        <label for="datepickerStart" class="control-label date-label">Ønsket hentast</label>
                         <input type="text" value='' class="form-control datefield" id="datepickerStart" name="initial_date">
                         <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                     </div>
@@ -42,9 +42,6 @@
                 </div>
 
                 <h3>Biltype</h3>
-
-
-
                 <div class="checkbox">
                   <label><input type="checkbox" name="personal" id="personal">Personbil</label>
                 </div>
@@ -110,7 +107,7 @@
                     <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Langtidsleie</h2>
-                <p>For å leie en bil over 30 dager, ber vi deg ta <a href="/Kontakt/">Kontakt</a></p>
+                <p>For å leiga ein bil over 30 dagar, ber vi deg ta <a href="/Kontakt/">Kontakt</a></p>
             </div>
             <div class="col-md-4">
                 <span class="fa-stack fa-5x">
@@ -118,15 +115,15 @@
                     <i class="fa fa-road fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Kjørelengde</h2>
-                <p>Per døgn i leien inneholder 50 km. <br> Utover dette koster det 1kr per km</p>
+                <p>Utleia inkluderer 50 km per dag i leigeperioden</p>
             </div>
             <div class="col-md-4">
                 <span class="fa-stack fa-5x">
                     <i class="fa fa-circle fa-stack-2x text-primary"></i>
                     <i class="fa fa-hourglass-end fa-stack-1x fa-inverse"></i>
                 </span>
-                <h2 class="service-heading">Jo lengre, jo billigere</h2>
-                <p>Ved lengre leieperider vil prisen synke</p>
+                <h2 class="service-heading">Jo lengre, jo billegare</h2>
+                <p>Ved større leigeperiodar vil prisen per dag verta mindre</p>
             </div>
 
 

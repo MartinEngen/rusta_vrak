@@ -2,19 +2,15 @@
 
 
 from django.shortcuts import render, HttpResponse
-
-
 from django.shortcuts import get_object_or_404, redirect
 
 
-from .forms import BookingForm
-
+from .forms import BookingForm, FilterForm
 from .models import Car
 from booking.models import Dates_Reserved, Reservation
 
 import logging
 import datetime
-
 
 from booking.data_functions import generate_calendar_data
 from frontpage.views import index
@@ -25,54 +21,139 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-#Uniqueness
-import hashlib
-
 # TODO: Genereal Code Cleanup. This may entail moving some functions to new apps / files.
 
 def car_list(request):
-    car_type = request.GET.get('type')
+    # TODO: Make the search queries based on posted from the car_list page
+    if request.method == 'POST':
 
-    if car_type:
-        types = car_type.split(',')
-        types = map(int, types)
+        filtered_data = FilterForm(request.POST)
+
+        if filtered_data.is_valid():
+            print(filtered_data)
+
+            car_types = []
+            # Car type
+            if filtered_data.cleaned_data['personal']:
+                car_types.append(1)
+
+
+            if filtered_data.cleaned_data['van']:
+                car_types.append(2)
+
+
+            if filtered_data.cleaned_data['combi_car']:
+                car_types.append(3)
+
+            if not car_types:
+                car_types = [1, 2, 3]
+
+            print(car_types)
+
+            # 0 is All seats
+            seats = []
+            #Spesific number of seats
+            if filtered_data.cleaned_data['seats'] > 0:
+                #seats = filtered_data.cleaned_data['seats']
+                seats.append(filtered_data.cleaned_data['seats'])
+            else:
+                # All seat combo's
+                seats = [1,2,3,4,5,6,7,8,9,10,11,12]
+
+            print(seats)
+
+            transmission_types = []
+            # Transmission
+            if filtered_data.cleaned_data['transmission_auto']:
+                transmission_types.append('Automatgir')
+
+            if filtered_data.cleaned_data['transmission_manual']:
+                transmission_types.append('Manuell')
+
+
+            if not transmission_types:
+                transmission_types = ['Manuell', 'Automatgir']
+
+            print(filtered_data.cleaned_data['transmission_auto'])
+            print(transmission_types)
+
+            # Fuel
+            fuel_types = []
+            if filtered_data.cleaned_data['fuel_diesel']:
+                fuel_types.append('Diesel')
+                pass
+            if filtered_data.cleaned_data['fuel_gasoline']:
+                fuel_types.append('Bensin')
+                pass
+
+
+            if not fuel_types:
+                fuel_types = ['Diesel', 'Bensin']
+
+
+
+            print(fuel_types)
+            cars = Car.objects.filter(car_type__in=car_types).filter(transmission__in=transmission_types).filter(fuel_type__in=fuel_types).filter(seats__in=seats)
+
+            print("Valid ")
+            context = {
+                'cars': cars
+            }
+            return render(request, 'cars/car_list.html', context)
+            #return redirect('/')
+
+
+
+        # Not valid POST request, redirect the user back to the start.
+        else:
+            return redirect('/')
+
+
+
     else:
-        types = []
+
+        car_type = request.GET.get('type')
+
+        if car_type:
+            types = car_type.split(',')
+            types = map(int, types)
+        else:
+            types = []
 
 
-    categories = ''
-    if 1 in types:
-        categories += 'Personbiler, '
-    if 2 in types:
-        categories += 'Varebiler, '
-    if 3 in types:
-        categories += 'Kombinertbiler, '
+        categories = ''
+        if 1 in types:
+            categories += 'Personbiler, '
+        if 2 in types:
+            categories += 'Varebiler, '
+        if 3 in types:
+            categories += 'Kombinertbiler, '
 
-    categories = categories.strip(", ")
-
-
-    # IF not any type(s) given, show the user them all.
-    if not types:
-        types = [1, 2, 3]
-        categories = 'Personbiler, Varebiler og Kombinertbiler'
+        categories = categories.strip(", ")
 
 
-
-
-    cars = Car.objects.filter(car_type__in=types)
-
-    for car in cars:
-        print (car.extra_accessories)
-    context = {
-        'categories': categories,
-        'cars': cars,
-    }
-
-    return render(request, 'cars/car_list.html', context)
+        # IF not any type(s) given, show the user them all.
+        if not types:
+            types = [1, 2, 3]
+            categories = 'Personbiler, Varebiler og Kombinertbiler'
 
 
 
 
+        cars = Car.objects.filter(car_type__in=types)
+
+        for car in cars:
+            print (car.extra_accessories)
+        context = {
+            'categories': categories,
+            'cars': cars,
+        }
+
+        return render(request, 'cars/car_list.html', context)
+
+
+
+# Validate dates before reservation.
 def validate_date(initial_date, final_date):
 
     message = ''

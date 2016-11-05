@@ -17,14 +17,9 @@ import datetime
 
 def index(request):
 
-    """
-    context = {
-        'personal_cars': '',
-        'van': '',
-        'combi_car': '',
-    }
-    """
 
+    # Check if the session has an error, based on last search.
+    # If the error exists, use give it to the template and delete it from the session.
     if 'search_car_error_message' in request.session:
         message = request.session['search_car_error_message']
         print(message)
@@ -95,13 +90,13 @@ def search_function(request):
 
                 return redirect(index)
 
-            print("There are cars!!")
+
+
             dates = {
                 'initial_date': inital_date,
                 'final_date': final_date
             }
 
-            print(inital_date)
             context = {
                 'cars': cars,
                 'initial_date': inital_date,
@@ -124,32 +119,3 @@ def search_function(request):
 
     else:
         return redirect('/')
-
-
-
-def validate_date(initial_date, final_date):
-
-    message = ""
-    error = False
-
-    if (final_date < initial_date):
-        logging.info("Final date is before initial date")
-        message = "Leveringsdagen er satt før Hente dagen, prøv på nytt."
-        error = True
-
-
-    # Less than 1 day searched, abort.
-    if (final_date - initial_date).days < 1:
-        logging.error("Less than 1 day, stop")
-        message = "For liten leieperiode."
-        error = True
-
-
-    # User tries to search from before today, this is illegal.
-    if initial_date < datetime.date.today():
-        logging.error("Error, not able to search back in time.")
-        message = "Kan ikke søke på dato tilbake i tid."
-        error = True
-
-
-    return True
