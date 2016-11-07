@@ -68,7 +68,11 @@
 
                     </div>
 
-
+                    {% if dates %}
+                    <p>Biler ledig fra : {{ initial_date |date:'d.m.y'}} til {{ dates.final_date }} </p>
+                    <input type="text" value="{{ dates.initial_date|date:'d.m.y' }}" id="datepickerStart" name="initial_date">
+                    <input type="text" value="{{ dates.final_date|date:'d.m.y' }}" id="datepickerFinish" name="final_date">
+                    {% endif %}
 
                     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Filter</button>
                 </form>

@@ -1,6 +1,3 @@
-.navbar-static-top a {
-  color: white; }
-
 .car_tab {
   border: solid;
   border-color: #143840;
@@ -36,8 +33,5 @@
   width: 360px;
   height: 240px;
   border: none; }
-
-.container {
-  padding-bottom: 30px; }
 
 /*# sourceMappingURL=car_list_style.css.map */
