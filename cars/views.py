@@ -9,6 +9,8 @@ from .forms import BookingForm, FilterForm
 from .models import Car
 from booking.models import Dates_Reserved, Reservation
 
+from validation_functions import validate_date, find_available_cars
+
 import logging
 import datetime
 
@@ -30,8 +32,16 @@ def car_list(request):
 
         if filtered_data.is_valid():
             # Initialze variables
+
+            #Searching cars
+            print("Searching for cars..")
+
+
             dates = False
             categories = ''
+            validate = {
+                'error': False
+            }
 
             car_types = []
             # Car type
@@ -88,18 +98,18 @@ def car_list(request):
                 fuel_types = ['Diesel', 'Bensin']
 
 
-            print(fuel_types)
+
             cars = Car.objects.filter(car_type__in=car_types).filter(transmission__in=transmission_types).filter(fuel_type__in=fuel_types).filter(seats__in=seats)
-
-
-
 
             # Date Handler
             if filtered_data.cleaned_data['initial_date'] and filtered_data.cleaned_data['final_date']:
                 initial_date = filtered_data.cleaned_data['initial_date']
                 final_date = filtered_data.cleaned_data['final_date']
 
-                if validate_date(initial_date, final_date):
+
+                validate = validate_date(initial_date, final_date)
+
+                if not validate['error']:
                     cars = find_available_cars(initial_date, final_date, cars)
 
                     dates = {
@@ -109,7 +119,10 @@ def car_list(request):
 
                 else:
                     #User Entered non valid dates.
-                    pass
+                    print("Non Valid dates found, do redirect home. , %s" % validate['message'])
+                    request.session['search_car_error_message'] = validate['message']
+
+                    return redirect('/')
 
 
 
@@ -141,7 +154,7 @@ def car_list(request):
         else:
             types = []
 
-
+        # Initialize categories as an empty string.
         categories = ''
         if 1 in types:
             categories += 'Personbiler, '
@@ -150,6 +163,7 @@ def car_list(request):
         if 3 in types:
             categories += 'Kombinertbiler, '
 
+        # Remove the last comma and space.
         categories = categories.strip(", ")
 
 
@@ -326,65 +340,6 @@ def booking_receipt(request, booking_id, registration_id):
 
 
 
-# Validate dates before reservation.
-def validate_date(initial_date, final_date):
-
-    message = ''
-    error = False
-
-
-      # Less than 1 day booked, abort.
-    if (final_date - initial_date).days < 1:
-        logging.error("Less than 1 day, stop")
-        message = "For liten leieperiode."
-        error = True
-
-
-    # Final date before the inital date.
-    if (final_date < initial_date):
-        logging.info("Final date is before initial date")
-        message = "Leveringsdagen er satt før Hente dagen, gjør om og prøv på nytt."
-        error = True
-        # calendar_data = generate_calendar_data(finalized_bookings)
-
-
-        # More than 30 days booked, abort.
-    if (final_date - initial_date).days > 30:
-        logging.error("Logging more than 30 days, Stop.")
-        message = "Kan ikke reservere mer enn 30 dager i gangen. Ta kontakt for en større reservasjon."
-        error = True
-
-
-        # User tries to book from before today, this is illegal.
-    if initial_date < datetime.date.today():
-        logging.error("Error, not able to book.")
-        message = "Kan ikke registerer en reservasjon tilbake i tid."
-        error = True
-
-
-    context = {
-        'message': message,
-        'error': error
-    }
-
-    return context
-
-# Find all avaiable cars between two dates, from a list of cars.
-def find_available_cars(inital_date, final_date, cars):
-    # All reservations of the cars
-    car_reservations = Reservation.objects.filter(car__in=cars)
-
-    #Overlapping by final date
-    final_date_booking_overlap = car_reservations.filter(dates_reserved__final_date__range=(inital_date, final_date))
-
-    # Overlapping by inital date
-    initial_date_booking_overlap = car_reservations.filter(dates_reserved__initial_date__range=(inital_date, final_date))
-
-    # Remove the cars with overlapping dates
-    available_cars = cars.exclude(reserved_car__booking__car__in=final_date_booking_overlap.values("car")).exclude(
-        reserved_car__booking__car__in=initial_date_booking_overlap.values("car"))
-
-    return available_cars
 
 
 def image_generator(car):

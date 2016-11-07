@@ -95,7 +95,25 @@ def booking_schema(request, car_id):
 
         # User posted a form which was not valid.
         else:
-            return redirect(index)
+            error_message = "Feil med gitt informasjon, prøv igjen. "
+
+            form = booking_scheme_form
+            car = get_object_or_404(Car, id=car_id)
+            booking = get_object_or_404(Dates_Reserved, id=current_booking_id)
+
+            number_of_days = (booking.final_date - booking.initial_date).days
+            price = price_calculator(number_of_days, car.price)
+
+            context = {
+                'car': car,
+                'booking': booking,
+                'days': number_of_days,
+                'price': price,
+                'form': form,
+                'error_message': error_message,
+            }
+
+            return render(request, 'booking/booking_form.html', context)
 
     # GET request.
     else:

@@ -21,61 +21,60 @@
         </div>
 
         <div class="col-lg-12 col-md-12">
-                <a href="#demo" data-toggle="collapse" style="color: white; font-size: large">Instillinger Søk</a>
+                <a href="#filter" data-toggle="collapse" style="color: white; font-size: large">Instillinger Søk</a>
 
-                <div id="demo" class="collapse">
-                <form method="post" action="" >{% csrf_token %}
-                    <div class="col-md-4">
-                    <h3>Biltype</h3>
-                        <div class="checkbox">
-                          <label><input type="checkbox" name="personal" id="personal">Personbil</label>
+                <div id="filter" class="collapse row">
+                    <form method="post" action="" >{% csrf_token %}
+                        <div class="col-md-2">
+                            <div class="checkbox">
+                              <label><input type="checkbox" name="personal" id="personal">Personbil</label>
+                            </div>
+                            <div class="checkbox">
+                              <label><input type="checkbox" name="van" id="van">Varebil</label>
+                            </div>
+                            <div class="checkbox">
+                              <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
+                            </div>
+
                         </div>
-                        <div class="checkbox">
-                          <label><input type="checkbox" name="van" id="van">Varebil</label>
+                        <div class="col-md-2">
+
+                        <label for="seats">Antall Seter</label>
+                        <select id="seats" name="seats" style="color: black">
+                          <option value="0">Alle</option>
+                          <option value="3">2</option>
+                          <option value="3">3</option>
+                          <option value="5">5</option>
+                          <option value="7">7</option>
+                          <option value="9">9</option>
+                        </select>
+
+                        <h3>Drivstoff</h3>
+                        <div class="checkbox-inline">
+                            <label class="checkbox-inline"><input type="checkbox" name="fuel_gasoline" id="fuel_gasoline">Bensin</label>
                         </div>
-                        <div class="checkbox">
-                          <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
+                        <div class="checkbox-inline">
+                            <label class="checkbox-inline"><input type="checkbox" id="fuel_diesel" name="fuel_diesel">Diesel</label>
                         </div>
 
-                    </div>
-                    <div class="col-md-4">
-
-                    <label for="seats">Antall Seter</label>
-                    <select id="seats" name="seats" style="color: black">
-                      <option value="0">Alle</option>
-                      <option value="3">2</option>
-                      <option value="3">3</option>
-                      <option value="5">5</option>
-                      <option value="7">7</option>
-                      <option value="9">9</option>
-                    </select>
-
-                    <h3>Drivstoff</h3>
-                    <div class="checkbox-inline">
-                        <label class="checkbox-inline"><input type="checkbox" name="fuel_gasoline" id="fuel_gasoline">Bensin</label>
-                    </div>
-                    <div class="checkbox-inline">
-                        <label class="checkbox-inline"><input type="checkbox" id="fuel_diesel" name="fuel_diesel">Diesel</label>
-                    </div>
 
 
+                        </div>
+                        <div class="col-md-4">
 
-                    <h3>Gir</h3>
-                    <label class="checkbox-inline"><input type="checkbox" id="transmission_manual" name="transmission_manual">Manuell</label>
-                    <label class="checkbox-inline"><input type="checkbox" id="transmission_auto" name="transmission_auto">Automat</label>
-                    </div>
-                    <div class="col-md-4">
+                        <h3>Gir</h3>
+                        <label class="checkbox-inline"><input type="checkbox" id="transmission_manual" name="transmission_manual">Manuell</label>
+                        <label class="checkbox-inline"><input type="checkbox" id="transmission_auto" name="transmission_auto">Automat</label>
+                        </div>
 
-                    </div>
+                        {% if dates %}
+                        <p>Biler ledig fra : {{ initial_date |date:'d.m.y'}} til {{ dates.final_date }} </p>
+                        <input type="text" value="{{ dates.initial_date|date:'d.m.y' }}" id="datepickerStart" name="initial_date">
+                        <input type="text" value="{{ dates.final_date|date:'d.m.y' }}" id="datepickerFinish" name="final_date">
+                        {% endif %}
 
-                    {% if dates %}
-                    <p>Biler ledig fra : {{ initial_date |date:'d.m.y'}} til {{ dates.final_date }} </p>
-                    <input type="text" value="{{ dates.initial_date|date:'d.m.y' }}" id="datepickerStart" name="initial_date">
-                    <input type="text" value="{{ dates.final_date|date:'d.m.y' }}" id="datepickerFinish" name="final_date">
-                    {% endif %}
-
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Filter</button>
-                </form>
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Filter</button>
+                    </form>
                 <!-- End Collapse -->
                  </div>
         </div>
