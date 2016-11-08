@@ -31,4 +31,7 @@ body {
     .footer li a {
       color: white; }
 
+.navbar-toggle .icon-bar {
+  background-color: #fff; }
+
 /*# sourceMappingURL=baseStyle.css.map */

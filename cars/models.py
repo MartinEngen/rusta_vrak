@@ -29,6 +29,8 @@ class Car(models.Model):
 
     extra_accessories = models.CharField('Ekstra informasjon, splitt med komma (",")', blank=True, null=True, max_length=255)
 
+    license_plate = models.CharField('Skiltnummer', blank=True, null=True, max_length=10, unique=True)
+
 
     def __str__(self):
         return str(self.id) + " " + self.brand + " " + self.model

@@ -143,9 +143,12 @@ def download_pdf(request, reservation_id):
     booking = get_object_or_404(Reservation, id=reservation_id)
 
     booking_nr = str(booking.id)
-    initial_date = str(booking.dates_reserved.initial_date)
-    final_date = str(booking.dates_reserved.final_date)
+    initial_date = booking.dates_reserved.initial_date.strftime('%d.%m.%Y')
+    final_date = booking.dates_reserved.final_date.strftime('%d.%m.%Y')
     bil = str(booking.car.brand.encode('utf8') + ' ' + booking.car.model.encode('utf8'))
+    car_fuel = str(booking.car.fuel_type.encode('utf8'))
+    car_seats = str(booking.car.seats)
+    car_transmission = str(booking.car.transmission.encode('utf8'))
     days = (booking.dates_reserved.final_date - booking.dates_reserved.initial_date).days
     calculated_price = price_calculator(days, booking.car.price)
     pris = str(calculated_price)
@@ -160,41 +163,74 @@ def download_pdf(request, reservation_id):
     p = canvas.Canvas(response)
     p.setLineWidth(.5)
     p.setFont('Helvetica', 24)
-    p.drawString(100, 750, 'Rusta Vrak Bilutleige')
+    p.drawString(60, 780, 'Rusta Vrak Bilutleige')
+    p.drawString(60, 750, 'Ordre Bekreftelse')
     #p.setLineWidth(.3)
     #p.setFont('Helvetica', 18)
     #p.drawString(100, 720, 'Bestilling')
     #p.line(20, 710, 580, 710)
     p.setLineWidth(.5)
 
+    p.line(20, 705, 580, 705)
     p.setFont('Helvetica', 16)
-    p.drawString(100, 700, 'Reservasjonen')
+    p.drawString(60, 690, 'Reservasjonen')
     p.setFont('Helvetica', 13)
-    p.drawString(90, 675, 'Nr')
+    p.drawString(80, 675, 'Reservasjon Nr')
     p.setLineWidth(.3)
     p.drawString(350, 675, booking_nr)
-    p.drawString(90, 655, 'Hentes: ')
+    p.drawString(80, 655, 'Hente Dato: ')
     p.drawString(350, 655, initial_date)
+    p.drawString(80, 640, 'Leveres Dato:')
+    p.drawString(350, 640, final_date)
 
-    p.drawString(90, 630, 'Leveres: ')
-    p.drawString(350, 630, final_date)
+    p.line(20, 620, 580, 620)
 
-    p.line(20, 600, 580, 600)
-    p.drawString(100, 570, 'Bil:..')
-    p.drawString(350, 570, bil)
+    p.setFont('Helvetica', 16)
+    p.drawString(60, 600, 'Bilen')
+    p.setFont('Helvetica', 13)
+    p.drawString(80, 585, bil)
+    #p.setLineWidth(.3)
+    p.drawString(350, 570, car_fuel)
+    p.drawString(80, 570, 'Drivstoff')
 
-    p.drawString(100, 550, 'Pris')
-    p.drawString(350, 550, pris)
+    p.drawString(350, 555, car_seats)
+    p.drawString(80, 555, 'Antall Seter')
+
+
+    p.drawString(80, 540, 'Girkasse')
+    p.drawString(350, 540, car_transmission)
+
+
+
+
 
     p.line(20, 530, 580, 530)
-    p.drawString(100, 510, 'Kunde')
-    p.drawString(350, 510, kunde)
+    p.setFont('Helvetica', 16)
+    p.drawString(60, 500, 'Kunde Opplysninger')
 
-    p.drawString(100, 480, 'Epost')
-    p.drawString(350, 480, epost)
+    p.setFont('Helvetica', 13)
+    p.drawString(80, 480, 'Navn')
+    p.drawString(350, 480, kunde)
 
-    p.drawString(100, 450, 'Telefon Nummer')
+    p.drawString(80, 465, 'Epost')
+    p.drawString(350, 465, epost)
+
+    p.drawString(80, 450, 'Telefon Nummer')
     p.drawString(350, 450, tlf)
+
+
+
+
+    p.line(20, 445, 580, 445)
+    p.setFont('Helvetica', 16)
+
+
+
+    p.drawString(60, 75, 'Kontakt Informasjon')
+    p.setFont('Helvetica', 14)
+    p.drawString(80, 60, 'Epost adresse: rusta.vrak@gmail.com')
+    p.drawString(80, 45, 'Telefon +47 400 49 489')
+
 
 
     p.showPage()

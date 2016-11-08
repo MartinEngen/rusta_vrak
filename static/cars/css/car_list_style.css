@@ -34,4 +34,11 @@
   height: 240px;
   border: none; }
 
+#filter {
+  border: 2px solid black;
+  border-radius: 3px;
+  background-color: #A69E89; }
+  #filter label {
+    font-size: 200%; }
+
 /*# sourceMappingURL=car_list_style.css.map */

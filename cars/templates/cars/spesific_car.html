@@ -112,7 +112,9 @@
 
             <div class="col-md-6">
                 <h1><b>Legg til en ny reservasjon</b></h1>
-                <form method="post" >{% csrf_token %}
+                <form method="post" class="row" >{% csrf_token %}
+
+
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                             <label for="datepickerStart" class="control-label date-label">Hentes</label>
                             <input type="text" value='' class="form-control datefield" id="datepickerStart" name="initial_date">
@@ -124,9 +126,9 @@
                             <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                         </div>
 
-                <div class="col-md-offset-6 col-md-7" id="button_box">
-                    <button type="submit" class="btn btn-lg">Gå Videre</button>
-                </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="button_box">
+                            <button type="submit" class="btn btn-lg">Gå Videre</button>
+                        </div>
 
 
                     {% if errors %}

@@ -14,6 +14,8 @@ class CarAdmin(admin.ModelAdmin):
 
     upper_case_name.short_description = 'Name'
 
+    search_fields = ['brand', 'model', 'license_plate']
+
 
 
 admin.site.register(models.Car, CarAdmin)

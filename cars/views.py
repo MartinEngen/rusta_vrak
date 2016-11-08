@@ -39,6 +39,7 @@ def car_list(request):
 
             dates = False
             categories = ''
+            searched_categories = ''
             validate = {
                 'error': False
             }
@@ -71,16 +72,18 @@ def car_list(request):
                 seats.append(filtered_data.cleaned_data['seats'])
             else:
                 # All seat combo's
-                seats = [1,2,3,4,5,6,7,8,9,10,11,12]
+                seats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 
             transmission_types = []
             # Transmission
             if filtered_data.cleaned_data['transmission_auto']:
                 transmission_types.append('Automatgir')
+                searched_categories += 'Automat, '
 
             if filtered_data.cleaned_data['transmission_manual']:
                 transmission_types.append('Manuell')
+                searched_categories += 'Manuell, '
 
             if not transmission_types:
                 transmission_types = ['Manuell', 'Automatgir']
@@ -90,10 +93,12 @@ def car_list(request):
             fuel_types = []
             if filtered_data.cleaned_data['fuel_diesel']:
                 fuel_types.append('Diesel')
-                pass
+                searched_categories += 'Diesel, '
+
             if filtered_data.cleaned_data['fuel_gasoline']:
                 fuel_types.append('Bensin')
-                pass
+                searched_categories += 'Bensin, '
+
             if not fuel_types:
                 fuel_types = ['Diesel', 'Bensin']
 
@@ -106,9 +111,9 @@ def car_list(request):
                 initial_date = filtered_data.cleaned_data['initial_date']
                 final_date = filtered_data.cleaned_data['final_date']
 
-
                 validate = validate_date(initial_date, final_date)
 
+                # If the validate does not return an error.
                 if not validate['error']:
                     cars = find_available_cars(initial_date, final_date, cars)
 
@@ -127,11 +132,16 @@ def car_list(request):
 
 
 
+            # No Cars has been found on the given terms.
+            if not cars:
+                # TODO: Redirect and popup when this happens.
+                pass
 
             context = {
                 'cars': cars,
                 'dates': dates,
-                'categories':categories,
+                'categories': categories,
+                'searched_categories': searched_categories
             }
             return render(request, 'cars/car_list.html', context)
 
@@ -139,7 +149,8 @@ def car_list(request):
 
         # Not valid POST request, redirect the user back to the start.
         else:
-            print("Non valid post Request")
+            request.session['search_car_error_message'] = "Feil oppstod ved henting av biler. Prøv igjen"
+
             return redirect('/')
 
 

@@ -16,7 +16,7 @@
         <div class="col-lg-6 col-md-6">
             <h3>Kategorier: {{ categories }}</h3>
             {% if dates %}
-            <p>Biler ledig fra : {{ initial_date |date:'d.m.y'}} til {{ dates.final_date }} </p>
+            <h4>Viser ledige biler fra : {{ dates.initial_date }} til  {{ dates.final_date }} </h4>
             {% endif %}
         </div>
 
@@ -26,35 +26,28 @@
                 <div id="filter" class="collapse row">
                     <form method="post" action="" >{% csrf_token %}
                         <div class="col-md-2">
+                            <h3>Biltype</h3>
                             <div class="checkbox">
-                              <label><input type="checkbox" name="personal" id="personal">Personbil</label>
+                              <label><input type="checkbox" name="personal" id="personal" {% if "Personbil" in categories %} checked {% endif %}>Personbil</label>
                             </div>
                             <div class="checkbox">
-                              <label><input type="checkbox" name="van" id="van">Varebil</label>
+                              <label><input type="checkbox" name="van" id="van" {% if "Varebil" in categories %} checked {% endif %}>Varebil</label>
                             </div>
                             <div class="checkbox">
-                              <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
+                              <label><input type="checkbox" name="combi_car" id="combi_car" {% if "Kombinert" in categories %} checked {% endif %}>Kombinertbil</label>
                             </div>
 
                         </div>
                         <div class="col-md-2">
 
-                        <label for="seats">Antall Seter</label>
-                        <select id="seats" name="seats" style="color: black">
-                          <option value="0">Alle</option>
-                          <option value="3">2</option>
-                          <option value="3">3</option>
-                          <option value="5">5</option>
-                          <option value="7">7</option>
-                          <option value="9">9</option>
-                        </select>
+
 
                         <h3>Drivstoff</h3>
-                        <div class="checkbox-inline">
-                            <label class="checkbox-inline"><input type="checkbox" name="fuel_gasoline" id="fuel_gasoline">Bensin</label>
+                        <div class="checkbox">
+                            <label class="checkbox-inline"><input type="checkbox" name="fuel_gasoline" id="fuel_gasoline" {% if "Bensin" in searched_categories %} checked {% endif %}>Bensin</label>
                         </div>
-                        <div class="checkbox-inline">
-                            <label class="checkbox-inline"><input type="checkbox" id="fuel_diesel" name="fuel_diesel">Diesel</label>
+                        <div class="checkbox">
+                            <label class="checkbox-inline"><input type="checkbox" id="fuel_diesel" name="fuel_diesel" {% if "Diesel" in searched_categories %} checked {% endif %}>Diesel</label>
                         </div>
 
 
@@ -63,14 +56,28 @@
                         <div class="col-md-4">
 
                         <h3>Gir</h3>
-                        <label class="checkbox-inline"><input type="checkbox" id="transmission_manual" name="transmission_manual">Manuell</label>
-                        <label class="checkbox-inline"><input type="checkbox" id="transmission_auto" name="transmission_auto">Automat</label>
+                        <label class="checkbox"><input type="checkbox" id="transmission_manual" name="transmission_manual" {% if "Manuell" in searched_categories %} checked {% endif %}>Manuell</label>
+                        <label class="checkbox"><input type="checkbox" id="transmission_auto" name="transmission_auto" {% if "Automat" in searched_categories %} checked {% endif %}>Automat</label>
+
+
+
+
+                        <select id="seats" name="seats" style="color: black">
+                          <option value="0">Alle</option>
+                          <option value="3">2</option>
+                          <option value="3">3</option>
+                          <option value="5">5</option>
+                          <option value="7">7</option>
+                          <option value="9">9</option>
+                        </select>
+                         <label for="seats">Antall Seter</label>
                         </div>
 
+
+
                         {% if dates %}
-                        <p>Biler ledig fra : {{ initial_date |date:'d.m.y'}} til {{ dates.final_date }} </p>
-                        <input type="text" value="{{ dates.initial_date|date:'d.m.y' }}" id="datepickerStart" name="initial_date">
-                        <input type="text" value="{{ dates.final_date|date:'d.m.y' }}" id="datepickerFinish" name="final_date">
+                        <input type="text" value="{{ dates.initial_date|date:'d.m.y' }}" id="datepickerStart" name="initial_date" hidden>
+                        <input type="text" value="{{ dates.final_date|date:'d.m.y' }}" id="datepickerFinish" name="final_date" hidden>
                         {% endif %}
 
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Filter</button>
@@ -115,7 +122,10 @@
 
     </div>
     {% else %}
-        <h1>Fant ingen biler.</h1>
+        <h1>Ditt søk fant ingen biler i vår database. </h1>
+
+
+    <input type="button" class="btn btn-default" value="Tilbake" onClick="javascript:history.go(-1);">
     {% endif %}
 </div>
 
