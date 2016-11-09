@@ -20,19 +20,23 @@
                 <div class="form-group">
                     <label for="email">Epost adresse</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="Epost">
+                        {{ form.email.errors }}
                 </div>
                 <div class="form-group">
                     <label for="first_name">Fornavn</label>
                     <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Fornavn">
+                        {{ form.first_name.errors }}
                 </div>
                 <div class="form-group">
                     <label for="last_name">Etternavn</label>
                     <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Fornavn">
+                        {{ form.last_name.errors }}
                 </div>
 
                 <div class="form-group">
                     <label for="phone_number">Telefonnummer</label>
                     <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Telefonnummer">
+                     {{ form.phone_number.errors }}
                 </div>
 
 

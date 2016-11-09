@@ -16,8 +16,10 @@ body {
 #push {
   height: 100px; }
 
-.navbar-static-top {
+.navbar {
   background-color: #143840; }
+  .navbar a {
+    color: white; }
 
 .footer {
   background-color: dimgrey;
@@ -28,5 +30,8 @@ body {
     font-size: larger; }
     .footer li a {
       color: white; }
+
+.navbar-toggle .icon-bar {
+  background-color: #fff; }
 
 /*# sourceMappingURL=baseStyle.css.map */

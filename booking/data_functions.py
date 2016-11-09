@@ -97,11 +97,33 @@ def generate_pdf(customer, filled_form):
 
 
 def price_calculator(days, start_price):
-    price = 250
+
+    def round_function(x, base=5):
+        return int(base * round(float(x) / base))
+
+    discount = 1
+
+    if 5 <= days <= 9:
+        discount = 0.875
+    elif 10 <= days <= 14:
+        discount = 0.75
+
+    elif 15 <= days <= 19:
+        discount = 0.625
+
+    elif 20 <= days <= 24:
+        discount = 0.40
+
+    elif 25 <= days <= 29:
+        discount = 0.35
+
+    elif days == 30:
+        discount = 0.333
 
 
-    if days >= 30:
-        price = 2500
-
+    print("Discount: " + str(discount))
+    discounted_price = start_price*discount
+    price = days * discounted_price
+    final_price = round_function(price)
     # TODO: Add functionality to set correct number after longer rent discount
-    return start_price*days
+    return final_price
