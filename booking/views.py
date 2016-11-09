@@ -29,11 +29,11 @@ def booking_schema(request, car_id):
     if 'current_booking_id' in request.session:
         current_booking_id = request.session['current_booking_id']
     else:
-        # Session has no booking ID, return to frontpage..
+        # Session has no booking ID, return to the frontpage
         return redirect(index)
 
     if request.method == 'POST':
-
+        print("Generete a list")
         booking_scheme_form = BookingRegistrationForm(request.POST)
 
         if booking_scheme_form.is_valid():

@@ -9,7 +9,7 @@ from django.db import models
 # Need to support python 2
 @python_2_unicode_compatible
 class Car(models.Model):
-
+    car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
     #Misc information
     brand = models.CharField('Bilmerke', max_length=70)
     model = models.CharField('Biltype', max_length=70)
@@ -22,12 +22,11 @@ class Car(models.Model):
     gallery_images = models.CharField('Bilder til galleri. Splitt lenkene via komma ","', max_length=255, blank=True, null=True)
 
     transmission = models.CharField('Gir', choices=[('Manuell', 'Manuell'), ('Automatgir', 'Automatgir')], default='Manuell', max_length=15)
-
-    car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
+    extra_accessories = models.CharField('Ekstra informasjon, splitt med komma (",")', blank=True, null=True, max_length=255)
 
     price = models.IntegerField('Dagspris leie', default=250)
 
-    extra_accessories = models.CharField('Ekstra informasjon, splitt med komma (",")', blank=True, null=True, max_length=255)
+    #for_rent = models.BooleanField('Bilen klar for utleie.', default=True)
 
     license_plate = models.CharField('Skiltnummer', blank=True, null=True, max_length=10, unique=True)
 
