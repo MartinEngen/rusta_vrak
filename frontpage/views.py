@@ -34,6 +34,7 @@ def index(request):
         context = {
             'error': False,
         }
+
     return render(request, 'frontpage/index.html', context)
 
 
@@ -120,3 +121,4 @@ def search_function(request):
             return redirect(index)
     else:
         return redirect('/')
+

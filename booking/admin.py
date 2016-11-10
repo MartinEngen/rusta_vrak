@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from . import models
+from .data_functions import price_calculator
 # Register your models here.
 
 class FinalizedBookings(admin.ModelAdmin):
@@ -27,11 +28,11 @@ class FinalizedBookings(admin.ModelAdmin):
 
     # TODO: Use the price funciton once it is completed..
     def pris(self, obj):
-        price = obj.car.price
-        days = (obj.dates_reserved.final_date - obj.dates_reserved.initial_date).days
-        total_price = price * days
 
-        return total_price
+        price = price_calculator((obj.dates_reserved.final_date - obj.dates_reserved.initial_date).days, obj.car.price)
+
+
+        return price
 
     #pris.admin_order_field = 'pris'
     fra_dato.admin_order_field = 'dates_reserved__initial_date'
