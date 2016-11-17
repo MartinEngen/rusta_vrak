@@ -17,7 +17,6 @@
       <div class="col-md-12" id="welcome">
           <h1>Rusta Vrak Bilutleige</h1>
           <p style="font-size: x-large">Du finn oss i Førde og Jølster</p>
-
       </div>
     </div>
 
@@ -39,26 +38,41 @@
                         <input type="text" value='' class="form-control datefield" id="datepickerFinish" name="final_date">
                         <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                     </div>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        {% if error %}
+                            <div class="alert alert-danger" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                {{ message }}</div>
+                        {% endif %}
+                    </div>
+
                 </div>
 
-                <h3>Biltype</h3>
-                <div class="checkbox">
-                  <label><input type="checkbox" name="personal" id="personal">Personbil</label>
+                <div class="row">
+                     <div class="col-md-12 col-sm-12 col-xs-12">
+                        <h3>Biltype</h3>
+                        <div class="checkbox-inline">
+                          <label><input type="checkbox" name="personal" id="personal">Personbil</label>
+                        </div>
+                        <div class="checkbox-inline">
+                          <label><input type="checkbox" name="van" id="van">Varebil</label>
+                        </div>
+                        <div class="checkbox-inline">
+                          <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
+                        </div>
+                     </div>
                 </div>
-                <div class="checkbox">
-                  <label><input type="checkbox" name="van" id="van">Varebil</label>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                        <button type="submit" id="search_button" class="btn btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Søk</button>
+                    </div>
+
                 </div>
-                <div class="checkbox">
-                  <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
-                </div>
 
 
-
-                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Søk</button>
-
-                {% if error %}
-                {{ message }}
-                {% endif %}
             </form>
 
     </div>
@@ -123,7 +137,7 @@
                     <i class="fa fa-hourglass-end fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Jo lengre, jo billegare</h2>
-                <p> Hver 5. Dag i leiga påførar 17.5% ekstra rabatt! </p>
+                <p> Hver 5. Dag i leiga påførar 17.5% ekstra rabatt! <br> Ved 30 dagers leie vil det koste bare 2500kr! </p>
             </div>
 
 
@@ -140,10 +154,14 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1 class="section-heading"><b>Vilkår</b></h1>
-                <h2>Skade</h2>
-                <h3>Eigenandel / gebyr ved skade 10.000 NOK + evt. berging</h3>
+                <div class="policy_box">
+                    <h2>Skade</h2>
+                    <h3>Eigenandel / gebyr ved skade 10.000 NOK + evt. berging</h3>
+                </div>
+                <div class="policy_box">
                 <h2>Full-Full</h2>
                 <h3>Alle bilar vært levert med full tank og skal leverast tilbake med full tank</h3>
+                </div>
             </div>
 
 

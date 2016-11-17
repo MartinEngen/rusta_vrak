@@ -118,6 +118,7 @@ def price_calculator(days, start_price):
         final_price = round_function(start_price*days*discount_calculated)
 
     else:
+        # TODO: Slightly increase the price if the start_price is higher than 250.
         final_price = 2500
 
     return final_price
