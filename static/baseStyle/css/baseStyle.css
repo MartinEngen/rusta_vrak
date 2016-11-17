@@ -17,9 +17,14 @@ body {
   height: 100px; }
 
 .navbar {
-  background-color: #143840; }
+  background-color: #143840;
+  font-size: large; }
   .navbar a {
     color: white; }
+  .navbar a:hover {
+    background-color: #5C6B63; }
+  .navbar li a:hover {
+    background-color: #5C6B63; }
 
 .footer {
   background-color: dimgrey;

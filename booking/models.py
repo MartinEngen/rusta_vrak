@@ -45,7 +45,7 @@ class Customer(models.Model):
 
 @python_2_unicode_compatible
 class Reservation(models.Model):
-    dates_reserved = models.ForeignKey(Dates_Reserved, related_name='booking', on_delete=models.CASCADE)
+    #dates_reserved = models.ForeignKey(Dates_Reserved, related_name='booking', on_delete=models.CASCADE)
     car = models.ForeignKey(Car, related_name='Bil', on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, related_name='Kunde', on_delete=models.CASCADE)
 
@@ -55,6 +55,9 @@ class Reservation(models.Model):
     # Reservation Status
     status = models.PositiveSmallIntegerField('1: Pending, 2: Approved, 3:Declined',
                                               choices={(1, 'Pending'), (2, 'Approved'), (3, 'Declined')})
+
+    initial_date = models.DateField('Hente Dato')
+    final_date = models.DateField('Leverings Dato')
 
     date_made = models.DateField('Bestilligns dato', auto_now_add=True)
 

@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-
-
 import logging
+from django.db.models import Q
 
 from booking.models import Reservation
+
 import datetime
 
 
 
 
 # Validate dates before reservation.
+# Used for both validating search dates, as well as new reservations into the system.
 def validate_date(initial_date, final_date):
 
     message = ''
@@ -26,12 +27,12 @@ def validate_date(initial_date, final_date):
     # Final date before the inital date.
     if (final_date < initial_date):
         logging.info("Final date is before initial date")
-        message = "Leveringsdagen er satt før Hente dagen, gjør om og prøv på nytt."
+        message = "Leveringsdagen er satt før Hente dagen, Prøv på nytt."
         error = True
         # calendar_data = generate_calendar_data(finalized_bookings)
 
 
-        # More than 30 days booked, abort.
+        # More than 30 days booked, tell user to Contact instead.
     if (final_date - initial_date).days > 30:
         logging.error("Logging more than 30 days, Stop.")
         message = "Kan ikke reservere mer enn 30 dager i gangen. Ta kontakt for en større reservasjon."
@@ -57,16 +58,10 @@ def find_available_cars(inital_date, final_date, cars):
     # All reservations of the cars
     car_reservations = Reservation.objects.filter(car__in=cars)
 
-    #Overlapping by final date
-    final_date_booking_overlap = car_reservations.filter(dates_reserved__final_date__range=(inital_date, final_date))
+    # Checking if the dates input is between or same as any dates already reserved.
+    init_booking_overlap = car_reservations.filter(Q(initial_date__lte=inital_date) & Q(final_date__gte=inital_date))
+    fin_booking_overlap = car_reservations.filter(Q(initial_date__lte=final_date) & Q(final_date__gte=final_date))
 
-    # Overlapping by inital date
-    initial_date_booking_overlap = car_reservations.filter(dates_reserved__initial_date__range=(inital_date, final_date))
-
-    print("Overlapping: " + str(final_date_booking_overlap.count()) + " " + str(initial_date_booking_overlap.count()))
-
-    # Remove the cars with overlapping dates
-    available_cars = cars.exclude(reserved_car__booking__car_id__in=final_date_booking_overlap.values("car_id")).exclude(
-        reserved_car__booking__car_id__in=initial_date_booking_overlap.values("car_id"))
+    available_cars = cars.exclude(id__in=init_booking_overlap.values("car_id")).exclude(id__in=fin_booking_overlap.values("car_id"))
 
     return available_cars

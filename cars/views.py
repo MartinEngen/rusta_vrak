@@ -104,7 +104,7 @@ def car_list(request):
 
 
 
-            cars = Car.objects.filter(car_type__in=car_types).filter(transmission__in=transmission_types).filter(fuel_type__in=fuel_types).filter(seats__in=seats)
+            cars = Car.objects.filter(car_type__in=car_types).filter(transmission__in=transmission_types).filter(fuel_type__in=fuel_types).filter(seats__in=seats).filter(for_rent=True)
 
             # Date Handler
             if filtered_data.cleaned_data['initial_date'] and filtered_data.cleaned_data['final_date']:
@@ -186,7 +186,7 @@ def car_list(request):
 
 
 
-        cars = Car.objects.filter(car_type__in=types)
+        cars = Car.objects.filter(car_type__in=types).filter(for_rent=True)
 
         for car in cars:
             print (car.extra_accessories)
@@ -203,10 +203,8 @@ def specific_car(request, car_id):
 
     def abort_function(car, message, finalized_bookings):
         calendar_data = generate_calendar_data(finalized_bookings)
-        print("Calendar data ERROR size: " + str(finalized_bookings.count()))
         context = {
             'car': car,
-            # 'bookings': car_bookings,
             'dates': 'false',
             'warning': True,
             'message': message,
@@ -230,8 +228,8 @@ def specific_car(request, car_id):
 
             # Check if the number of days exeeds 30 days.
             # Get all registered bookings for this car.
-            finalized_bookings = Reservation.objects.filter(car=car).exclude(dates_reserved__final_date__lte=(datetime.date.today()))\
-                .order_by('dates_reserved__initial_date')
+            finalized_bookings = Reservation.objects.filter(car=car).exclude(final_date__lte=(datetime.date.today()))\
+                .order_by('initial_date')
 
 
 
@@ -247,14 +245,14 @@ def specific_car(request, car_id):
             for finalized_booking in finalized_bookings:
 
                 # Checks if the date is placed within a range of already booked.
-                if finalized_booking.dates_reserved.initial_date <= initial_date <= finalized_booking.dates_reserved.final_date or finalized_booking.dates_reserved.initial_date <= final_date <= finalized_booking.dates_reserved.final_date:
+                if finalized_booking.initial_date <= initial_date <= finalized_booking.final_date or finalized_booking.initial_date <= final_date <= finalized_booking.final_date:
                     print("Complicated working..")
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
 
                 # Check if there is an exisiting booking within this new entry.
-                if initial_date <= finalized_booking.dates_reserved.initial_date <= final_date or initial_date <= finalized_booking.dates_reserved.final_date <= final_date:
+                if initial_date <= finalized_booking.initial_date <= final_date or initial_date <= finalized_booking.final_date <= final_date:
                     print("Complicated working..")
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
@@ -267,7 +265,16 @@ def specific_car(request, car_id):
             new_booking.save()
 
 
+            booking_information = {
+                'initial_date': booking_form.cleaned_data['final_date']
+                #'final_date': booking_form.cleaned_data['final_date']
+            }
+
+
             request.session['current_booking_id'] = new_booking.id
+
+            #request.session['booking_information'] = booking_information
+
             return redirect('booking:reservation_schema', car_id=car.id)
 
 
@@ -278,8 +285,8 @@ def specific_car(request, car_id):
             print(booking_form.errors)
             #car = get_object_or_404(Car, id=car_id)
             finalized_bookings = Reservation.objects.filter(car=car).exclude(
-                dates_reserved__final_date__lte=(datetime.date.today())) \
-                .order_by('dates_reserved__initial_date')
+                final_date__lte=(datetime.date.today())) \
+                .order_by('initial_date')
 
             message = "Informasjon mangler, prøv å fyll ut feltene på nytt. Dato må være DD.MM.ÅÅÅÅ"
 
@@ -319,8 +326,8 @@ def specific_car(request, car_id):
         # Gather the information required by the Calendar
         #finalized_bookings = Reservation.objects.filter(car=current_car).exclude(dates_reserved__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
         finalized_bookings = Reservation.objects.filter(car=current_car).exclude(
-            dates_reserved__final_date__lte=(datetime.date.today())) \
-            .order_by('dates_reserved__initial_date')
+            final_date__lte=(datetime.date.today())) \
+            .order_by('initial_date')
 
         print("GET bookings: " + str(finalized_bookings.count()))
         print(finalized_bookings)

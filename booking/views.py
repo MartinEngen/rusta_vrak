@@ -57,29 +57,36 @@ def booking_schema(request, car_id):
             customer.num_orders += 1
             customer.save()
 
+            """
             new_reservation, updated_reservation = Reservation.objects.update_or_create(car_id=car_id,
-                                                                   dates_reserved_id=current_booking_id,
                                                                    customer=customer,
                                                                    defaults={
                                                                        'misc_info': misc_info,
                                                                        'status': 2, #Status 2 is defined as approved
+                                                                       'initial_date': current_booking.initial_date,
+                                                                       'final_date': current_booking.final_date,
                                                                    })
-
-
 
             if updated_reservation:
                 logging.warning("User has updated an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
+            """
+
+            new_reservation = Reservation(car_id=car_id, customer=customer, status=2, initial_date=current_booking.initial_date, final_date=current_booking.final_date, misc_info=misc_info)
+            new_reservation.save()
 
 
 
             print("----------------New Reservation Saved---------------------")
 
-            number_of_days = (current_booking.final_date - current_booking.initial_date).days
+            number_of_days = (new_reservation.final_date - new_reservation.initial_date).days
 
-            # Run the function that handles the sending of receipt.
-            send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car)
 
             price = price_calculator(number_of_days, current_car.price)
+
+
+            # Run the function that handles the sending of receipt.
+            send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
+
             context = {
                 'car': current_car,
                 'booking': current_booking,
@@ -140,24 +147,24 @@ def download_pdf(request, reservation_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Rusta_vrak_reservasjon.pdf"'
 
-    booking = get_object_or_404(Reservation, id=reservation_id)
+    reservation = get_object_or_404(Reservation, id=reservation_id)
 
-    booking_nr = str(booking.id)
-    initial_date = booking.dates_reserved.initial_date.strftime('%d.%m.%Y')
-    final_date = booking.dates_reserved.final_date.strftime('%d.%m.%Y')
-    bil = str(booking.car.brand.encode('utf8') + ' ' + booking.car.model.encode('utf8'))
-    car_fuel = str(booking.car.fuel_type.encode('utf8'))
-    car_seats = str(booking.car.seats)
-    car_transmission = str(booking.car.transmission.encode('utf8'))
-    days = (booking.dates_reserved.final_date - booking.dates_reserved.initial_date).days
-    calculated_price = price_calculator(days, booking.car.price)
+    reservation_nr = str(reservation.id)
+    initial_date = reservation.initial_date.strftime('%d.%m.%Y')
+    final_date = reservation.final_date.strftime('%d.%m.%Y')
+    bil = str(reservation.car.brand.encode('utf8') + ' ' + reservation.car.model.encode('utf8'))
+    car_fuel = str(reservation.car.fuel_type.encode('utf8'))
+    car_seats = str(reservation.car.seats)
+    car_transmission = str(reservation.car.transmission.encode('utf8'))
+    days = (reservation.final_date - reservation.initial_date).days
+    calculated_price = price_calculator(days, reservation.car.price)
     pris = str(calculated_price)
-    fornavn  = booking.customer.first_name
-    etternavn = booking.customer.last_name
+    fornavn  = reservation.customer.first_name
+    etternavn = reservation.customer.last_name
     kunde = str(fornavn + ' ' + etternavn)
 
-    epost = str(booking.customer.email)
-    tlf = str(booking.customer.phone_number)
+    epost = str(reservation.customer.email)
+    tlf = str(reservation.customer.phone_number)
 
 
     p = canvas.Canvas(response)
@@ -177,7 +184,7 @@ def download_pdf(request, reservation_id):
     p.setFont('Helvetica', 13)
     p.drawString(80, 675, 'Reservasjon Nr')
     p.setLineWidth(.3)
-    p.drawString(350, 675, booking_nr)
+    p.drawString(350, 675, reservation_nr)
     p.drawString(80, 655, 'Hente Dato: ')
     p.drawString(350, 655, initial_date)
     p.drawString(80, 640, 'Leveres Dato:')

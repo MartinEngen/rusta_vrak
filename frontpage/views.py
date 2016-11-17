@@ -72,22 +72,6 @@ def search_function(request):
             filtered_cars = Car.objects.filter(car_type__in=searched_types)
 
 
-
-
-            """
-            # All bookings of current cars
-            car_bookings = Reservation.objects.filter(car__in=cars)
-
-
-            # Overlapping by final date
-            final_date_booking_overlap = car_bookings.filter(dates_reserved__final_date__range=(inital_date, final_date))
-            # Overlapping by inital date
-            initial_date_booking_overlap = car_bookings.filter(dates_reserved__initial_date__range=(inital_date, final_date))
-            # Remove the cars with overlapping dates
-            cars = cars.exclude(reserved_car__booking__car__in=final_date_booking_overlap.values("car")).exclude(reserved_car__booking__car__in=initial_date_booking_overlap.values("car"))
-            """
-
-
             cars = find_available_cars(inital_date, final_date, filtered_cars)
 
             # The chosen dates did not find any cars. Redirect back to front with an error.
