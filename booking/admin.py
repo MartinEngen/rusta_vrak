@@ -11,10 +11,10 @@ class FinalizedBookings(admin.ModelAdmin):
         return ("%s %s" % (obj.car.brand, obj.car.model)).upper()
 
     def fra_dato(self, obj):
-        return obj.dates_reserved.initial_date
+        return obj.initial_date
 
     def til_dato(self, obj):
-        return (obj.dates_reserved.final_date)
+        return (obj.final_date)
 
     def kunde(self, obj):
         return ("%s %s" % (obj.customer.first_name, obj.customer.last_name))
@@ -29,14 +29,14 @@ class FinalizedBookings(admin.ModelAdmin):
     # TODO: Use the price funciton once it is completed..
     def pris(self, obj):
 
-        price = price_calculator((obj.dates_reserved.final_date - obj.dates_reserved.initial_date).days, obj.car.price)
+        price = price_calculator((obj.final_date - obj.initial_date).days, obj.car.price)
 
 
         return price
 
     #pris.admin_order_field = 'pris'
-    fra_dato.admin_order_field = 'dates_reserved__initial_date'
-    til_dato.admin_order_field = 'dates_reserved__final_date'
+    fra_dato.admin_order_field = 'initial_date'
+    til_dato.admin_order_field = 'final_date'
 
     search_fields = ['car__brand', 'car__model']
 
@@ -59,6 +59,6 @@ class CarAdmin(admin.ModelAdmin):
 """
 
 
-admin.site.register(models.Dates_Reserved)
+#admin.site.register(models.Dates_Reserved)
 admin.site.register(models.Reservation, FinalizedBookings)
 admin.site.register(models.Customer)

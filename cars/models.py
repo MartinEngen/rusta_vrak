@@ -26,13 +26,16 @@ class Car(models.Model):
 
     price = models.IntegerField('Dagspris leie', default=250)
 
-    #for_rent = models.BooleanField('Bilen klar for utleie.', default=True)
+    for_rent = models.BooleanField('Bilen klar for utleie.', default=True)
 
     license_plate = models.CharField('Skiltnummer', blank=True, null=True, max_length=10, unique=True)
 
 
     def __str__(self):
-        return str(self.id) + " " + self.brand + " " + self.model
+        if self.license_plate:
+            return self.license_plate + " | " + self.brand + " | " + self.model
+        else:
+            return str(self.car_type) + " | " + self.brand + " | " + self.model
 
     class Meta:
         verbose_name = 'Bil'

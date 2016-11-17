@@ -17,7 +17,7 @@
 
 # [START django_app]
 application: rusta-vrak
-version: beta--01
+version: beta--02
 runtime: python27
 api_version: 1
 threadsafe: yes
