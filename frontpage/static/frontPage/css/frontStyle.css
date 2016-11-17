@@ -42,11 +42,15 @@ a {
   -webkit-transform: scale(1.5);
   -o-transform: scale(1.5);
   padding: 10px; }
-#search_section .checkbox label {
-  margin: 5px;
-  font-size: x-large; }
+#search_section .checkbox-inline {
+  padding-bottom: 20px; }
+  #search_section .checkbox-inline label {
+    margin: 5px;
+    font-size: large; }
 #search_section .container {
   padding-bottom: 50px; }
+#search_section #search_button {
+  background-color: #D96523; }
 
 #services {
   background-color: #143840;
@@ -68,6 +72,6 @@ a {
   padding-bottom: 60px;
   background-color: #5C6B63; }
   #policy .policy_box {
-    padding: 20px; }
+    padding: 10px; }
 
 /*# sourceMappingURL=frontStyle.css.map */
