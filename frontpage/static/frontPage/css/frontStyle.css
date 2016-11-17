@@ -63,4 +63,11 @@ a {
   padding-top: 30px;
   padding-bottom: 30px; }
 
+#policy {
+  padding-top: 40px;
+  padding-bottom: 60px;
+  background-color: #5C6B63; }
+  #policy .policy_box {
+    padding: 20px; }
+
 /*# sourceMappingURL=frontStyle.css.map */
