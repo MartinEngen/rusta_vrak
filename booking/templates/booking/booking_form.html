@@ -12,10 +12,15 @@
 <div class="container" id="form_container">
 
     <div class="row">
-        <div class="col-md-offset-3 col-md-6">
-            <h3>Kontakt Informasjon</h3>
 
-            <p>Steg 2 av prossessen. For å fulføre reservasjonen, vennligst fyll ut det føgende skjema. Husk å dobbelsjekk informasjon om bestillingen før du går videre.</p>
+
+        <div class="col-md-offset-2 col-md-9">
+        <h1>Kontakt Informasjon</h1>
+
+        <p>Steg 2 av prossessen. <br> For å fulføre reservasjonen, vennligst fyll ut det føgende skjema. Husk å dobbelsjekk informasjon av reservasjonen før du går videre.</p>
+        </div>
+        <div class="col-md-offset-3 col-md-6">
+
             <form method="post" >{% csrf_token %}
                 <div class="form-group">
                     <label for="email">Epost adresse</label>
@@ -45,7 +50,7 @@
                     <textarea class="form-control" id="misc_info" name="misc_info" rows="3"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-default">Fullfør bestilling</button>
+                <button type="submit" class="btn">Fullfør bestilling</button>
             </form>
         </div>
 

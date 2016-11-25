@@ -25,6 +25,14 @@ body {
     background-color: #5C6B63; }
   .navbar li a:hover {
     background-color: #5C6B63; }
+  .navbar li .dropdown {
+    background-color: black; }
+    .navbar li .dropdown a:focus {
+      background-color: pink; }
+
+.dropdown-toggle:active, .open .dropdown-toggle {
+  background: #000000 !important;
+  color: #000 !important; }
 
 .footer {
   background-color: dimgrey;
