@@ -3,22 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="28c1d72e-f227-4be8-a2c6-20ab1fc2adbe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/static/booking/css/booking_form_style.css" afterPath="$PROJECT_DIR$/booking/static/booking/css/booking_form_style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/static/booking/css/booking_form_style.css.map" afterPath="$PROJECT_DIR$/booking/static/booking/css/booking_form_style.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/static/booking/css/booking_form_style.sass" afterPath="$PROJECT_DIR$/booking/static/booking/css/booking_form_style.sass" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/static/booking/css/receipt_style.css" afterPath="$PROJECT_DIR$/booking/static/booking/css/receipt_style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/static/booking/css/receipt_style.css.map" afterPath="$PROJECT_DIR$/booking/static/booking/css/receipt_style.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/static/booking/css/receipt_style.sass" afterPath="$PROJECT_DIR$/booking/static/booking/css/receipt_style.sass" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/templates/booking/booking_form.html" afterPath="$PROJECT_DIR$/booking/templates/booking/booking_form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/templates/booking/booking_receipt.html" afterPath="$PROJECT_DIR$/booking/templates/booking/booking_receipt.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.css" afterPath="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.css.map" afterPath="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.sass" afterPath="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.sass" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.css" afterPath="$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.css.map" afterPath="$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.sass" afterPath="$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.sass" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontpage/templates/frontpage/index.html" afterPath="$PROJECT_DIR$/frontpage/templates/frontpage/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/booking/admin.py" afterPath="$PROJECT_DIR$/booking/admin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/baseStyle/css/baseStyle.css" afterPath="$PROJECT_DIR$/static/baseStyle/css/baseStyle.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/baseStyle/css/baseStyle.css.map" afterPath="$PROJECT_DIR$/static/baseStyle/css/baseStyle.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/baseStyle/css/baseStyle.sass" afterPath="$PROJECT_DIR$/static/baseStyle/css/baseStyle.sass" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/booking/css/booking_form_style.css" afterPath="$PROJECT_DIR$/static/booking/css/booking_form_style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/booking/css/booking_form_style.css.map" afterPath="$PROJECT_DIR$/static/booking/css/booking_form_style.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/booking/css/booking_form_style.sass" afterPath="$PROJECT_DIR$/static/booking/css/booking_form_style.sass" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/booking/css/receipt_style.css" afterPath="$PROJECT_DIR$/static/booking/css/receipt_style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/booking/css/receipt_style.css.map" afterPath="$PROJECT_DIR$/static/booking/css/receipt_style.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/booking/css/receipt_style.sass" afterPath="$PROJECT_DIR$/static/booking/css/receipt_style.sass" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/frontpage/css/frontStyle.css" afterPath="$PROJECT_DIR$/static/frontpage/css/frontStyle.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/frontpage/css/frontStyle.css.map" afterPath="$PROJECT_DIR$/static/frontpage/css/frontStyle.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/frontpage/css/frontStyle.sass" afterPath="$PROJECT_DIR$/static/frontpage/css/frontStyle.sass" />
     </list>
     <ignored path="rusta_vrak.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,7 +42,7 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/booking/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
+            <state relative-caret-position="935">
               <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
               <folding>
                 <element signature="e#26#75#0" expanded="true" />
@@ -77,18 +74,38 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="867">
+            <state relative-caret-position="1071">
               <caret line="63" column="31" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="baseStyle.sass" pinned="false" current-in-tab="true">
+      <file leaf-file-name="baseStyle.sass" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.sass">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="844">
+            <state relative-caret-position="776">
               <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/booking/admin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="40" column="91" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="91" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cars/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="30" column="17" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -107,28 +124,8 @@
       <file leaf-file-name="frontStyle.sass" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.sass">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1184">
+            <state relative-caret-position="1972">
               <caret line="116" column="19" selection-start-line="116" selection-start-column="19" selection-end-line="116" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="booking_form.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/booking/templates/booking/booking_form.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="booking_receipt.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/booking/templates/booking/booking_receipt.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1224">
-              <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -195,7 +192,6 @@
         <option value="$PROJECT_DIR$/cars/validation_functions.py" />
         <option value="$PROJECT_DIR$/cars/models.py" />
         <option value="$PROJECT_DIR$/cars/views.py" />
-        <option value="$PROJECT_DIR$/booking/admin.py" />
         <option value="$PROJECT_DIR$/cars/static/cars/css/car_list_style.sass" />
         <option value="$PROJECT_DIR$/cars/static/cars/css/spesific_carStyle.sass" />
         <option value="$PROJECT_DIR$/cars/templates/cars/car_list.html" />
@@ -212,6 +208,7 @@
         <option value="$PROJECT_DIR$/frontpage/templates/frontpage/index.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.sass" />
+        <option value="$PROJECT_DIR$/booking/admin.py" />
       </list>
     </option>
   </component>
@@ -271,6 +268,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -598,7 +596,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1024,13 +1021,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/polls/views.py" />
     <entry file="file://$PROJECT_DIR$/cars/static/cars/css/car_list_style.css.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
+      </provider>
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cars/static/cars/css/car_list_style.css">
@@ -1170,13 +1167,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/booking/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="61" column="1" selection-start-line="61" selection-start-column="1" selection-end-line="61" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/booking/data_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
@@ -1189,7 +1179,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1819">
           <caret line="107" column="24" selection-start-line="107" selection-start-column="24" selection-end-line="107" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1205,15 +1194,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
           <caret line="49" column="36" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cars/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1221,7 +1201,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1229,7 +1208,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="14" column="64" selection-start-line="14" selection-start-column="64" selection-end-line="14" selection-end-column="64" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1245,7 +1223,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1269,13 +1246,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="748">
           <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="52" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/booking/templates/booking/booking_form.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
+        <state relative-caret-position="867">
           <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding />
         </state>
@@ -1299,7 +1275,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/booking/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
+        <state relative-caret-position="935">
           <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
           <folding>
             <element signature="e#26#75#0" expanded="true" />
@@ -1325,7 +1301,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontpage/static/frontPage/css/frontStyle.sass">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1184">
+        <state relative-caret-position="1972">
           <caret line="116" column="19" selection-start-line="116" selection-start-column="19" selection-end-line="116" selection-end-column="19" />
           <folding />
         </state>
@@ -1341,7 +1317,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
+        <state relative-caret-position="1071">
           <caret line="63" column="31" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="31" />
           <folding />
         </state>
@@ -1349,8 +1325,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontpage/static/baseStyle/css/baseStyle.sass">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="844">
+        <state relative-caret-position="776">
           <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cars/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="30" column="17" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/booking/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="40" column="91" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="91" />
           <folding />
         </state>
       </provider>

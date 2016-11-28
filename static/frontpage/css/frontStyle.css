@@ -68,10 +68,18 @@ a {
   padding-bottom: 30px; }
 
 #policy {
-  padding-top: 40px;
-  padding-bottom: 60px;
   background-color: #5C6B63; }
   #policy .policy_box {
     padding: 10px; }
+
+#contact {
+  background-color: #143840; }
+
+#about p {
+  font-size: 200%; }
+
+section {
+  padding-top: 40px;
+  padding-bottom: 60px; }
 
 /*# sourceMappingURL=frontStyle.css.map */

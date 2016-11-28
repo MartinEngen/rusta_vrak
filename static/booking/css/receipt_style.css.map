@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAOE,SAAE;EACA,SAAS,EAAE,IAAI",
+"mappings": "AAOE,SAAE;EACA,SAAS,EAAE,IAAI;;AAInB,IAAI;EACF,gBAAgB,EATT,OAAO;EAUd,KAAK,EAAE,KAAK;EACZ,cAAc,EAAE,MAAM;EACtB,SAAS,EAAE,IAAI;;AAEjB,sBAAsB;EACpB,KAAK,EAAE,KAAK;EACZ,gBAAgB,EAhBT,OAAO",
 "sources": ["receipt_style.sass"],
 "names": [],
 "file": "receipt_style.css"

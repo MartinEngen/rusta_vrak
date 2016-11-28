@@ -38,7 +38,7 @@ class FinalizedBookings(admin.ModelAdmin):
     fra_dato.admin_order_field = 'initial_date'
     til_dato.admin_order_field = 'final_date'
 
-    search_fields = ['car__brand', 'car__model']
+    search_fields = ['car__brand', 'car__model', 'car__license_plate', 'customer__last_name']
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'author_first_name')
