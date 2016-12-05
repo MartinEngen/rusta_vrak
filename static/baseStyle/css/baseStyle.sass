@@ -27,8 +27,16 @@ body
   height: 100px
 
 
+@media (max-width: 767px)
+  .navbar .navbar-nav .open .dropdown-menu > li > a
+    color: #FFF
+
+
 .navbar
   background-color: $color1
+
+
+
 
   a
     color: white
@@ -43,13 +51,13 @@ body
       background-color: $color2
 
     .dropdown
-      background-color: black
+      background-color: $color2
       a:focus
-        background-color: pink
+        background-color: $color2
 
 .dropdown-toggle:active, .open .dropdown-toggle
-  background: #000000!important
-  color: #000 !important
+  background: $color2!important
+  color: white !important
 
 
 .footer

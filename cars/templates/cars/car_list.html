@@ -5,6 +5,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static "cars/css/car_list_style.css" %}"/>
 <link rel="stylesheet" href="{% static "packages/lightbox/css/lightbox.css" %}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 {% endblock pageBasedStyle %}
 
 
@@ -21,7 +22,7 @@
         </div>
 
         <div class="col-lg-12 col-md-12">
-                <a href="#filter" data-toggle="collapse" style="color: white; font-size: large">Instillinger Søk</a>
+                <a href="#filter" data-toggle="collapse" style="color: white; font-size: large"><u>Instillinger for Søk</u></a>
 
                 <div id="filter" class="collapse row">
                     <form method="post" action="" >{% csrf_token %}
@@ -53,15 +54,18 @@
 
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
 
                         <h3>Gir</h3>
-                        <label class="checkbox"><input type="checkbox" id="transmission_manual" name="transmission_manual" {% if "Manuell" in searched_categories %} checked {% endif %}>Manuell</label>
-                        <label class="checkbox"><input type="checkbox" id="transmission_auto" name="transmission_auto" {% if "Automat" in searched_categories %} checked {% endif %}>Automat</label>
+                        <div class="checkbox">
+                            <label class="checkbox"><input type="checkbox" id="transmission_manual" name="transmission_manual" {% if "Manuell" in searched_categories %} checked {% endif %}>Manuell</label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="checkbox"><input type="checkbox" id="transmission_auto" name="transmission_auto" {% if "Automat" in searched_categories %} checked {% endif %}>Automat</label>
+                        </div>
 
 
-
-
+                        <label for="seats">Antall Seter</label>
                         <select id="seats" name="seats" style="color: black">
                           <option value="0">Alle</option>
                           <option value="3">2</option>
@@ -70,7 +74,7 @@
                           <option value="7">7</option>
                           <option value="9">9</option>
                         </select>
-                         <label for="seats">Antall Seter</label>
+
                         </div>
 
 
@@ -79,8 +83,9 @@
                         <input type="text" value="{{ dates.initial_date|date:'d.m.y' }}" id="datepickerStart" name="initial_date" hidden>
                         <input type="text" value="{{ dates.final_date|date:'d.m.y' }}" id="datepickerFinish" name="final_date" hidden>
                         {% endif %}
-
-                        <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Filter</button>
+                         <div class="col-md-12">
+                            <button type="submit" class="btn btn-lg" style="margin: 5px; background-color: #5C6B63;"><i class="fa fa-search" aria-hidden="true" ></i> Filter</button>
+                         </div>
                     </form>
                 <!-- End Collapse -->
                  </div>
@@ -108,10 +113,10 @@
                     <br>
                     <br>
                     {% if dates %}
-                        <a class="btn" href="{% url 'cars:car_availability' car.id %}?fra={{ dates.initial_date|date:'d.m.Y' }}&til={{ dates.final_date|date:'d.m.Y'}}" style="vertical-align: middle;"  ><b>Se Tilgjengelighet </b></a>
+                        <a class="btn" href="{% url 'cars:car_availability' car.id %}?fra={{ dates.initial_date|date:'d.m.Y' }}&til={{ dates.final_date|date:'d.m.Y'}}" style="vertical-align: middle;"  ><b>Se Detaljer </b></a>
 
                     {% else %}
-                        <a class="btn" href="{% url 'cars:car_availability' car.id %}" style="vertical-align: middle;"  ><b>Se Tilgjengelighet </b></a>
+                        <a class="btn" href="{% url 'cars:car_availability' car.id %}" style="vertical-align: middle;"  ><b>Se Tilgjengelighet</b></a>
                     {% endif %}
 
                 </div>

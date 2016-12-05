@@ -57,32 +57,32 @@ def booking_schema(request, car_id):
             customer.num_orders += 1
             customer.save()
 
-            """
-            new_reservation, updated_reservation = Reservation.objects.update_or_create(car_id=car_id,
+
+            new_reservation, created = Reservation.objects.update_or_create(car_id=car_id,
                                                                    customer=customer,
+                                                                   initial_date=current_booking.initial_date,
                                                                    defaults={
                                                                        'misc_info': misc_info,
                                                                        'status': 2, #Status 2 is defined as approved
-                                                                       'initial_date': current_booking.initial_date,
+                                                                       #'initial_date': current_booking.initial_date,
                                                                        'final_date': current_booking.final_date,
                                                                    })
 
-            if updated_reservation:
+            if created:
+                logging.info("New Entry saved, ID: %s, by user %s" % (str(new_reservation.id), customer.email))
+            else:
                 logging.warning("User has updated an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
-            """
-
-            new_reservation = Reservation(car_id=car_id, customer=customer, status=2, initial_date=current_booking.initial_date, final_date=current_booking.final_date, misc_info=misc_info)
-            new_reservation.save()
 
 
-
-            print("----------------New Reservation Saved---------------------")
+            #new_reservation = Reservation(car_id=car_id, customer=customer, status=2, initial_date=current_booking.initial_date, final_date=current_booking.final_date, misc_info=misc_info)
+            #new_reservation.save()
 
             number_of_days = (new_reservation.final_date - new_reservation.initial_date).days
 
 
-            price = price_calculator(number_of_days, current_car.price)
 
+            price = price_calculator(number_of_days, current_car.price)
+            km_included = number_of_days * 50
 
             # Run the function that handles the sending of receipt.
             send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
@@ -93,6 +93,7 @@ def booking_schema(request, car_id):
                 'customer': customer,
                 'filled_form': new_reservation,
                 'price': price,
+                'km_included': km_included,
             }
 
             #Redirect the user to the final page, reciept is shown etc.
@@ -110,6 +111,7 @@ def booking_schema(request, car_id):
 
             number_of_days = (booking.final_date - booking.initial_date).days
             price = price_calculator(number_of_days, car.price)
+            km_included = number_of_days * 50
 
             context = {
                 'car': car,
@@ -118,6 +120,7 @@ def booking_schema(request, car_id):
                 'price': price,
                 'form': form,
                 'error_message': error_message,
+                'km_included': km_included
             }
 
             return render(request, 'booking/booking_form.html', context)
@@ -129,13 +132,15 @@ def booking_schema(request, car_id):
 
         number_of_days = (booking.final_date - booking.initial_date).days
         price = price_calculator(number_of_days, car.price)
+        km_included = number_of_days*50
 
 
         context = {
             'car': car,
             'booking': booking,
             'days': number_of_days,
-            'price': price
+            'price': price,
+            'km_included': km_included
         }
 
         return render(request, 'booking/booking_form.html', context)

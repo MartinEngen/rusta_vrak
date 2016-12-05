@@ -16,6 +16,9 @@ body {
 #push {
   height: 100px; }
 
+@media (max-width: 767px) {
+  .navbar .navbar-nav .open .dropdown-menu > li > a {
+    color: #FFF; } }
 .navbar {
   background-color: #143840;
   font-size: large; }
@@ -26,13 +29,13 @@ body {
   .navbar li a:hover {
     background-color: #5C6B63; }
   .navbar li .dropdown {
-    background-color: black; }
+    background-color: #5C6B63; }
     .navbar li .dropdown a:focus {
-      background-color: pink; }
+      background-color: #5C6B63; }
 
 .dropdown-toggle:active, .open .dropdown-toggle {
-  background: #000000 !important;
-  color: #000 !important; }
+  background: #5C6B63 !important;
+  color: white !important; }
 
 .footer {
   background-color: dimgrey;

@@ -5,6 +5,7 @@
 {% block pageBasedStyle %}
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static "booking/css/receipt_style.css" %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 {% endblock pageBasedStyle %}
 
 
@@ -33,6 +34,11 @@
             <tr>
                 <td>Levers Dato</td>
                 <td>{{ booking.final_date }}</td>
+            </tr>
+
+            <tr>
+                <td>Gratis inkl. kjørelengde</td>
+                <td>{{ km_included }} Km</td>
             </tr>
 
             <tr>
@@ -67,7 +73,7 @@
         </tbody>
         </table>
          <a href="{% url 'booking:pdf' filled_form.id %}">
-            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn">Last ned kvittering på PDF</button>
+            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned kvittering på PDF</button>
         </a>
     </div>
 

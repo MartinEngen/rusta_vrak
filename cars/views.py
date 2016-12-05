@@ -34,7 +34,7 @@ def car_list(request):
             # Initialze variables
 
             #Searching cars
-            print("Searching for cars..")
+            print("Finding Cars.")
 
 
             dates = False
@@ -123,14 +123,11 @@ def car_list(request):
                     }
 
                 else:
-                    #User Entered non valid dates.
+                    # User Entered non valid dates.
                     print("Non Valid dates found, do redirect home. , %s" % validate['message'])
                     request.session['search_car_error_message'] = validate['message']
 
                     return redirect('/')
-
-
-
 
             # No Cars has been found on the given terms.
             if not cars:
@@ -226,7 +223,6 @@ def specific_car(request, car_id):
             initial_date = booking_form.cleaned_data['initial_date']
             final_date = booking_form.cleaned_data['final_date']
 
-            # Check if the number of days exeeds 30 days.
             # Get all registered bookings for this car.
             finalized_bookings = Reservation.objects.filter(car=car).exclude(final_date__lte=(datetime.date.today()))\
                 .order_by('initial_date')
@@ -273,7 +269,6 @@ def specific_car(request, car_id):
 
             request.session['current_booking_id'] = new_booking.id
 
-            #request.session['booking_information'] = booking_information
 
             return redirect('booking:reservation_schema', car_id=car.id)
 

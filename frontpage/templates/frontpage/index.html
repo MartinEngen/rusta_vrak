@@ -15,26 +15,27 @@
 <div class="container">
     <div class="row">
       <div class="col-md-12" id="welcome">
-          <h1>Rusta Vrak Bilutleige</h1>
-          <p style="font-size: x-large">Du finn oss i Førde og Jølster</p>
+          <h1>Rusta Vrak Bilutleie</h1>
+          <p style="font-size: x-large">Du finner oss i Førde og Jølster</p>
       </div>
     </div>
 
 </div>
 
-<section id="search_section">
+
+<div id="search_section">
     <div class="container">
             <h2>Søk etter ledig bil</h2>
             <hr>
             <form method="post" action="biler/" >{% csrf_token %}
                 <div class="row">
                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label for="datepickerStart" class="control-label date-label">Ønsket hentast</label>
+                        <label for="datepickerStart" class="control-label date-label">Ønsket Hentes</label>
                         <input type="text" value='' class="form-control datefield" id="datepickerStart" name="initial_date">
                         <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                     </div>
-                    <div class="col-md-offset-1 col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label for="name" class="control-label date-label">Ønsket levering</label>
+                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label for="name" class="control-label date-label">Ønsket Levering</label>
                         <input type="text" value='' class="form-control datefield" id="datepickerFinish" name="final_date">
                         <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
                     </div>
@@ -76,9 +77,9 @@
             </form>
 
     </div>
-</section>
+</div>
 
-<section id="car_types">
+<div id="car_types">
     <div class="container">
     <h1>Se alle biler</h1>
         <div class="row">
@@ -104,7 +105,11 @@
             </div>
       </div>
     </div>
-</section>
+</div>
+
+
+
+
 
 <section id="services">
     <div class="container">
@@ -121,7 +126,7 @@
                     <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Langtidsleie</h2>
-                <p>For å leiga ein bil over 30 dagar, ber vi deg ta <a href="/Kontakt/">Kontakt</a></p>
+                <p>For å leie en bil i over 30 dager, ber vi deg ta <a href="/Kontakt/">kontakt</a></p>
             </div>
             <div class="col-md-4">
                 <span class="fa-stack fa-5x">
@@ -129,15 +134,15 @@
                     <i class="fa fa-road fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Kjørelengde</h2>
-                <p>Utleia inkluderer 50 km per dag i leigeperioden</p>
+                <p>Utleien inkluderer 50 km per dag i leieperioden</p>
             </div>
             <div class="col-md-4">
                 <span class="fa-stack fa-5x">
                     <i class="fa fa-circle fa-stack-2x text-primary"></i>
                     <i class="fa fa-hourglass-end fa-stack-1x fa-inverse"></i>
                 </span>
-                <h2 class="service-heading">Jo lengre, jo billegare</h2>
-                <p> Hver 5. Dag i leiga påførar 17.5% ekstra rabatt! <br> Ved 30 dagers leie vil det koste bare 2500kr! </p>
+                <h2 class="service-heading">Jo lengre, Jo billigere</h2>
+                <p> Hver 5. gir 17.5% ekstra rabatt. <br> Ved 30 dagers leie vil det koste kun 2500kr. </p>
             </div>
 
 
@@ -156,11 +161,11 @@
                 <h1 class="section-heading"><b>Vilkår</b></h1>
                 <div class="policy_box">
                     <h2>Skade</h2>
-                    <h3>Eigenandel / gebyr ved skade 10.000 NOK + evt. berging</h3>
+                    <h3>Egenandel / gebyr ved skade 10.000 NOK + evt. berging</h3>
                 </div>
                 <div class="policy_box">
                 <h2>Full-Full</h2>
-                <h3>Alle bilar vært levert med full tank og skal leverast tilbake med full tank</h3>
+                <h3>Alle biler blir levert med full tank og skal leveres tilbake med full tank</h3>
                 </div>
             </div>
         <!-- Row END -->
@@ -194,7 +199,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1 class="section-heading">Om Oss</h1>
-                <p>Fusce ac ex lacinia, ultricies sem eu, rutrum libero. Mauris blandit arcu nibh, a scelerisque est elementum eget. Etiam est nisl, hendrerit quis consequat ut, molestie sit amet ex. Morbi non lacus tempor, viverra ex eget, elementum magna. Donec fermentum sodales justo, a sagittis diam scelerisque sed. Nunc auctor tellus mi, eu congue dolor mollis eget. Etiam id orci aliquet, malesuada lectus et, ultrices ipsum. </p>
+
             </div>
         </div>
     </div>

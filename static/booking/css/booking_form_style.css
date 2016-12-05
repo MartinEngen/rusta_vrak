@@ -2,7 +2,8 @@ body {
   background-color: #5C6B63; }
 
 #form_container {
-  background-color: #143840; }
+  background-color: #143840;
+  margin-bottom: 20px; }
   #form_container label {
     font-size: large; }
 
@@ -32,5 +33,8 @@ p {
 .btn:hover, .btn:focus {
   color: black;
   background-color: #D96523; }
+
+#total {
+  font-size: larger; }
 
 /*# sourceMappingURL=booking_form_style.css.map */

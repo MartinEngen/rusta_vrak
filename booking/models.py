@@ -26,14 +26,13 @@ class Dates_Reserved(models.Model):
 class Customer(models.Model):
     email = models.EmailField('Epost Adresse', primary_key=True, max_length=100)
 
-    #Customer Information
+    # Customer Information
     first_name = models.CharField('Fornavn', max_length=100)
     last_name = models.CharField('Etternavn', max_length=100)
-
-    num_orders = models.IntegerField('Antall bestilinger', default=0)
-
     phone_number = models.CharField('Telefonnummer', max_length=12, validators=[RegexValidator(r'^\d{1,10}$')])
 
+    # Reservation counter
+    num_orders = models.IntegerField('Antall bestilinger', default=0)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name

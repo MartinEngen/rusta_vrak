@@ -25,7 +25,7 @@
 
                 <!-- If the car contains multiple images -->
                 {% if images %}
-                <a href="#demo" data-toggle="collapse" style="color: white; font-size: large">Flere Bilder</a>
+                <a href="#demo" data-toggle="collapse" style="color: white; font-size: large; margin-top: 5px;"><u>Flere Bilder</u></a>
 
                 <div id="demo" class="collapse">
 
@@ -52,7 +52,7 @@
     <div class="container" id="car_info_container">
         <div class="row">
             <div class="col-md-offset-1 col-md-5">
-            <h1> <b>{{ car.brand }} {{ car.model }}</b></h1>
+
 
                 <!-- Car Info Table -->
                 <div id="car_info_table">
@@ -110,7 +110,7 @@
             </div>
 
 
-            <div class="col-md-6">
+            <div class="col-md-6" id="action_area">
                 <h1><b>Legg til en ny reservasjon</b></h1>
                 <form method="post" class="row" >{% csrf_token %}
 

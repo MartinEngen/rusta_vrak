@@ -119,7 +119,7 @@ elif os.getenv('SETTINGS_MODE') == 'prod':
             'NAME': 'rustadb',
             'USER': 'mello',
             'PASSWORD': '123',
-            'HOST': '173.194.104.174',
+            'HOST': '207.223.172.149',
             #'HOST': '2001:4860:4864:1:4767:db93:73d2:48fc',
             'PORT': '3306',
         }

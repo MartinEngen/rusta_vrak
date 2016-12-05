@@ -94,13 +94,6 @@ def generate_pdf(customer, filled_form):
     return response
 
 
-
-
-
-
-
-
-
 def price_calculator(days, start_price):
     # Round to closest 5
     def round_function(x, base=5):
@@ -108,17 +101,23 @@ def price_calculator(days, start_price):
 
     if 0 <= days <= 29:
         # Initialize variables
-        discount_calculated = 1
-        amount_of_discounts = days / 5
-        discount = 0.825
+        discount_calculated = 1         # Initialize to 0% discount.
+        amount_of_discounts = days / 5  # Number of discount chunks.
+        discount = 0.825                # 17.5% discount for each chunk
 
+        # Iterate through the chunks, adding a 17.5% discount to the existing discount.
         for i in range(0, amount_of_discounts):
             discount_calculated *= discount
 
         final_price = round_function(start_price*days*discount_calculated)
 
     else:
-        # TODO: Slightly increase the price if the start_price is higher than 250.
-        final_price = 2500
+        # 30 days rented, final price is 2500 for the normal priced cars.
+        if start_price == 250:
+            final_price = 2500
+
+        #
+        else:
+            final_price = 2750
 
     return final_price

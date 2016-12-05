@@ -16,13 +16,11 @@ def validate_date(initial_date, final_date):
     message = ''
     error = False
 
-
       # Less than 1 day booked, abort.
     if (final_date - initial_date).days < 1:
         logging.error("Less than 1 day, stop")
         message = "For liten leieperiode."
         error = True
-
 
     # Final date before the inital date.
     if (final_date < initial_date):
@@ -54,14 +52,15 @@ def validate_date(initial_date, final_date):
     return context
 
 # Find all avaiable cars between two dates, from a list of cars.
-def find_available_cars(inital_date, final_date, cars):
+def find_available_cars(initial_date, final_date, cars):
     # All reservations of the cars
     car_reservations = Reservation.objects.filter(car__in=cars)
 
     # Checking if the dates input is between or same as any dates already reserved.
-    init_booking_overlap = car_reservations.filter(Q(initial_date__lte=inital_date) & Q(final_date__gte=inital_date))
+    init_booking_overlap = car_reservations.filter(Q(initial_date__lte=initial_date) & Q(final_date__gte=initial_date))
     fin_booking_overlap = car_reservations.filter(Q(initial_date__lte=final_date) & Q(final_date__gte=final_date))
+    inside_booking_overlap = car_reservations.filter(Q(initial_date__gte=initial_date) & Q(final_date__lte=final_date))
 
-    available_cars = cars.exclude(id__in=init_booking_overlap.values("car_id")).exclude(id__in=fin_booking_overlap.values("car_id"))
+    available_cars = cars.exclude(id__in=init_booking_overlap.values("car_id")).exclude(id__in=fin_booking_overlap.values("car_id")).exclude(id__in=inside_booking_overlap.values("car_id"))
 
     return available_cars

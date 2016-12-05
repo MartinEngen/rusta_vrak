@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 # Need to support python 2
+# Old Car Table.
 @python_2_unicode_compatible
 class Car(models.Model):
     car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
@@ -33,10 +34,23 @@ class Car(models.Model):
 
     def __str__(self):
         if self.license_plate:
-            return self.license_plate + " | " + self.brand + " | " + self.model
+            return str(self.id) + self.license_plate + " | " + self.brand + " | " + self.model
         else:
-            return str(self.car_type) + " | " + self.brand + " | " + self.model
+            return str(self.id) + str(self.car_type) + " | " + self.brand + " | " + self.model
 
     class Meta:
         verbose_name = 'Bil'
         verbose_name_plural = 'Biler'
+
+
+
+
+
+
+"""
+@python_2_unicode_compatible
+class Car_Rental(models.Model):
+    reg_number = models.CharField('Skiltnummer',primary_key=True, max_length=10, unique=True)
+    car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
+
+"""
