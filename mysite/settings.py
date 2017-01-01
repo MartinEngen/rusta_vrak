@@ -111,6 +111,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
 elif os.getenv('SETTINGS_MODE') == 'prod':
     # Running in development, but want to access the Google Cloud SQL instance
     # in production.
+    # TODO: Remove this section when product is for use in production.
     print("Cloud SQL from local enviroment")
     logging.info("Running CLoud SQL")
     DATABASES = {
@@ -131,8 +132,8 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'rustadblocal',
-            'USER': 'app',
+            'NAME': 'rustadb',
+            'USER': 'localuser',
             'PASSWORD': '123',
         }
     }

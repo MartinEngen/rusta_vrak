@@ -15,7 +15,7 @@ from frontpage.views import index
 
 #custom functions
 from data_functions import generate_calendar_data, price_calculator, generate_pdf
-from mail_functions import send_mail_receipt
+from send_mail_appengine import send_mail_receipt
 
 #PDF generator
 from reportlab.pdfgen import canvas
