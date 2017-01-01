@@ -91,11 +91,11 @@
                  </div>
         </div>
     {% for car in cars %}
-        <div class="col-lg-12 car_tab" >
-            <div class="col-md-4 ">
+        <div class="col-lg-12 col-md-12 car_tab" >
+            <div class="col-md-4 col-sm-4">
                 <div class="thumbnail car_images" style="border: none">
 
-                    <a href="{{ car.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}"><img src="{{ car.main_image }}"></a>
+                    <a href="{{ car.carimages.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}"><img src="{{ car.carimages.thumbnail }}"></a>
                 </div>
 
             </div>

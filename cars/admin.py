@@ -18,6 +18,7 @@ class CarAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(models.Car, CarAdmin)
+admin.site.register(models.Car)
+admin.site.register(models.CarImages)
 #admin.site.register(models.Car_Booking)
 #admin.site.register(models.Registration_Scheme)

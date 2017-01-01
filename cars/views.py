@@ -3,10 +3,10 @@
 
 from django.shortcuts import render, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
-
+from django.core.exceptions import ObjectDoesNotExist
 
 from .forms import BookingForm, FilterForm
-from .models import Car
+from .models import Car, CarImages
 from booking.models import Dates_Reserved, Reservation
 
 from validation_functions import validate_date, find_available_cars
@@ -186,7 +186,16 @@ def car_list(request):
         cars = Car.objects.filter(car_type__in=types).filter(for_rent=True)
 
         for car in cars:
+            if hasattr(car, 'carimages'):
+                print("Has attribute..")
+                print(car.carimages.main_image)
+            #print(car.CarImages.main_image)
+
+
+        for car in cars:
             print (car.extra_accessories)
+
+
         context = {
             'categories': categories,
             'cars': cars,
@@ -292,8 +301,6 @@ def specific_car(request, car_id):
     else:
         current_car = get_object_or_404(Car, id=car_id)
 
-        images_string = current_car.gallery_images.encode('utf-8')
-        images = images_string.split(',')
 
         images = image_generator(current_car)
 
@@ -356,12 +363,17 @@ def booking_receipt(request, booking_id, registration_id):
 
 
 def image_generator(car):
-    images_string = car.gallery_images.encode('utf-8')
+    try:
+        images_string = car.carimages.gallery_images.encode('utf-8')
+    except ObjectDoesNotExist:
+        images = False
+        return images
+
+
 
     # If the image string is not empty, split them up into a list.
     if images_string:
         images = images_string.split(',')
-
     else:
         images = False
 
