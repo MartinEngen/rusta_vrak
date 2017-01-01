@@ -17,8 +17,8 @@
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
                 <h1><b>{{ car.brand }} {{ car.model }}</b></h1>
-                <a href="{{ car.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
-                    <img src="{{ car.main_image }}" class="img-rounded img-responsive" alt="{{ car.brand }} {{ car.model }}" width="800" height="450">
+                <a href="{{ car.carimages.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
+                    <img src="{{ car.carimages.main_image }}" class="img-rounded img-responsive" alt="{{ car.brand }} {{ car.model }}" width="800" height="450">
                 <!-- Main Image End -->
                 </a>
 

@@ -117,7 +117,7 @@ elif os.getenv('SETTINGS_MODE') == 'prod':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'rustadb',
+            'NAME': 'rustacloudsql',
             'USER': 'mello',
             'PASSWORD': '123',
             'HOST': '207.223.172.149',

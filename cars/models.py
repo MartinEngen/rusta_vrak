@@ -35,7 +35,7 @@ class Car(models.Model):
         verbose_name_plural = 'Biler'
 
 
-
+@python_2_unicode_compatible
 class CarImages(models.Model):
     car = models.OneToOneField(
         Car,
