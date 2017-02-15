@@ -1,0 +1,14 @@
+.table td {
+  font-size: 150%; }
+
+.btn {
+  background-color: #D96523;
+  color: white;
+  vertical-align: middle;
+  font-size: 19px; }
+
+.btn:hover, .btn:focus {
+  color: black;
+  background-color: #D96523; }
+
+/*# sourceMappingURL=receipt_style.css.map */

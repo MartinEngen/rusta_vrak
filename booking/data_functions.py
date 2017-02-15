@@ -6,12 +6,38 @@ from reportlab.pdfgen import canvas
 import json
 import datetime
 
+
+
+
+def generate_booked_dates(finalized_bookings):
+    # TODO: For every object in Finalized bookings, add the dates, and the dates in between into a json.
+
+    data = []
+
+    for booking in finalized_bookings:
+        delta = booking.final_date - booking.initial_date
+
+        for i in range(delta.days + 1):
+            print(booking.initial_date + datetime.timedelta(days=i))
+            booked_date = booking.initial_date + datetime.timedelta(days=i)
+            print (booked_date.strftime('%d.%m.%Y'))
+            data.append(booked_date.strftime('%d.%m.%Y'))
+
+
+    json_data_string = json.dumps(data)
+    return json_data_string
+
+
+
+
+
 def generate_calendar_data(finalized_bookings):
     data = []
 
     for finalized_bookings in finalized_bookings:
         start_date = finalized_bookings.initial_date
         end_date = finalized_bookings.final_date
+        print(start_date)
 
         event = {'start': str(start_date), 'end': str(end_date + datetime.timedelta(days=1)), 'rendering': 'background',
                  'color': 'black'}

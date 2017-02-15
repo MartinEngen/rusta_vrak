@@ -1,0 +1,1 @@
+PYTHONPATH=$HOME/django-rustavrak:$HOME/rustavrak:. python manage.py runserver 127.0.0.1:62116

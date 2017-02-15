@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 
 
 
-from .forms import BookingForm, BookingRegistrationForm
+from .forms import BookingRegistrationForm
 from .models import Car, Dates_Reserved, Reservation, Customer
 
 
