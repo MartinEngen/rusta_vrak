@@ -18,7 +18,7 @@ import sys
 sys.path.append('lib')
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rustavrak.settings")
 
     from django.core.management import execute_from_command_line
 
