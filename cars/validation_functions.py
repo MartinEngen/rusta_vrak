@@ -16,6 +16,8 @@ def validate_date(initial_date, final_date):
     message = ''
     error = False
 
+    print(type(initial_date))
+    print((final_date - initial_date))
       # Less than 1 day booked, abort.
     if (final_date - initial_date).days < 1:
         logging.error("Less than 1 day, stop")
