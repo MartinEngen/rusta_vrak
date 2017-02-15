@@ -14,7 +14,7 @@ from validation_functions import validate_date, find_available_cars
 import logging
 import datetime
 
-from booking.data_functions import generate_calendar_data
+from booking.data_functions import generate_calendar_data, generate_booked_dates
 
 # Mail API's
 import smtplib
@@ -223,20 +223,15 @@ def specific_car(request, car_id):
     # POST Request
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
-
-        # logging.info("Booking Requested.")
-        print ("Booking Requested.")
         car = get_object_or_404(Car, id=car_id)
-        if booking_form.is_valid():
 
+        if booking_form.is_valid():
             initial_date = booking_form.cleaned_data['initial_date']
             final_date = booking_form.cleaned_data['final_date']
 
             # Get all registered bookings for this car.
             finalized_bookings = Reservation.objects.filter(car=car).exclude(final_date__lte=(datetime.date.today()))\
                 .order_by('initial_date')
-
-
 
             # Run function to validate the dates searched.
             validated_dates = validate_date(initial_date, final_date)
@@ -283,11 +278,7 @@ def specific_car(request, car_id):
 
 
         else:
-
-            print("Not Valid.")
             logging.debug("Non valid form posted.")
-            print(booking_form.errors)
-            #car = get_object_or_404(Car, id=car_id)
             finalized_bookings = Reservation.objects.filter(car=car).exclude(
                 final_date__lte=(datetime.date.today())) \
                 .order_by('initial_date')
@@ -321,10 +312,6 @@ def specific_car(request, car_id):
             }
         else:
             dates = 'false'
-
-
-        print(from_date)
-
         # Gather the information required by the Calendar
         #finalized_bookings = Reservation.objects.filter(car=current_car).exclude(dates_reserved__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
         finalized_bookings = Reservation.objects.filter(car=current_car).exclude(
@@ -334,11 +321,13 @@ def specific_car(request, car_id):
         print("GET bookings: " + str(finalized_bookings.count()))
         print(finalized_bookings)
         calendar_data = generate_calendar_data(finalized_bookings)
+        booked_dates = generate_booked_dates(finalized_bookings)
         #print("Calendar data GET size: " + str(finalized_bookings.count()))
 
         context = {
             'car': current_car,
             'json_data_string': calendar_data,
+            'booked_dates_json': booked_dates,
             'images': images,
             'dates': dates
         }
@@ -349,13 +338,6 @@ def specific_car(request, car_id):
 
 
 
-
-
-
-
-def booking_receipt(request, booking_id, registration_id):
-    # TODO: Get the information required for the receipt page. Send this to the view and display it.
-    return render(request, 'booking/booking_receipt.html')
 
 
 

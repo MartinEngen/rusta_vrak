@@ -1,0 +1,40 @@
+body {
+  background-color: #5C6B63; }
+
+#form_container {
+  background-color: #143840;
+  margin-bottom: 20px; }
+  #form_container label {
+    font-size: large; }
+
+p {
+  font-size: 200%; }
+
+#car_info_table .table td {
+  width: 80%;
+  font-size: 150%; }
+#car_info_table .table #total {
+  border-bottom: 2px solid #fff; }
+
+.errorlist {
+  font-size: large;
+  border: 1px solid #FFBABA;
+  border-radius: 5px;
+  background-color: #FFBABA;
+  color: #D8000C;
+  margin: 5px; }
+
+.btn {
+  background-color: #D96523;
+  color: white;
+  vertical-align: middle;
+  font-size: 19px; }
+
+.btn:hover, .btn:focus {
+  color: black;
+  background-color: #D96523; }
+
+#total {
+  font-size: larger; }
+
+/*# sourceMappingURL=booking_form_style.css.map */

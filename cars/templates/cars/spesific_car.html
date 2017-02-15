@@ -5,6 +5,8 @@
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static "packages/lightbox/css/lightbox.css" %}"/>
 <link rel="stylesheet" href="{% static "cars/css/spesific_carStyle.css" %}"/>
+<link rel="stylesheet" href="{% static "packages/date-range-jquery/daterangepicker.min.css" %}">
+
 {% endblock pageBasedStyle %}
 
 
@@ -15,8 +17,11 @@
 <section id="car_images_section">
     <div class="container" id="car_image_container">
         <div class="row">
-            <div class="col-md-offset-2 col-md-8">
+            <div class="col-md-12" style="text-align: center">
                 <h1><b>{{ car.brand }} {{ car.model }}</b></h1>
+            </div>
+            <div class="col-md-offset-1 col-md-5">
+
                 <a href="{{ car.carimages.main_image }}" id="{{ car.id }}" data-lightbox="image-{{ car.id }}" data-title="{{ car.brand }} {{ car.model }}">
                     <img src="{{ car.carimages.main_image }}" class="img-rounded img-responsive" alt="{{ car.brand }} {{ car.model }}" width="800" height="450">
                 <!-- Main Image End -->
@@ -42,16 +47,7 @@
             <!-- Image column end -->
             </div>
 
-        <!-- Row END -->
-        </div>
-
-    <!-- Container END -->
-    </div>
-
-
-    <div class="container" id="car_info_container">
-        <div class="row">
-            <div class="col-md-offset-1 col-md-5">
+            <div class="col-md-6">
 
 
                 <!-- Car Info Table -->
@@ -110,56 +106,72 @@
             </div>
 
 
-            <div class="col-md-6" id="action_area">
+        <!-- Row END -->
+        </div>
+
+
+        <div class="col-md-offset-1 col-md-10">
+            <hr>
+             <div class="range_calendar">
                 <h1><b>Legg til en ny reservasjon</b></h1>
-                <form method="post" class="row" >{% csrf_token %}
+             <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
+                    <div id="date-range12-container" class="col-md-6"></div>
+                </div>
+
+                <div class="col-md-offset-1 col-md-5 col-sm-12 col-xs-12 form-group has-feedback">
+                     <form method="post" class="row" >{% csrf_token %}
+                        <span id="date-range">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                <label for="datepickerStart" class="control-label date-label">Hentes</label>
+                                <input type="text" value='' class="form-control datefield" id="datepickerStart" name="initial_date">
+                                <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                <label for="name" class="control-label date-label">Leveres</label>
+                                <input type="text" value='' class="form-control datefield" id="datepickerFinish" name="final_date">
+                                <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
+                            </div>
+                            <!-- <input size="20" id="datepickerStart" name="initial_date"> -->
+                            <!-- <input size="20" id="datepickerFinish" name="final_date"> -->
+                        </span>
 
 
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                            <label for="datepickerStart" class="control-label date-label">Hentes</label>
-                            <input type="text" value='' class="form-control datefield" id="datepickerStart" name="initial_date">
-                            <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                            <label for="name" class="control-label date-label">Leveres</label>
-                            <input type="text" value='' class="form-control datefield" id="datepickerFinish" name="final_date">
-                            <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
-                        </div>
-
+                        {% if errors %}
+                        {{ errors }}
+                        {% endif %}
                         <div class="col-md-6 col-sm-6 col-xs-12" id="button_box">
                             <button type="submit" class="btn btn-lg">Gå Videre</button>
                         </div>
-
-
-                    {% if errors %}
-                    {{ errors }}
-                    {% endif %}
-
-                </form>
-                <div class="col-md-12">
-                    {% if warning %}
-                    <div class="alert alert-danger" style="font-size: large">
-                      <strong> {{ message }} </strong>
-                    </div>
-                    {% endif %}
-
+                    </form>
                 </div>
-
-                <div class="col-md-offset-1 col-md-12" id="calendar_box">
-                    <h1>Tilgjengelighet</h1>
-                    <div>
-                        <div id='calendar' style="background-color: white; color: black; width: 70%; height: 70%;"></div>
-                    </div>
-                </div>
-
-
-
+              </div>
             </div>
-        <!-- Row End -->
         </div>
 
-    <!-- Container End -->
+    <div class="col-md-offset-1 col-md-10">
+            <hr>
+        <h1><b>Detaljer for valgt periode</b></h1>
+        <div class="col-md-offset-1 col-md-12">
+            <h4 id="days_booked"></h4>
+        </div>
+
+        <div class="col-md-offset-1 col-md-12">
+            <h4 id="total_price"></h4>
+        </div>
+
+        <div class="col-md-offset-1 col-md-12">
+            <h4 id="free_length"></h4>
+        </div>
+
     </div>
+
+    <!-- Container END -->
+    </div>
+
+
+
 
 </section>
 
@@ -169,55 +181,38 @@
 
 
 {% block testBlock %}
-    <script src="{% static "packages/lightbox/js/lightbox.js" %}"></script>
-   <script>
-   //var event1 = {{ event|safe }}
-   var json_data_string = {{ json_data_string | safe }}
-   var events = []; //The array
-   for(var i = 0; i<json_data_string.length; i++){
-       console.log(i);
-       events.push( {start: json_data_string[i].start, end: json_data_string[i].end, rendering: 'eventBackgroundColor', color: 'red'})
-   }
 
-    $(document).ready(( function() {
-        $( "#datepickerStart" ).datepicker({minDate: 0});
-        $( "#datepickerFinish" ).datepicker({minDate: 0});
+<script>
+var booked_dates = {{ booked_dates_json | safe }};
+
+var dates = {{ dates | safe }};
+
+if(dates){
+    $("#datepickerStart").val(dates.initial_date);
+    $("#datepickerFinish").val(dates.final_date);
+}
 
 
-        $('#calendar').fullCalendar({
-            // put your options and callbacks here
-        dayRender: function (date, cell) {
-            cell.css("background-color", "white");
-            },
-
-
-                }
-            ),
-
-
-
-
-        $("#calendar").fullCalendar('removeEvents');
-        $("#calendar").fullCalendar('addEventSource', events);
-
-
-        var dates = {{ dates | safe }}
-
-        if(dates){
-            console.log("Dato Oppgitt");
-            $("#datepickerStart").val(dates.initial_date);
-            $("#datepickerFinish").val(dates.final_date);
-        }
-        else{
-            console.log("Ingen Dato");
-        }
-
-
+$( "#datepickerStart" ).datepicker({
+    minDate: 0,
+    beforeShowDay: function(date){
+        var string = jQuery.datepicker.formatDate('dd.mm.yy', date);
+        return [ booked_dates.indexOf(string) == -1 ]
     }
+});
+$( "#datepickerFinish" ).datepicker({
+    minDate: 0,
+    beforeShowDay: function(date){
+        var string = jQuery.datepicker.formatDate('dd.mm.yy', date);
+        return [ booked_dates.indexOf(string) == -1 ]
+    }
+});
 
-    ));
-
-
-    </script>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js" type="text/javascript"></script>
+<script src="{% static "packages/date-range-jquery/jquery.daterangepicker.js" %}"></script>
+<script src="{% static "cars/js/date-range-jquery_config.js" %}"></script>
+<script src="{% static "cars/js/spesific_carJs.js" %}"></script>
+<script src="{% static "packages/lightbox/js/lightbox.js" %}"></script>
 
 {% endblock testBlock %}
