@@ -37,15 +37,12 @@ body {
   background: #5C6B63 !important;
   color: white !important; }
 
-.footer {
-  background-color: dimgrey;
-  height: 100px; }
-  .footer .navbar-static-bottom {
-    background-color: dimgray; }
-  .footer li {
-    font-size: larger; }
-    .footer li a {
-      color: white; }
+.footer .navbar-static-bottom {
+  background-color: dimgray; }
+.footer li {
+  font-size: larger; }
+  .footer li a {
+    color: white; }
 
 .navbar-toggle .icon-bar {
   background-color: #fff; }
