@@ -13,6 +13,10 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+from config import password
+from config import email
+
+
 SITE_ID = 8
 
 # SECURITY WARNING: don't run with debug turned on in production!

@@ -43,8 +43,7 @@ a {
   -o-transform: scale(1.5);
   padding: 10px; }
 #search_section .checkbox-inline {
-  padding-bottom: 20px;
-  margin-left: 50px; }
+  padding-bottom: 20px; }
   #search_section .checkbox-inline label {
     margin: 5px;
     font-size: large; }
@@ -83,4 +82,4 @@ section {
   padding-top: 40px;
   padding-bottom: 60px; }
 
-/*# sourceMappingURL=frontstyle.css.map */
+/*# sourceMappingURL=frontStyle.css.map */

@@ -54,13 +54,9 @@
                 <div class="row">
                      <div class="col-md-12 col-sm-12 col-xs-12">
                         <h3>Biltype</h3>
-                        <div class="checkbox-inline col-md-1 col-sm-12 col-xs-12">
-                          <label><input type="checkbox" name="personal" id="personal">Personbil</label>
-                        </div>
-                        <div class="checkbox-inline col-md-1 col-sm-12 col-xs-12">
-                          <label><input type="checkbox" name="van" id="van">Varebil</label>
-                        </div>
-                        <div class="checkbox-inline col-md-1 col-sm-12 col-xs-12">
+                        <div class="checkbox-inline col-md-12 col-sm-12 col-xs-12">
+                          <label><input type="checkbox" name="personal" id="personal">Personbil</label> <br>
+                          <label><input type="checkbox" name="van" id="van">Varebil</label> <br>
                           <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
                         </div>
                      </div>
@@ -81,7 +77,7 @@
 
 <div id="car_types">
     <div class="container">
-    <h1>Se alle biler</h1>
+    <h1>Biler</h1>
         <div class="row">
             <div class="col-md-4 car_frame">
               <a href="{% url 'cars:car_list'%}?type=1" class="thumbnail">

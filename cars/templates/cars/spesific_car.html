@@ -114,12 +114,13 @@
             <hr>
              <div class="range_calendar">
                 <h1><b>Legg til en ny reservasjon</b></h1>
+             <p>Velg en ledig periode.</p>
              <div class="row">
-                <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
-                    <div id="date-range12-container" class="col-md-6"></div>
+                <div class="col-md-5 col-sm-12 col-xs-12 form-group has-feedback" style="max-width: 100%;">
+                    <div id="date-range12-container" class="col-md-6" ></div>
                 </div>
 
-                <div class="col-md-offset-1 col-md-5 col-sm-12 col-xs-12 form-group has-feedback">
+                <div class="col-md-offset-2 col-md-5 col-sm-12 col-xs-12 form-group has-feedback">
                      <form method="post" class="row" >{% csrf_token %}
                         <span id="date-range">
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
@@ -151,7 +152,7 @@
         </div>
 
     <div class="col-md-offset-1 col-md-10">
-            <hr>
+        <hr>
         <h1><b>Detaljer for valgt periode</b></h1>
         <div class="col-md-offset-1 col-md-12">
             <h4 id="days_booked"></h4>
@@ -164,7 +165,6 @@
         <div class="col-md-offset-1 col-md-12">
             <h4 id="free_length"></h4>
         </div>
-
     </div>
 
     <!-- Container END -->
