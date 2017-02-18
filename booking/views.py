@@ -16,7 +16,7 @@ from frontpage.views import index
 #custom functions
 from data_functions import generate_calendar_data, price_calculator, generate_pdf
 from send_mail_appengine import send_mail_receipt
-
+from send_django_mail import send_mail_django
 #PDF generator
 from reportlab.pdfgen import canvas
 import datetime
@@ -86,6 +86,7 @@ def booking_schema(request, car_id):
 
             # Run the function that handles the sending of receipt.
             send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
+            send_mail_django(new_reservation, current_booking, current_booking_id, current_car, price)
 
             context = {
                 'car': current_car,

@@ -34,7 +34,7 @@ def index(request):
         context = {
             'error': False,
         }
-
+    print(request.META['HTTP_HOST'])
     return render(request, 'frontpage/index.html', context)
 
 

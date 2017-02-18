@@ -3,14 +3,22 @@
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from config import email, password
 BASE_DIR = os.path.dirname(__file__)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '@l!&amp;*!qmr_%y*buj!t1+80kz#r7o%7@a7b3*z1bd%zw0dp0%4c'
 
+"""
+ALLOWED_HOSTS = '*'
+"""
 ALLOWED_HOSTS = [
+    '*',
     '.rustavrak.sites.djangoeurope.com',
     '127.0.0.1',
+    'conantur.no',
+    '.conantur.no',
+    'www.conantur.no',
 ]
 
 from config import password
@@ -34,6 +42,15 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
+########### EMAIL #######################
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = email
+EMAIL_HOST_PASSWORD = password
+EMAIL_PORT = 587
+
+
+############ Database Connection ################
 if os.getenv('SETTINGS_MODE') == 'local':
     DATABASES = {
         'default': {
