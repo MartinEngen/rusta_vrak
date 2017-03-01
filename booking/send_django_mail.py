@@ -41,7 +41,5 @@ def send_mail_django(new_form, current_booking, booking_id, current_car, price):
         '',
         '',
         [new_form.customer.email],
-        fail_silently=False,
-        html_message=content
-
-    )
+        fail_silently=True,
+        html_message=content)

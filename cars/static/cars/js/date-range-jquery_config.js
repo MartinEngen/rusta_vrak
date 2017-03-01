@@ -32,7 +32,7 @@ $(function(){
             language: 'no',
             startOfWeek: 'monday',// or monday
             startDate: FormatDate(new Date()), // The current date, formatted.
-            maxDays: 30,
+            maxDays: 31,
             getValue: function()
             {
                 if ($('#datepickerStart').val() && $('#datepickerFinish').val() )

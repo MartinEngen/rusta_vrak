@@ -84,6 +84,9 @@ function updateDetails(){
 
 $('#datepickerStart').datepicker().on("input change", function (e) {
     updateDetails();
+    var date = $("#datepickerStart").datepicker('getDate');
+    date.setDate(date.getDate()+1);
+    $("#datepickerFinish").datepicker("option","minDate", date);
 });
 
 

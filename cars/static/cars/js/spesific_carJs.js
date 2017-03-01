@@ -13,7 +13,6 @@ function countDays(firstDate,secondDate){
     var endDay = new Date(secondDate);
     var a = moment([startDay.getYear(), startDay.getMonth(), startDay.getDate()]);
     var b = moment([endDay.getYear(), endDay.getMonth(), endDay.getDate()]);
-    console.log(b.diff(a, 'days')+1);   // =1
 
     return b.diff(a, 'days');
 }
@@ -32,12 +31,10 @@ function price_calculator(days, start_price){
         var amount_of_discounts = Math.floor(days / 5);
         var discount = 0.825; //17.5% discount for each chunk
 
-        console.log("Discounts: " + amount_of_discounts);
 
         for(var i =0; i<amount_of_discounts;i++){
             discount_calculated *= discount;
         }
-        console.log(start_price*days*discount_calculated);
         final_price = round5(start_price*days*discount_calculated);
 
     }
@@ -84,6 +81,9 @@ function updateDetails(){
 
 $('#datepickerStart').datepicker().on("input change", function (e) {
     updateDetails();
+    var date = $("#datepickerStart").datepicker('getDate');
+    date.setDate(date.getDate()+1);
+    $("#datepickerFinish").datepicker("option","minDate", date);
 });
 
 

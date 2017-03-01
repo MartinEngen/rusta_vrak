@@ -85,7 +85,7 @@ def booking_schema(request, car_id):
             km_included = number_of_days * 50
 
             # Run the function that handles the sending of receipt.
-            send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
+            #send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
             send_mail_django(new_reservation, current_booking, current_booking_id, current_car, price)
 
             context = {

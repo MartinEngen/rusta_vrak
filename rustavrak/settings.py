@@ -43,12 +43,31 @@ MANAGERS = ADMINS
 
 
 ########### EMAIL #######################
+
+
+DEFAULT_FROM_EMAIL = 'martin@conantur.no'
+SERVER_EMAIL = 'martin@conantur.no'
+
+
+"""
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'martin@conantur.no'
+DEFAULT_FROM_EMAIL = 'martin@conantur.no'
+SERVER_EMAIL = 'martin@conantur.no'
+EMAIL_HOST_PASSWORD = 'e245d4.E2'
+EMAIL_HOST = 'smtp.gmail.com'
+
+#EMAIL_PORT = 587
+
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = email
+DEFAULT_FROM_EMAIL = 'martin@conantur.no'
+SERVER_EMAIL = 'martin@conantur.no'
 EMAIL_HOST_PASSWORD = password
 EMAIL_PORT = 587
-
+"""
 
 ############ Database Connection ################
 if os.getenv('SETTINGS_MODE') == 'local':
