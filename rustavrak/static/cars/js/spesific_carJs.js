@@ -74,8 +74,8 @@ function updateDetails(){
         free_length = days * 50;
         price = price_calculator(days, 250);
         $("#days_booked").html("Antall dager: " + days);
-        $("#total_price").html("Total pris: " + price);
-        $("#days_booked").html("Antall dager: " + days);
+        $("#total_price").html("Total pris: " + price + " kr");
+        $("#free_length").html("Inkludert kjørelengde: " + free_length +" km");
     }
 
 }
@@ -84,6 +84,9 @@ function updateDetails(){
 
 $('#datepickerStart').datepicker().on("input change", function (e) {
     updateDetails();
+    var date = $("#datepickerStart").datepicker('getDate');
+    date.setDate(date.getDate()+1);
+    $("#datepickerFinish").datepicker("option","minDate", date);
 });
 
 

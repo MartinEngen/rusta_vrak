@@ -1,4 +1,5 @@
 #car_image_container {
+  padding-top: 20px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background-color: #143840;
@@ -62,8 +63,7 @@ p {
   padding-top: 10px; }
 
 #car_info_table {
-  font-size: large;
-  padding-top: 20px; }
+  font-size: large; }
 
 #datepickerStart, #datepickerFinish {
   font-size: x-large;

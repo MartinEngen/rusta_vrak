@@ -114,12 +114,13 @@
             <hr>
              <div class="range_calendar">
                 <h1><b>Legg til en ny reservasjon</b></h1>
+             <p>Velg en ledig periode.</p>
              <div class="row">
-                <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
-                    <div id="date-range12-container" class="col-md-6"></div>
+                <div class="col-md-5 col-sm-12 col-xs-12 form-group has-feedback" style="max-width: 100%;">
+                    <div id="date-range12-container" class="col-md-6" ></div>
                 </div>
 
-                <div class="col-md-offset-1 col-md-5 col-sm-12 col-xs-12 form-group has-feedback">
+                <div class="col-md-offset-2 col-md-5 col-sm-12 col-xs-12 form-group has-feedback">
                      <form method="post" class="row" >{% csrf_token %}
                         <span id="date-range">
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
@@ -151,7 +152,7 @@
         </div>
 
     <div class="col-md-offset-1 col-md-10">
-            <hr>
+        <hr>
         <h1><b>Detaljer for valgt periode</b></h1>
         <div class="col-md-offset-1 col-md-12">
             <h4 id="days_booked"></h4>
@@ -164,7 +165,6 @@
         <div class="col-md-offset-1 col-md-12">
             <h4 id="free_length"></h4>
         </div>
-
     </div>
 
     <!-- Container END -->
@@ -179,36 +179,53 @@
 
 
 
-
 {% block testBlock %}
 
 <script>
+
+// Dates already booked, insertet as invalid dates in the date pickers
 var booked_dates = {{ booked_dates_json | safe }};
 
+
+// If searched by dates.
 var dates = {{ dates | safe }};
 
+
+var dp_start_date = $("#datepickerStart");
+var dp_end_date = $("#datepickerFinish");
+
 if(dates){
-    $("#datepickerStart").val(dates.initial_date);
-    $("#datepickerFinish").val(dates.final_date);
+    dp_start_date.val(dates.initial_date);
+    dp_end_date.val(dates.final_date);
 }
 
+dp_end_date.datepicker({
+    minDate: 0,
+    beforeShowDay: function(date){
+        var string = jQuery.datepicker.formatDate('dd.mm.yy', date);
+        return [ booked_dates.indexOf(string) == -1 ]
+    }
+});
 
-$( "#datepickerStart" ).datepicker({
+dp_start_date.datepicker({
     minDate: 0,
     beforeShowDay: function(date){
         var string = jQuery.datepicker.formatDate('dd.mm.yy', date);
         return [ booked_dates.indexOf(string) == -1 ]
-    }
-});
-$( "#datepickerFinish" ).datepicker({
-    minDate: 0,
-    beforeShowDay: function(date){
-        var string = jQuery.datepicker.formatDate('dd.mm.yy', date);
-        return [ booked_dates.indexOf(string) == -1 ]
-    }
-});
+        }
+    });
+
+dp_start_date.on("input change", function (e) {
+    var date = dp_start_date.datepicker('getDate');
+    date.setDate(date.getDate()+1);
+    dp_end_date.datepicker("option","minDate", date);
+    });
+
+
 
 </script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js" type="text/javascript"></script>
 <script src="{% static "packages/date-range-jquery/jquery.daterangepicker.js" %}"></script>
 <script src="{% static "cars/js/date-range-jquery_config.js" %}"></script>

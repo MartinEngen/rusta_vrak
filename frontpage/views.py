@@ -21,7 +21,6 @@ def index(request):
     # If the error exists, use give it to the template and delete it from the session.
     if 'search_car_error_message' in request.session:
         message = request.session['search_car_error_message'].encode('utf8')
-        print(message)
         context = {
             'error': True,
             'message': message
@@ -34,7 +33,6 @@ def index(request):
         context = {
             'error': False,
         }
-
     return render(request, 'frontpage/index.html', context)
 
 
@@ -44,8 +42,6 @@ def search_function(request):
         search_form = SearchForm(request.POST)
 
         if search_form.is_valid():
-            print('Valid search form, lets do some queries.')
-
             inital_date = search_form.cleaned_data['initial_date']
             final_date = search_form.cleaned_data['final_date']
 
@@ -97,7 +93,6 @@ def search_function(request):
             return render(request, 'cars/car_list.html', context)
 
         else:
-            print("mangler info i greia.")
             # TODO: Generate Error, same as booking input errors.
             message = "Informasjon mangler. Prøv å fyll ut begge dato feltene på nytt"
             request.session['search_car_error_message'] = message

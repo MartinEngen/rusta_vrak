@@ -29,11 +29,11 @@
             </tr>
             <tr>
                 <td>Hentes Dato</td>
-                <td>{{ booking.initial_date }}</td>
+                <td>{{ booking.initial_date|date:'d.m.Y' }}</td>
             </tr>
             <tr>
                 <td>Levers Dato</td>
-                <td>{{ booking.final_date }}</td>
+                <td>{{ booking.final_date|date:'d.m.Y' }}</td>
             </tr>
 
             <tr>
@@ -73,7 +73,7 @@
         </tbody>
         </table>
          <a href="{% url 'booking:pdf' filled_form.id %}">
-            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned kvittering på PDF</button>
+            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned ordre bekreftelse som PDF</button>
         </a>
     </div>
 
