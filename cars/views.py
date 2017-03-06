@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import BookingForm, FilterForm
 from .models import Car, CarImages
 from booking.models import Dates_Reserved, Reservation
+from control_panel.models import lock_reservation_period
 
 from validation_functions import validate_date, find_available_cars
 
@@ -191,7 +192,7 @@ def car_list(request):
 
 def specific_car(request, car_id):
 
-    # TODO: Modernize. for newer.
+    # Standard Abort function.
     def abort_function(car, message, finalized_bookings):
         calendar_data = generate_booked_dates(finalized_bookings)
         context = {
@@ -225,6 +226,8 @@ def specific_car(request, car_id):
                 return abort_function(car, validated_dates['message'], finalized_bookings)
 
 
+            # All locked periods.
+            existing_reservation_locks = lock_reservation_period.objects.filter(to_date__gte=datetime.date.today())
 
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
             for finalized_booking in finalized_bookings:
@@ -241,18 +244,15 @@ def specific_car(request, car_id):
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
 
+                # TODO: Add check for no business dates.
+            
+
+
 
 
             new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
                                       final_date=booking_form.cleaned_data['final_date'])
             new_booking.save()
-
-
-            booking_information = {
-                'initial_date': booking_form.cleaned_data['final_date']
-                #'final_date': booking_form.cleaned_data['final_date']
-            }
-
 
             request.session['current_booking_id'] = new_booking.id
 

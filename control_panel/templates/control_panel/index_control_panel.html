@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block Content %}
+<h1>VIP only.</h1>
+<hr>
+<h3>Sett av datoer</h3>
+    <p> Her er det mulig å sette av et rom mellom 2 dato for å stoppe bestillinger på nettsiden. For kunder vil dette se ut som bilene er booket.</p>
+    <p>Problemer: Dersom en bestilling allerede eksisterers, må dette håndteres manuelt. Kontakt Kunde eller noe slikt..</p>
+    <a href="{% url 'control_panel:lock_reservations'  %}">Stopp booking mellom 2 dato</a>
+
+{% endblock Content %}

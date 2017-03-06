@@ -3,7 +3,7 @@
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from config import email, password
+
 BASE_DIR = os.path.dirname(__file__)
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -22,11 +22,9 @@ ALLOWED_HOSTS = [
     '.rustavrak.no'
 ]
 
-from config import password
-from config import email
 
 
-SITE_ID = 8
+SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -105,7 +103,9 @@ else:
     """
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
+
 LANGUAGE_CODE = 'nb'
+
 TIME_ZONE = 'Europe/Oslo'
 USE_I18N = True
 USE_L10N = True
@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'frontpage.apps.FrontpageConfig',
     'cars.apps.CarsConfig',
     'booking.apps.BookingConfig',
+    'control_panel.apps.ControlPanelConfig',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
