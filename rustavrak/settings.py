@@ -13,12 +13,13 @@ SECRET_KEY = '@l!&amp;*!qmr_%y*buj!t1+80kz#r7o%7@a7b3*z1bd%zw0dp0%4c'
 ALLOWED_HOSTS = '*'
 """
 ALLOWED_HOSTS = [
-    '*',
     '.rustavrak.sites.djangoeurope.com',
     '127.0.0.1',
     'conantur.no',
     '.conantur.no',
     'www.conantur.no',
+    'rustavrak.no',
+    '.rustavrak.no'
 ]
 
 from config import password
@@ -45,8 +46,8 @@ MANAGERS = ADMINS
 ########### EMAIL #######################
 
 
-DEFAULT_FROM_EMAIL = 'martin@conantur.no'
-SERVER_EMAIL = 'martin@conantur.no'
+DEFAULT_FROM_EMAIL = 'ikke.svar@rustavrak.no'
+SERVER_EMAIL = 'ikke.svar@rustavrak.no'
 
 
 """

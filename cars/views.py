@@ -14,29 +14,22 @@ from validation_functions import validate_date, find_available_cars
 import logging
 import datetime
 
-from booking.data_functions import generate_calendar_data, generate_booked_dates
+from booking.data_functions import generate_booked_dates
 
 # Mail API's
-import smtplib
-import os
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 # TODO: General Code Cleanup. This may entail moving some functions to new apps / files.
 
 def car_list(request):
     # TODO: Make the search queries based on posted from the car_list page
     if request.method == 'POST':
         # This method shall handle filtering of the objects AND searching for dates and availability.
-        print("Filter Post Request")
         filtered_data = FilterForm(request.POST)
+
+
+
 
         if filtered_data.is_valid():
             # Initialze variables
-
-            #Searching cars
-            print("Finding Cars.")
-
-
             dates = False
             categories = ''
             searched_categories = ''
@@ -45,6 +38,8 @@ def car_list(request):
             }
 
             car_types = []
+
+
             # Car type
             if filtered_data.cleaned_data['personal']:
                 car_types.append(1)
@@ -124,7 +119,7 @@ def car_list(request):
 
                 else:
                     # User Entered non valid dates.
-                    print("Non Valid dates found, do redirect home. , %s" % validate['message'])
+                    logging.error("Non Valid dates found, do redirect home. , %s" % validate['message'])
                     request.session['search_car_error_message'] = validate['message']
 
                     return redirect('/')
@@ -146,6 +141,7 @@ def car_list(request):
 
         # Not valid POST request, redirect the user back to the start.
         else:
+            logging.error("Invalid search form posted." + filtered_data.errors)
             request.session['search_car_error_message'] = "Feil oppstod ved henting av biler. Prøv igjen"
 
             return redirect('/')
@@ -153,7 +149,6 @@ def car_list(request):
 
 
     else:
-        print("Get Request List")
         car_type = request.GET.get('type')
 
         if car_type:
@@ -185,17 +180,6 @@ def car_list(request):
 
         cars = Car.objects.filter(car_type__in=types).filter(for_rent=True)
 
-        for car in cars:
-            if hasattr(car, 'carimages'):
-                print("Has attribute..")
-                print(car.carimages.main_image)
-            #print(car.CarImages.main_image)
-
-
-        for car in cars:
-            print (car.extra_accessories)
-
-
         context = {
             'categories': categories,
             'cars': cars,
@@ -207,14 +191,15 @@ def car_list(request):
 
 def specific_car(request, car_id):
 
+    # TODO: Modernize. for newer.
     def abort_function(car, message, finalized_bookings):
-        calendar_data = generate_calendar_data(finalized_bookings)
+        calendar_data = generate_booked_dates(finalized_bookings)
         context = {
             'car': car,
             'dates': 'false',
             'warning': True,
             'message': message,
-            'json_data_string': calendar_data,
+            'booked_dates_json': calendar_data,
         }
         return render(request, 'cars/spesific_car.html', context)
 
@@ -246,14 +231,12 @@ def specific_car(request, car_id):
 
                 # Checks if the date is placed within a range of already booked.
                 if finalized_booking.initial_date <= initial_date <= finalized_booking.final_date or finalized_booking.initial_date <= final_date <= finalized_booking.final_date:
-                    print("Complicated working..")
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
 
                 # Check if there is an exisiting booking within this new entry.
                 if initial_date <= finalized_booking.initial_date <= final_date or initial_date <= finalized_booking.final_date <= final_date:
-                    print("Complicated working..")
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
@@ -303,9 +286,6 @@ def specific_car(request, car_id):
             initial_date = from_date[1].encode('utf8')
             final_date = from_date[0].encode('utf8')
 
-            # This is the one I need.
-            print(initial_date)
-            print(final_date)
             dates = {
                 'initial_date': initial_date,
                 'final_date': final_date
@@ -318,15 +298,11 @@ def specific_car(request, car_id):
             final_date__lte=(datetime.date.today())) \
             .order_by('initial_date')
 
-        print("GET bookings: " + str(finalized_bookings.count()))
-        print(finalized_bookings)
-        calendar_data = generate_calendar_data(finalized_bookings)
         booked_dates = generate_booked_dates(finalized_bookings)
         #print("Calendar data GET size: " + str(finalized_bookings.count()))
 
         context = {
             'car': current_car,
-            'json_data_string': calendar_data,
             'booked_dates_json': booked_dates,
             'images': images,
             'dates': dates

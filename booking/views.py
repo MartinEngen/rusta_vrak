@@ -14,7 +14,7 @@ from frontpage.views import index
 
 
 #custom functions
-from data_functions import generate_calendar_data, price_calculator, generate_pdf
+from data_functions import price_calculator, generate_pdf
 from send_mail_appengine import send_mail_receipt
 from send_django_mail import send_mail_django
 #PDF generator
@@ -33,7 +33,6 @@ def booking_schema(request, car_id):
         return redirect(index)
 
     if request.method == 'POST':
-        print("Generete a list")
         booking_scheme_form = BookingRegistrationForm(request.POST)
 
         if booking_scheme_form.is_valid():

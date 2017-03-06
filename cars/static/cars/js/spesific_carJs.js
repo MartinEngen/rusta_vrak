@@ -60,12 +60,10 @@ function updateDetails(){
     var price = 0;
     var free_length = 0;
 
-
-
-
     days = countDays(start, end);
     if (days < 0 || days > 30){
-
+        // Do nothing, this is not valid booking.
+        // Alert?.
     }
     else{
         free_length = days * 50;

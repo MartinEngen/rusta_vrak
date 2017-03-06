@@ -32,6 +32,6 @@ class FilterForm(forms.Form):
     fuel_gasoline = forms.BooleanField(required=False)
     fuel_diesel = forms.BooleanField(required=False)
 
-    initial_date = forms.DateField(required=False, input_formats=DATE_INPUT_FORMATS)
-    final_date = forms.DateField(required=False, input_formats=DATE_INPUT_FORMATS)
+    initial_date = forms.DateField(input_formats=DATE_INPUT_FORMATS, required=False)
+    final_date = forms.DateField(input_formats=DATE_INPUT_FORMATS, required=False)
 

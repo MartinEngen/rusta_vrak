@@ -35,11 +35,10 @@ def send_mail_django(new_form, current_booking, booking_id, current_car, price):
         str(current_car.model.encode('utf8')), str(current_booking.initial_date.strftime('%d.%m.%Y')),
         str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.customer.phone_number), str(price))
 
-
     send_mail(
         'Rusta Vrak Bilutleige', # Subject
         '',
         '',
         [new_form.customer.email],
-        fail_silently=True,
+        fail_silently=False,
         html_message=content)
