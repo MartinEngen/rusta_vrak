@@ -67,4 +67,4 @@ class Reservation(models.Model):
 
     class Meta:
         verbose_name = 'Reservasjon'
-        verbose_name_plural = 'Fullførte Bestillinger'
+        verbose_name_plural = 'Reservasjoner'

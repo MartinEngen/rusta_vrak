@@ -245,7 +245,7 @@ def specific_car(request, car_id):
                     return abort_function(car, message, finalized_bookings)
 
                 # TODO: Add check for no business dates.
-            
+
 
 
 

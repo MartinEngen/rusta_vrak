@@ -3,7 +3,7 @@ from django.core.mail import send_mail, EmailMessage
 
 
 
-def send_mail_django(new_form, current_booking, booking_id, current_car, price):
+def send_mail_django(new_form, current_booking, current_car, price):
 
 
     content = """<html>
@@ -31,14 +31,17 @@ def send_mail_django(new_form, current_booking, booking_id, current_car, price):
       </body>
     </html>
     """ % (
-        new_form.customer.first_name.encode('utf8'), str(booking_id), str(current_car.brand.encode('utf8')),
+        new_form.customer.first_name.encode('utf8'), str(new_form.id), str(current_car.brand.encode('utf8')),
         str(current_car.model.encode('utf8')), str(current_booking.initial_date.strftime('%d.%m.%Y')),
         str(current_booking.final_date.strftime('%d.%m.%Y')), str(new_form.customer.phone_number), str(price))
 
-    send_mail(
+    status = send_mail(
         'Rusta Vrak Bilutleige', # Subject
         '',
         '',
         [new_form.customer.email],
         fail_silently=False,
         html_message=content)
+
+
+    print("EMAIL STATUS: " + str(status))
