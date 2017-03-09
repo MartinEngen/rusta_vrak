@@ -12,68 +12,72 @@
 {% block Content %}
 <div class="container">
     <div class="jumbotron" style="color: black;">
-        <h2>Reservasjon er registrert</h2>
-        <h3>Informasjon om bestillingen</h3>
-        <hr>
-        <h4>Reservasjonen</h4>
-        <p>
-        <table class="table">
-         <tbody>
-            <tr>
-                <td>Reservasjon Nr.</td>
-                <td>{{ filled_form.id }}</td>
-            </tr>
-            <tr>
-                <td>Bil</td>
-                <td>{{ car.brand }} {{ car.model }}, {{ car.seats }} seter, {{ car.fuel_type }}</td>
-            </tr>
-            <tr>
-                <td>Hentes Dato</td>
-                <td>{{ booking.initial_date|date:'d.m.Y' }}</td>
-            </tr>
-            <tr>
-                <td>Levers Dato</td>
-                <td>{{ booking.final_date|date:'d.m.Y' }}</td>
-            </tr>
+        <h2>Reservasjon er registrert i vårt system.</h2>
+        <p style="font-size: large">En e-post med informasjon om reservasjonen er sendt til din adresse. Husk å sjekke spam/søppelpost dersom den ikke spretter opp. <br>
+            <b>Merk:</b> Reservasjonen må bekreftes av oss før bestillingen er fullført. Vi vil ta kontakt.</p>
 
-            <tr>
-                <td>Gratis inkl. kjørelengde</td>
-                <td>{{ km_included }} Km</td>
-            </tr>
+        <div style="padding-top: 20px;">
+            <h3>Reservasjonsinformasjon</h3>
+            <p>
+            <table class="table">
+             <tbody>
+                <tr>
+                    <td>Reservasjon Nr.</td>
+                    <td>{{ filled_form.id }}</td>
+                </tr>
+                <tr>
+                    <td>Bil</td>
+                    <td>{{ car.brand }} {{ car.model }}, {{ car.seats }} seter, {{ car.fuel_type }}</td>
+                </tr>
+                <tr>
+                    <td>Hentes Dato</td>
+                    <td>{{ booking.initial_date|date:'d.m.Y' }}</td>
+                </tr>
+                <tr>
+                    <td>Levers Dato</td>
+                    <td>{{ booking.final_date|date:'d.m.Y' }}</td>
+                </tr>
 
-            <tr>
-                <td>Pris</td>
-                <td>{{ price }}</td>
-            </tr>
-            {%   if filled_form.misc_info %}
-            <tr>
-                <td>Ekstra Informasjon</td>
-                <td>"{{ filled_form.misc_info }}"</td>
-            </tr>
-            {% endif %}
-            <tr>
+                <tr>
+                    <td>Gratis inkl. kjørelengde</td>
+                    <td>{{ km_included }} Km</td>
+                </tr>
 
-            </tr>
-            <tr>
-                <td><h4>Bestiller</h4></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Navn</td>
-                <td>{{ customer.first_name }} {{ customer.last_name }}</td>
-            </tr>
-            <tr>
-                <td>Epost</td>
-                <td>{{ customer.email }}</td>
-            </tr>
-            <tr>
-                <td>Telefon</td>
-                <td>{{ customer.phone_number }}</td>
-            </tr>
-        </tbody>
-        </table>
+                <tr>
+                    <td>Pris</td>
+                    <td>{{ price }}kr</td>
+                </tr>
+                {%   if filled_form.misc_info %}
+                <tr>
+                    <td>Ekstra Informasjon</td>
+                    <td>"{{ filled_form.misc_info }}"</td>
+                </tr>
+                {% endif %}
+                <tr>
+
+                </tr>
+                <tr>
+                    <td><h4>Bestiller</h4></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Navn</td>
+                    <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+                </tr>
+                <tr>
+                    <td>Epost</td>
+                    <td>{{ customer.email }}</td>
+                </tr>
+                <tr>
+                    <td>Telefon</td>
+                    <td>{{ customer.phone_number }}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
          <a href="{% url 'booking:pdf' filled_form.id %}">
-            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned ordre bekreftelse som PDF</button>
+            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned reservasjonsinformasjon som PDF</button>
         </a>
     </div>
 

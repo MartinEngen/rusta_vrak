@@ -113,7 +113,15 @@
         <div class="col-md-offset-1 col-md-10">
             <hr>
              <div class="range_calendar">
+                        {% if warning %}
+                            <div class="alert alert-danger" role="alert" style="font-size: large">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                <b>{{ message }}</b>
+                            </div>
+                        {% endif %}
                 <h1><b>Legg til en ny reservasjon</b></h1>
+
              <p>Velg en ledig periode.</p>
              <div class="row">
                 <div class="col-md-5 col-sm-12 col-xs-12 form-group has-feedback" style="max-width: 100%;">
