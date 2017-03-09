@@ -5,7 +5,10 @@ from .data_functions import price_calculator
 # Register your models here.
 
 class FinalizedBookings(admin.ModelAdmin):
-    list_display = ('bil', 'date_made', 'fra_dato', 'til_dato', 'kunde', 'kunde_epost', 'kunde_tlf', 'pris')
+    list_display = ('id', 'bil', 'date_made', 'fra_dato', 'til_dato', 'kunde', 'kunde_epost', 'kunde_tlf', 'pris')
+
+    def id(self, obj):
+        return obj.id
 
     def bil(self, obj):
         return ("%s %s" % (obj.car.brand, obj.car.model)).upper()
@@ -38,7 +41,7 @@ class FinalizedBookings(admin.ModelAdmin):
     fra_dato.admin_order_field = 'initial_date'
     til_dato.admin_order_field = 'final_date'
 
-    search_fields = ['car__brand', 'car__model', 'car__license_plate', 'customer__last_name']
+    search_fields = ['id', 'car__brand', 'car__model', 'car__license_plate', 'customer__last_name']
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'author_first_name')

@@ -8,8 +8,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import BookingForm, FilterForm
 from .models import Car, CarImages
 from booking.models import Dates_Reserved, Reservation
+from control_panel.models import lock_reservation_period
 
-from validation_functions import validate_date, find_available_cars
+from validation_functions import validate_availability, validate_date, find_available_cars
 
 import logging
 import datetime
@@ -191,7 +192,7 @@ def car_list(request):
 
 def specific_car(request, car_id):
 
-    # TODO: Modernize. for newer.
+    # Standard Abort function.
     def abort_function(car, message, finalized_bookings):
         calendar_data = generate_booked_dates(finalized_bookings)
         context = {
@@ -225,10 +226,18 @@ def specific_car(request, car_id):
                 return abort_function(car, validated_dates['message'], finalized_bookings)
 
 
+            # All locked periods.
+            existing_reservation_locks = lock_reservation_period.objects.filter(to_date__gte=datetime.date.today())
 
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
-            for finalized_booking in finalized_bookings:
+            validated_availability = validate_availability(initial_date, final_date, finalized_bookings)
 
+            if validated_availability['error']:
+                return abort_function(car, validated_availability['message'], finalized_bookings)
+
+
+            """
+            for finalized_booking in finalized_bookings:
                 # Checks if the date is placed within a range of already booked.
                 if finalized_booking.initial_date <= initial_date <= finalized_booking.final_date or finalized_booking.initial_date <= final_date <= finalized_booking.final_date:
                     logging.error("Error, not able to book. Overlapping")
@@ -241,22 +250,22 @@ def specific_car(request, car_id):
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
 
+            for locked_periods in existing_reservation_locks:
+                if locked_periods.from_date <= initial_date <= locked_periods.to_date or locked_periods.from_date <= final_date <= locked_periods.to_date:
+                    logging.error("Error, not able to book. Overlapping")
+                    message = "Reservasjon overlapper, velg en ledig periode."
+                    return abort_function(car, message, finalized_bookings)
 
-
+                if initial_date <= locked_periods.from_date <= final_date or initial_date <= locked_periods.to_date <= final_date:
+                    logging.error("Error, not able to book. Overlapping")
+                    message = "Reservasjon overlapper, velg en ledig periode."
+                    return abort_function(car, message, finalized_bookings)
+            """
+            # ============== Validation Passed ===============
             new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
                                       final_date=booking_form.cleaned_data['final_date'])
             new_booking.save()
-
-
-            booking_information = {
-                'initial_date': booking_form.cleaned_data['final_date']
-                #'final_date': booking_form.cleaned_data['final_date']
-            }
-
-
             request.session['current_booking_id'] = new_booking.id
-
-
             return redirect('booking:reservation_schema', car_id=car.id)
 
 
@@ -265,8 +274,7 @@ def specific_car(request, car_id):
             finalized_bookings = Reservation.objects.filter(car=car).exclude(
                 final_date__lte=(datetime.date.today())) \
                 .order_by('initial_date')
-
-            message = "Informasjon mangler, prøv å fyll ut feltene på nytt. Dato må være DD.MM.ÅÅÅÅ"
+            message = "Informasjon mangler, prøv å fyll ut feltene på nytt. NB: Dato må være i format DD.MM.ÅÅÅÅ"
 
             return abort_function(car, message, finalized_bookings)
 

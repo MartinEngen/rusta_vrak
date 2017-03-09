@@ -3,15 +3,12 @@
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from config import email, password
+
 BASE_DIR = os.path.dirname(__file__)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '@l!&amp;*!qmr_%y*buj!t1+80kz#r7o%7@a7b3*z1bd%zw0dp0%4c'
 
-"""
-ALLOWED_HOSTS = '*'
-"""
 ALLOWED_HOSTS = [
     '.rustavrak.sites.djangoeurope.com',
     '127.0.0.1',
@@ -22,11 +19,9 @@ ALLOWED_HOSTS = [
     '.rustavrak.no'
 ]
 
-from config import password
-from config import email
 
 
-SITE_ID = 8
+SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,31 +39,8 @@ MANAGERS = ADMINS
 
 
 ########### EMAIL #######################
-
-
 DEFAULT_FROM_EMAIL = 'ikke.svar@rustavrak.no'
 SERVER_EMAIL = 'ikke.svar@rustavrak.no'
-
-
-"""
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'martin@conantur.no'
-DEFAULT_FROM_EMAIL = 'martin@conantur.no'
-SERVER_EMAIL = 'martin@conantur.no'
-EMAIL_HOST_PASSWORD = 'e245d4.E2'
-EMAIL_HOST = 'smtp.gmail.com'
-
-#EMAIL_PORT = 587
-
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = email
-DEFAULT_FROM_EMAIL = 'martin@conantur.no'
-SERVER_EMAIL = 'martin@conantur.no'
-EMAIL_HOST_PASSWORD = password
-EMAIL_PORT = 587
-"""
 
 ############ Database Connection ################
 if os.getenv('SETTINGS_MODE') == 'local':
@@ -92,26 +64,14 @@ else:
             'PORT': '',
         }
     }
-
-    """
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'rusta_vrak_local',
-            'USER': 'local_admin',
-            'PASSWORD': 'pa$$sword1'
-        }
-    }
-    """
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
-LANGUAGE_CODE = 'nb'
-TIME_ZONE = 'Europe/Oslo'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
+LANGUAGE_CODE = 'nb'
+TIME_ZONE = 'Europe/Oslo'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/username/projectname/media/"
@@ -140,12 +100,13 @@ INSTALLED_APPS = (
     'frontpage.apps.FrontpageConfig',
     'cars.apps.CarsConfig',
     'booking.apps.BookingConfig',
+    'control_panel.apps.ControlPanelConfig',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 )

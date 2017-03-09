@@ -71,11 +71,6 @@ def booking_schema(request, car_id):
                 logging.info("New Entry saved, ID: %s, by user %s" % (str(new_reservation.id), customer.email))
             else:
                 logging.warning("User has updated an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
-
-
-            #new_reservation = Reservation(car_id=car_id, customer=customer, status=2, initial_date=current_booking.initial_date, final_date=current_booking.final_date, misc_info=misc_info)
-            #new_reservation.save()
-
             number_of_days = (new_reservation.final_date - new_reservation.initial_date).days
 
 
@@ -85,7 +80,7 @@ def booking_schema(request, car_id):
 
             # Run the function that handles the sending of receipt.
             #send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
-            send_mail_django(new_reservation, current_booking, current_booking_id, current_car, price)
+            send_mail_django(new_reservation, current_booking, current_car, price)
 
             context = {
                 'car': current_car,

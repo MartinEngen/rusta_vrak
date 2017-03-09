@@ -3,17 +3,14 @@
 from django.shortcuts import HttpResponse
 from reportlab.pdfgen import canvas
 
+from control_panel.models import lock_reservation_period
+
 import json
 import datetime
 
 
-
-
 def generate_booked_dates(finalized_bookings):
-    # TODO: For every object in Finalized bookings, add the dates, and the dates in between into a json.
-
     data = []
-
     for booking in finalized_bookings:
         delta = booking.final_date - booking.initial_date
 
@@ -21,6 +18,15 @@ def generate_booked_dates(finalized_bookings):
             booked_date = booking.initial_date + datetime.timedelta(days=i)
             data.append(booked_date.strftime('%d.%m.%Y'))
 
+    # Add any locked periods
+    existing_reservation_locks = lock_reservation_period.objects.filter(to_date__gte=datetime.date.today())
+    for locked_period in existing_reservation_locks:
+        delta = locked_period.to_date - locked_period.from_date
+        print("locked period existing.")
+
+        for i in range(delta.days + 1):
+            locked_date = locked_period.from_date + datetime.timedelta(days=i)
+            data.append(locked_date.strftime('%d.%m.%Y'))
 
     json_data_string = json.dumps(data)
     return json_data_string

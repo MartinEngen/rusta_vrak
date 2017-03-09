@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+
+{% block Content %}
+<h1>Legg til periode for stopp av reservasjoner</h1>
+                <form method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label for="from_date" class="control-label date-label">Fra Dato</label>
+                        <input type="text" value='' class="form-control datefield" id="from_date" name="from_date">
+                        <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label for="to_date" class="control-label date-label">Til date</label>
+                        <input type="text" value='' class="form-control datefield" id="to_date" name="to_date">
+                        <span class="glyphicon glyphicon-calendar form-control-feedback date_icon" ></span>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        {% if error %}
+                            <div class="alert alert-danger" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                {{ message }}</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                        <button type="submit" id="search_button" class="btn btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Add</button>
+                    </div>
+
+                </div>
+
+
+            </form>
+
+
+
+    <hr>
+
+    {% for a in existing_reservation_locks %}
+        <p>Fra {{ a.from_date }} til {{ a.to_date }}</p>
+    {% endfor %}
+{% endblock Content %}
+
+
+{% block siteSpesificJs %}
+<script>
+
+var dp_start_date = $("#from_date");
+var dp_end_date = $("#to_date");
+
+dp_end_date.datepicker({
+    minDate: 0
+});
+
+dp_start_date.datepicker({
+    minDate: 0
+    });
+
+</script>
+{% endblock siteSpesificJs %}
