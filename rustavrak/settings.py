@@ -5,7 +5,7 @@
 import os
 
 # Sensitive Information.
-from config import S_Key, local_post_sql_pw, Post_sql_pw
+from config import S_Key, local_post_sql_pw, Post_sql_pw, my_site_id
 
 
 
@@ -24,9 +24,7 @@ ALLOWED_HOSTS = [
     '.rustavrak.no'
 ]
 
-
-
-SITE_ID = 1
+SITE_ID = my_site_id
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
