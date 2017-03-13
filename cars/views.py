@@ -230,13 +230,13 @@ def specific_car(request, car_id):
             existing_reservation_locks = lock_reservation_period.objects.filter(to_date__gte=datetime.date.today())
 
             # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
-            validated_availability = validate_availability(initial_date, final_date, finalized_bookings)
+            #validated_availability = validate_availability(initial_date, final_date, finalized_bookings)
 
-            if validated_availability['error']:
-                return abort_function(car, validated_availability['message'], finalized_bookings)
+            #if validated_availability['error']:
+            #  return abort_function(car, validated_availability['message'], finalized_bookings)
 
 
-            """
+
             for finalized_booking in finalized_bookings:
                 # Checks if the date is placed within a range of already booked.
                 if finalized_booking.initial_date <= initial_date <= finalized_booking.final_date or finalized_booking.initial_date <= final_date <= finalized_booking.final_date:
@@ -260,7 +260,7 @@ def specific_car(request, car_id):
                     logging.error("Error, not able to book. Overlapping")
                     message = "Reservasjon overlapper, velg en ledig periode."
                     return abort_function(car, message, finalized_bookings)
-            """
+
             # ============== Validation Passed ===============
             new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
                                       final_date=booking_form.cleaned_data['final_date'])

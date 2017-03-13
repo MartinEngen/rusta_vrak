@@ -4,10 +4,15 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# Sensitive Information.
+from config import S_Key, local_post_sql_pw, Post_sql_pw
+
+
+
 BASE_DIR = os.path.dirname(__file__)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@l!&amp;*!qmr_%y*buj!t1+80kz#r7o%7@a7b3*z1bd%zw0dp0%4c'
+SECRET_KEY = S_Key
 
 ALLOWED_HOSTS = [
     '.rustavrak.sites.djangoeurope.com',
@@ -28,9 +33,6 @@ DEBUG = True
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-SERVER_EMAIL = 'info@wservices.ch'
-DEFAULT_FROM_EMAIL = 'Martin.Engen@outlook.com'
-
 ADMINS = (
     (u'Martin Engen', 'Martin.Engen@outlook.com'),
 )
@@ -49,7 +51,7 @@ if os.getenv('SETTINGS_MODE') == 'local':
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'rusta_vrak_local',
             'USER': 'local_admin',
-            'PASSWORD': 'pa$$sword1'
+            'PASSWORD': local_post_sql_pw
         }
     }
 else:
@@ -59,7 +61,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'nitrax92_rustadb',
             'USER': 'nitrax92',
-            'PASSWORD': 'nIuXYyhTp4s1',
+            'PASSWORD': Post_sql_pw,
             'HOST': '',
             'PORT': '',
         }
