@@ -70,12 +70,11 @@ def search_function(request):
 
             # The chosen dates did not find any cars. Redirect back to front with an error.
             if not cars:
+                print("No Cars.")
                 message = "Fant ingen ledige biler av kategori: %s i oppgitt periopde. Prøv igjen med ny kategori / periode, eller kontakt oss." % (categories)
                 request.session['search_car_error_message'] = message
 
                 return redirect(index)
-
-
 
             dates = {
                 'initial_date': initial_date,
@@ -84,7 +83,6 @@ def search_function(request):
 
             context = {
                 'cars': cars,
-                'initial_date': initial_date,
                 'dates': dates,
                 'categories': categories
             }

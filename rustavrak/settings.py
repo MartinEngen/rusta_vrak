@@ -43,6 +43,8 @@ DEFAULT_FROM_EMAIL = 'ikke.svar@rustavrak.no'
 SERVER_EMAIL = 'ikke.svar@rustavrak.no'
 
 ############ Database Connection ################
+# To run the server locally
+# Enter SET SETTINGS_MODE=local in cmd
 if os.getenv('SETTINGS_MODE') == 'local':
     DATABASES = {
         'default': {

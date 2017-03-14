@@ -41,6 +41,11 @@ def validate_availability(reserved_initial_date, reserved_final_date, registered
         if locked_periods.from_date <= reserved_initial_date <= locked_periods.to_date or locked_periods.from_date <= reserved_final_date <= locked_periods.to_date:
             logging.error("Error, not able to book. Locked Period")
             message = "Reservasjon overlapper, velg en ledig periode."
+            context = {
+                'message': message,
+                'error': True
+            }
+            return context
 
         if reserved_initial_date <= locked_periods.from_date <= reserved_final_date or reserved_initial_date <= locked_periods.to_date <= reserved_final_date:
             logging.error("Error, not able to book. Locked Period")

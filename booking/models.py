@@ -52,7 +52,7 @@ class Reservation(models.Model):
     misc_info = models.CharField('Ekstra informasjon', max_length=255, blank=True, null=True)
 
     # Reservation Status
-    status = models.PositiveSmallIntegerField('1: Pending, 2: Approved, 3:Declined',
+    status = models.PositiveSmallIntegerField('Ordrestatus',
                                               choices={(1, 'Pending'), (2, 'Approved'), (3, 'Declined')})
 
     initial_date = models.DateField('Hente Dato')

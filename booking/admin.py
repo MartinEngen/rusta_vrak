@@ -5,7 +5,7 @@ from .data_functions import price_calculator
 # Register your models here.
 
 class FinalizedBookings(admin.ModelAdmin):
-    list_display = ('id', 'bil', 'date_made', 'fra_dato', 'til_dato', 'kunde', 'kunde_epost', 'kunde_tlf', 'pris')
+    list_display = ('id', 'bil', 'date_made', 'fra_dato', 'til_dato', 'kunde', 'kunde_epost', 'kunde_tlf', 'pris', 'ordre_status')
 
     def id(self, obj):
         return obj.id
@@ -27,6 +27,14 @@ class FinalizedBookings(admin.ModelAdmin):
 
     def kunde_tlf(self, obj):
         return obj.customer.phone_number
+
+    def ordre_status(self, obj):
+        if obj.status == 1:
+            return "Ny"
+        elif obj.status == 2:
+            return "Godkjent"
+        else:
+            return "Avslatt"
 
 
     # TODO: Use the price funciton once it is completed..
