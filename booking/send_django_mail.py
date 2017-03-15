@@ -225,7 +225,7 @@ body{
         'Reservasjon Registrert. Rustavrak. (Ønskes hentes om %s dager)' % str(days_until_deliver),  # Subject
         '',
         '',
-        ['Nitrax92@gmail.com'],
+        ['rusta.vrak@gmail.com'],
         fail_silently=False,
         html_message=alert_content
     )
