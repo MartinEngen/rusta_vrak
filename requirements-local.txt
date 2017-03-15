@@ -1,4 +1,0 @@
-# only install locally since GAE has its own version
-MySQL-python==1.2.5
-
-#MySQL_python-1.2.5-cp27-none-win32.whl from http://www.lfd.uci.edu/~gohlke/pythonlibs/

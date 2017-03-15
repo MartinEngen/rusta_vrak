@@ -1,2 +1,1 @@
-Car Rental Website Project.
-This project is based on Google App Engines Django Skeleton. Follow this guide for the setup: [GAE Django Skeleton Github](https://github.com/GoogleCloudPlatform/appengine-django-skeleton)
+Rusta Vrak Bilutleige
