@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect
 from .forms import BookingRegistrationForm
 from .models import Car, Dates_Reserved, Reservation, Customer
 
-
+from send_django_mail import send_mail_django
 from frontpage.views import index
 from data_functions import price_calculator
 from reportlab.pdfgen import canvas
@@ -77,7 +77,7 @@ def booking_schema(request, car_id):
             km_included = number_of_days * 50
 
             # Run the function that handles the sending of receipt.
-            #send_mail_django(new_reservation, current_booking, current_car, price)
+            send_mail_django(new_reservation, current_booking, current_car, price)
             print(str(customer))
             context = {
                 'car': current_car,

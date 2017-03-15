@@ -1,8 +1,20 @@
 from django.contrib import admin
 
-from . import models
+import models
 from .data_functions import price_calculator
 # Register your models here.
+
+
+class ReservationsInline(admin.TabularInline):
+    model = models.Reservation
+    fk_name = 'customer'
+    ordering = ['-date_made']
+
+class CustomerAdmin(admin.ModelAdmin):
+    inlines = [
+        ReservationsInline,
+    ]
+
 
 class FinalizedBookings(admin.ModelAdmin):
     list_display = ('id', 'bil', 'date_made', 'fra_dato', 'til_dato', 'kunde', 'kunde_epost', 'kunde_tlf', 'pris', 'ordre_status')
@@ -51,25 +63,6 @@ class FinalizedBookings(admin.ModelAdmin):
 
     search_fields = ['id', 'car__brand', 'car__model', 'car__license_plate', 'customer__last_name']
 
-class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'author_first_name')
 
-    def author_first_name(self, obj):
-        return obj.author.first_name
-
-    author_first_name.admin_order_field = 'author__first_name'
-
-"""
-class CarAdmin(admin.ModelAdmin):
-    list_display = ('upper_case_name', 'model', 'car_type')
-
-    def upper_case_name(self, obj):
-        return ("%s %s" % (obj.brand, obj.model)).upper()
-
-    upper_case_name.short_description = 'Name'
-"""
-
-
-#admin.site.register(models.Dates_Reserved)
 admin.site.register(models.Reservation, FinalizedBookings)
-admin.site.register(models.Customer)
+admin.site.register(models.Customer, CustomerAdmin)

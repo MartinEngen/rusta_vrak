@@ -26,9 +26,9 @@ class Car(models.Model):
 
     def __str__(self):
         if self.license_plate:
-            return str(self.id) + self.license_plate + " | " + self.brand + " | " + self.model
+            return "Skiltnr: " +  self.license_plate + " | " + self.brand + " " + self.model
         else:
-            return str(self.id) + str(self.car_type) + " | " + self.brand + " | " + self.model
+            return "Skiltnr: Ikke Oppgitt |" +  self.brand + " " + self.model
 
     class Meta:
         verbose_name = 'Bil'
