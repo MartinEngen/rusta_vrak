@@ -86,8 +86,9 @@ body{
 
 </body>
 </html>""" % (
-        new_form.customer.first_name.encode('utf8'),
-        str(new_form.id), str(current_car.brand.encode('utf8')),
+        new_form.customer.first_name.encode('utf8'),  #Greeting
+        str(new_form.id),  # Reservation Info Table
+        str(current_car.brand.encode('utf8')),
         str(current_car.model.encode('utf8')),
         str(current_booking.initial_date.strftime('%d.%m.%Y')),
         str(current_booking.final_date.strftime('%d.%m.%Y')),

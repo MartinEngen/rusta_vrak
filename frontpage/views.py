@@ -25,7 +25,6 @@ def index(request):
             'error': False,
         }
 
-
     return render(request, 'frontpage/index.html', context)
 
 
@@ -38,8 +37,7 @@ def search_function(request):
             initial_date = search_form.cleaned_data['initial_date']
             final_date = search_form.cleaned_data['final_date']
 
-
-            # Any extra requirements handleded.
+            # Any extra requirements handled.
             searched_types = []
             categories = ''
             if search_form.cleaned_data['personal']:
@@ -93,9 +91,6 @@ def search_function(request):
             message = "Informasjon mangler. Prøv å fyll ut begge dato feltene på nytt"
             request.session['search_car_error_message'] = message
             return redirect(index)
-
-    # GET request, might not be necessary, consider removing.
-    # TODO: Figure out if GET requests are possible in POST functions.
     else:
         return redirect('/')
 

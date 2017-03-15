@@ -6,6 +6,8 @@ import datetime
 
 
 def generate_booked_dates(finalized_bookings):
+    """ Generate data for the datepickers. """
+    # Gathering all locked dates and converts this into a JSON object.
     data = []
     for booking in finalized_bookings:
         delta = booking.final_date - booking.initial_date

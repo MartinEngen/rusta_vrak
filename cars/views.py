@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from .forms import BookingForm, FilterForm
-from .models import Car, CarImages
+from .models import Car
 from booking.models import Dates_Reserved, Reservation
-from control_panel.models import lock_reservation_period
 
 from validation import validate_date, find_available_cars, validate_availability
 
@@ -23,12 +22,11 @@ def car_list(request):
         # This method shall handle filtering of the objects AND searching for dates and availability.
         filtered_data = FilterForm(request.POST)
         if filtered_data.is_valid():
-            # Initialze variables
+            # Initialize variables
             dates = False
             categories = ''
             searched_categories = ''
             car_types = []
-
 
             # Car type
             if filtered_data.cleaned_data['personal']:
@@ -44,16 +42,14 @@ def car_list(request):
             if categories:
                 categories = categories.strip(", ")
 
-
             if not car_types:
                 car_types = [1, 2, 3]
                 categories = 'Personbil, Varebil og Kombinertbil'
 
             # 0 is All seats
             seats = []
-            #Spesific number of seats
+            # Specific number of seats
             if filtered_data.cleaned_data['seats'] > 0:
-                #seats = filtered_data.cleaned_data['seats']
                 seats.append(filtered_data.cleaned_data['seats'])
             else:
                 # All seat combo's
@@ -72,7 +68,6 @@ def car_list(request):
 
             if not transmission_types:
                 transmission_types = ['Manuell', 'Automatgir']
-
 
             # Fuel
             fuel_types = []
@@ -120,8 +115,6 @@ def car_list(request):
             }
 
             return render(request, 'cars/car_list.html', context)
-
-
 
         # Not valid POST request, redirect the user back to the start.
         else:
@@ -265,6 +258,9 @@ def specific_car(request, car_id):
 
 
 def image_generator(car):
+    """ Function to split up images for the gallery (if any)"""
+    # Gallery images are stored as a string in the database
+    # Simply split these strings by any ',' and store in a list.
     try:
         images_string = car.carimages.gallery_images.encode('utf-8')
     except ObjectDoesNotExist:
