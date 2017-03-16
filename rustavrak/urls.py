@@ -12,10 +12,8 @@ urlpatterns = [
     url(r'^', include('cars.urls', namespace='cars')),
     url(r'^', include('booking.urls')),
     url(r'^control_panel/', include('control_panel.urls')),
+    url(r'^admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
-urlpatterns += i18n_patterns(
-    url(r'^admin/', include(admin.site.urls)),
-)
 

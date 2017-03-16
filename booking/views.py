@@ -9,17 +9,11 @@ from django.shortcuts import get_object_or_404, redirect
 from .forms import BookingRegistrationForm
 from .models import Car, Dates_Reserved, Reservation, Customer
 
-
-from frontpage.views import index
-
-
-#custom functions
-from data_functions import price_calculator, generate_pdf
-from send_mail_appengine import send_mail_receipt
 from send_django_mail import send_mail_django
-#PDF generator
+from frontpage.views import index
+from data_functions import price_calculator
 from reportlab.pdfgen import canvas
-import datetime
+
 
 import logging
 
@@ -62,7 +56,7 @@ def booking_schema(request, car_id):
                                                                    initial_date=current_booking.initial_date,
                                                                    defaults={
                                                                        'misc_info': misc_info,
-                                                                       'status': 2, #Status 2 is defined as approved
+                                                                       'status': 1, #Status 2 is defined as approved
                                                                        #'initial_date': current_booking.initial_date,
                                                                        'final_date': current_booking.final_date,
                                                                    })
@@ -71,17 +65,20 @@ def booking_schema(request, car_id):
                 logging.info("New Entry saved, ID: %s, by user %s" % (str(new_reservation.id), customer.email))
             else:
                 logging.warning("User has updated an entry. Info: Booking Nr. %s, Customers email: %s" % (str(new_reservation.id), customer.email))
+
+
+            # TODO: Something has to be done with this table. Maybe figure out some alternative sollution.
+            # Deletes the booking dates from the database.
+            #current_booking.delete()
+
+            # Calculate
             number_of_days = (new_reservation.final_date - new_reservation.initial_date).days
-
-
-
             price = price_calculator(number_of_days, current_car.price)
             km_included = number_of_days * 50
 
             # Run the function that handles the sending of receipt.
-            #send_mail_receipt(new_reservation, current_booking, current_booking_id, current_car, price)
             send_mail_django(new_reservation, current_booking, current_car, price)
-
+            print(str(customer))
             context = {
                 'car': current_car,
                 'booking': current_booking,
@@ -142,12 +139,13 @@ def booking_schema(request, car_id):
 
 
 
-def download_pdf(request, reservation_id):
-
+def download_pdf(request, reservation_id, car_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Rusta_vrak_reservasjon.pdf"'
 
     reservation = get_object_or_404(Reservation, id=reservation_id)
+    if reservation.car_id is not int(car_id):
+        return redirect('/')
 
     reservation_nr = str(reservation.id)
     initial_date = reservation.initial_date.strftime('%d.%m.%Y')

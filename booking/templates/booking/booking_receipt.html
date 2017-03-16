@@ -76,8 +76,8 @@
             </table>
         </div>
 
-         <a href="{% url 'booking:pdf' filled_form.id %}">
-            <button type="button" href="{% url 'booking:pdf' filled_form.id %}" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned reservasjonsinformasjon som PDF</button>
+         <a href="{% url 'booking:pdf' filled_form.id car.pk %}">
+            <button type="button" class="btn"><i class="fa fa-download" aria-hidden="true" ></i> Last ned reservasjonsinformasjon som PDF</button>
         </a>
     </div>
 

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Google App Engine SDK" type="python">
     <CLASSES>
-      <root url="file://$APPLICATION_HOME_DIR$/jre/jre/bin" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_121/jre/bin" />
     </CLASSES>
     <SOURCES />
   </library>

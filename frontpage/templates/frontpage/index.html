@@ -1,14 +1,10 @@
 {% extends 'base.html' %}
 
 {% load staticfiles %}
-
-
-
-    {% block pageBasedStyle %}
-    <link rel="stylesheet" href="{% static "frontpage/css/frontstyle.css" %}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-    {% endblock pageBasedStyle %}
-
+{% block pageBasedStyle %}
+<link rel="stylesheet" href="{% static "frontpage/css/frontstyle.css" %}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+{% endblock pageBasedStyle %}
 {% block Content %}
 
 
@@ -54,11 +50,20 @@
                 <div class="row">
                      <div class="col-md-12 col-sm-12 col-xs-12">
                         <h3>Biltype</h3>
-                        <div class="checkbox-inline col-md-12 col-sm-12 col-xs-12">
-                          <label><input type="checkbox" name="personal" id="personal">Personbil</label> <br>
-                          <label><input type="checkbox" name="van" id="van">Varebil</label> <br>
-                          <label><input type="checkbox" name="combi_car" id="combi_car">Kombinertbil</label>
-                        </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input type="checkbox" name="personal" id="personal">
+                                <label class="checkbox_label" for="personal">Personbil</label>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input type="checkbox" name="van" id="van">
+                                <label class="checkbox_label" for="van">Varebil</label>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                <input type="checkbox" name="combi_car" id="combi_car">
+                                <label class="checkbox_label" for="combi_car">Kombinertbil</label>
+                            </div>
                      </div>
                 </div>
 
@@ -138,7 +143,7 @@
                     <i class="fa fa-hourglass-end fa-stack-1x fa-inverse"></i>
                 </span>
                 <h2 class="service-heading">Jo lengre, Jo billigere</h2>
-                <p> Hver 5. gir 17.5% ekstra rabatt. <br> Ved 30 dagers leie vil det koste kun 2500kr. </p>
+                <p> Hver 5. dag gir 17.5% ekstra rabatt. <br> Ved 30 dagers leie vil det koste kun 2500kr. </p>
             </div>
 
 
@@ -189,7 +194,7 @@
 </section>
 
 
-
+<!--
 <section id="about">
     <div class="container">
         <div class="row">
@@ -200,7 +205,7 @@
         </div>
     </div>
 </section>
-
+-->
 
 {% endblock Content %}
 

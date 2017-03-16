@@ -1,45 +1,32 @@
 # -*- coding: utf-8 -*-
 
 
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from .forms import BookingForm, FilterForm
-from .models import Car, CarImages
+from .models import Car
 from booking.models import Dates_Reserved, Reservation
-from control_panel.models import lock_reservation_period
 
-from validation_functions import validate_availability, validate_date, find_available_cars
+from validation import validate_date, find_available_cars, validate_availability
 
 import logging
 import datetime
 
 from booking.data_functions import generate_booked_dates
 
-# Mail API's
-# TODO: General Code Cleanup. This may entail moving some functions to new apps / files.
 
 def car_list(request):
-    # TODO: Make the search queries based on posted from the car_list page
     if request.method == 'POST':
         # This method shall handle filtering of the objects AND searching for dates and availability.
         filtered_data = FilterForm(request.POST)
-
-
-
-
         if filtered_data.is_valid():
-            # Initialze variables
+            # Initialize variables
             dates = False
             categories = ''
             searched_categories = ''
-            validate = {
-                'error': False
-            }
-
             car_types = []
-
 
             # Car type
             if filtered_data.cleaned_data['personal']:
@@ -55,20 +42,18 @@ def car_list(request):
             if categories:
                 categories = categories.strip(", ")
 
-
             if not car_types:
                 car_types = [1, 2, 3]
                 categories = 'Personbil, Varebil og Kombinertbil'
 
             # 0 is All seats
             seats = []
-            #Spesific number of seats
+            # Specific number of seats
             if filtered_data.cleaned_data['seats'] > 0:
-                #seats = filtered_data.cleaned_data['seats']
                 seats.append(filtered_data.cleaned_data['seats'])
             else:
                 # All seat combo's
-                seats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                seats = [2, 3, 5, 7, 8, 9]
 
 
             transmission_types = []
@@ -84,7 +69,6 @@ def car_list(request):
             if not transmission_types:
                 transmission_types = ['Manuell', 'Automatgir']
 
-
             # Fuel
             fuel_types = []
             if filtered_data.cleaned_data['fuel_diesel']:
@@ -97,8 +81,6 @@ def car_list(request):
 
             if not fuel_types:
                 fuel_types = ['Diesel', 'Bensin']
-
-
 
             cars = Car.objects.filter(car_type__in=car_types).filter(transmission__in=transmission_types).filter(fuel_type__in=fuel_types).filter(seats__in=seats).filter(for_rent=True)
 
@@ -125,20 +107,14 @@ def car_list(request):
 
                     return redirect('/')
 
-            # No Cars has been found on the given terms.
-            if not cars:
-                # TODO: Redirect and popup when this happens.
-                pass
-
             context = {
                 'cars': cars,
                 'dates': dates,
                 'categories': categories,
                 'searched_categories': searched_categories
             }
+
             return render(request, 'cars/car_list.html', context)
-
-
 
         # Not valid POST request, redirect the user back to the start.
         else:
@@ -189,22 +165,19 @@ def car_list(request):
         return render(request, 'cars/car_list.html', context)
 
 
-
 def specific_car(request, car_id):
 
     # Standard Abort function.
-    def abort_function(car, message, finalized_bookings):
-        calendar_data = generate_booked_dates(finalized_bookings)
+    def abort_function(current_car, error_message, current_car_reservations):
+        calendar_data = generate_booked_dates(current_car_reservations)
         context = {
-            'car': car,
+            'car': current_car,
             'dates': 'false',
             'warning': True,
-            'message': message,
+            'message': error_message,
             'booked_dates_json': calendar_data,
         }
         return render(request, 'cars/spesific_car.html', context)
-
-
 
     # POST Request
     if request.method == 'POST':
@@ -215,84 +188,50 @@ def specific_car(request, car_id):
             initial_date = booking_form.cleaned_data['initial_date']
             final_date = booking_form.cleaned_data['final_date']
 
-            # Get all registered bookings for this car.
-            finalized_bookings = Reservation.objects.filter(car=car).exclude(final_date__lte=(datetime.date.today()))\
+            # Get all registered reservations for this car.
+            existing_reservations = Reservation.objects.filter(car=car).exclude(final_date__lte=(datetime.date.today()))\
                 .order_by('initial_date')
 
-            # Run function to validate the dates searched.
+            # Run function to validate the two dates searched.
             validated_dates = validate_date(initial_date, final_date)
-
             if validated_dates['error']:
-                return abort_function(car, validated_dates['message'], finalized_bookings)
+                return abort_function(car, validated_dates['message'], existing_reservations)
 
-
-            # All locked periods.
-            existing_reservation_locks = lock_reservation_period.objects.filter(to_date__gte=datetime.date.today())
-
-            # Check if the dates are valid, this means that all the dates inbetween are also not already booked.
-            #validated_availability = validate_availability(initial_date, final_date, finalized_bookings)
-
-            #if validated_availability['error']:
-            #  return abort_function(car, validated_availability['message'], finalized_bookings)
-
-
-
-            for finalized_booking in finalized_bookings:
-                # Checks if the date is placed within a range of already booked.
-                if finalized_booking.initial_date <= initial_date <= finalized_booking.final_date or finalized_booking.initial_date <= final_date <= finalized_booking.final_date:
-                    logging.error("Error, not able to book. Overlapping")
-                    message = "Reservasjon overlapper, velg en ledig periode."
-                    return abort_function(car, message, finalized_bookings)
-
-                # Check if there is an exisiting booking within this new entry.
-                if initial_date <= finalized_booking.initial_date <= final_date or initial_date <= finalized_booking.final_date <= final_date:
-                    logging.error("Error, not able to book. Overlapping")
-                    message = "Reservasjon overlapper, velg en ledig periode."
-                    return abort_function(car, message, finalized_bookings)
-
-            for locked_periods in existing_reservation_locks:
-                if locked_periods.from_date <= initial_date <= locked_periods.to_date or locked_periods.from_date <= final_date <= locked_periods.to_date:
-                    logging.error("Error, not able to book. Overlapping")
-                    message = "Reservasjon overlapper, velg en ledig periode."
-                    return abort_function(car, message, finalized_bookings)
-
-                if initial_date <= locked_periods.from_date <= final_date or initial_date <= locked_periods.to_date <= final_date:
-                    logging.error("Error, not able to book. Overlapping")
-                    message = "Reservasjon overlapper, velg en ledig periode."
-                    return abort_function(car, message, finalized_bookings)
+            # Checks the new dates against existing reservations and any reservation locks.
+            validated_availability = validate_availability(initial_date, final_date, existing_reservations)
+            if validated_availability['error']:
+                return abort_function(car, validated_availability['message'], existing_reservations)
 
             # ============== Validation Passed ===============
-            new_booking = Dates_Reserved(car=car, initial_date=booking_form.cleaned_data['initial_date'],
-                                      final_date=booking_form.cleaned_data['final_date'])
-            new_booking.save()
-            request.session['current_booking_id'] = new_booking.id
+            # Save the new record to the database.
+            new_reservation = Dates_Reserved(car=car,
+                                         initial_date=booking_form.cleaned_data['initial_date'],
+                                         final_date=booking_form.cleaned_data['final_date']
+                                         )
+            new_reservation.save()
+            request.session['current_booking_id'] = new_reservation.id
             return redirect('booking:reservation_schema', car_id=car.id)
-
 
         else:
             logging.debug("Non valid form posted.")
-            finalized_bookings = Reservation.objects.filter(car=car).exclude(
+            existing_reservations = Reservation.objects.filter(car=car).exclude(
                 final_date__lte=(datetime.date.today())) \
                 .order_by('initial_date')
             message = "Informasjon mangler, prøv å fyll ut feltene på nytt. NB: Dato må være i format DD.MM.ÅÅÅÅ"
 
-            return abort_function(car, message, finalized_bookings)
-
+            return abort_function(car, message, existing_reservations)
 
     # GET request
     else:
-        current_car = get_object_or_404(Car, id=car_id)
+        car = get_object_or_404(Car, id=car_id)
 
+        images = image_generator(car)
 
-        images = image_generator(current_car)
+        selected_dates = request.GET.values()
 
-
-
-        from_date = request.GET.values()
-
-        if from_date:
-            initial_date = from_date[1].encode('utf8')
-            final_date = from_date[0].encode('utf8')
+        if selected_dates:
+            initial_date = selected_dates[1].encode('utf8')
+            final_date = selected_dates[0].encode('utf8')
 
             dates = {
                 'initial_date': initial_date,
@@ -300,17 +239,16 @@ def specific_car(request, car_id):
             }
         else:
             dates = 'false'
+
         # Gather the information required by the Calendar
-        #finalized_bookings = Reservation.objects.filter(car=current_car).exclude(dates_reserved__final_date__lte=datetime.datetime.today()).order_by('car__reserved_car__initial_date')
-        finalized_bookings = Reservation.objects.filter(car=current_car).exclude(
+        existing_reservations = Reservation.objects.filter(car=car).exclude(
             final_date__lte=(datetime.date.today())) \
             .order_by('initial_date')
 
-        booked_dates = generate_booked_dates(finalized_bookings)
-        #print("Calendar data GET size: " + str(finalized_bookings.count()))
+        booked_dates = generate_booked_dates(existing_reservations)
 
         context = {
-            'car': current_car,
+            'car': car,
             'booked_dates_json': booked_dates,
             'images': images,
             'dates': dates
@@ -319,23 +257,14 @@ def specific_car(request, car_id):
         return render(request, 'cars/spesific_car.html', context)
 
 
-
-
-
-
-
-
-
-
-
 def image_generator(car):
+    """ Function to split up images for the gallery (if any)"""
+    # Gallery images are stored as a string in the database
+    # Simply split these strings by any ',' and store in a list.
     try:
         images_string = car.carimages.gallery_images.encode('utf-8')
     except ObjectDoesNotExist:
-        images = False
-        return images
-
-
+        return False
 
     # If the image string is not empty, split them up into a list.
     if images_string:

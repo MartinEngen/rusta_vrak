@@ -26,9 +26,9 @@ class Car(models.Model):
 
     def __str__(self):
         if self.license_plate:
-            return str(self.id) + self.license_plate + " | " + self.brand + " | " + self.model
+            return "Skiltnr: " +  self.license_plate + " | " + self.brand + " " + self.model
         else:
-            return str(self.id) + str(self.car_type) + " | " + self.brand + " | " + self.model
+            return "Skiltnr: Ikke Oppgitt |" +  self.brand + " " + self.model
 
     class Meta:
         verbose_name = 'Bil'
@@ -53,13 +53,3 @@ class CarImages(models.Model):
     class Meta:
         verbose_name = 'Bil Bilder'
         verbose_name_plural = 'Bil Bilder'
-
-
-
-"""
-@python_2_unicode_compatible
-class Car_Rental(models.Model):
-    reg_number = models.CharField('Skiltnummer',primary_key=True, max_length=10, unique=True)
-    car_type = models.PositiveSmallIntegerField('Kategori', choices=[(1, 'Personbil'), (2, 'Varebil'), (3, 'Kombibil')])
-
-"""

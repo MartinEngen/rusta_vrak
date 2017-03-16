@@ -15,7 +15,7 @@
 
 import os
 import sys
-sys.path.append('lib')
+#sys.path.append('lib')
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rustavrak.settings")

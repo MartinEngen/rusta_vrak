@@ -2,49 +2,42 @@
 
 from django.shortcuts import render, redirect
 
-# Create your views here.
-
-from django.http import HttpResponse
-
 from cars.views import find_available_cars
 from cars.models import Car
-from booking.models import Dates_Reserved, Reservation
 from .forms import SearchForm
-
-import logging
-import datetime
 
 
 
 def index(request):
-    # Check if the session has an error, based on last search.
-    # If the error exists, use give it to the template and delete it from the session.
+    # Check if the session (for this user) has any errors.
+    # If the error exists, use give it to the template and delete the processed error from the session.
     if 'search_car_error_message' in request.session:
         message = request.session['search_car_error_message'].encode('utf8')
         context = {
             'error': True,
             'message': message
         }
-
         del request.session['search_car_error_message']
 
-
     else:
+        # Telling the Template that there is no error.
         context = {
             'error': False,
         }
+
     return render(request, 'frontpage/index.html', context)
 
 
-
+# Searching to find any available cars between two given dates.
 def search_function(request):
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
 
         if search_form.is_valid():
-            inital_date = search_form.cleaned_data['initial_date']
+            initial_date = search_form.cleaned_data['initial_date']
             final_date = search_form.cleaned_data['final_date']
 
+            # Any extra requirements handled.
             searched_types = []
             categories = ''
             if search_form.cleaned_data['personal']:
@@ -58,8 +51,11 @@ def search_function(request):
                 categories += 'Kombinertbil, '
 
             if categories:
+                # Remove the trailing ', ' from the string.
+                # This is the string shown to the user of which categories used in the search.
                 categories = categories.strip(", ")
 
+            # No type categories specified.
             if not searched_types:
                 searched_types = [1, 2, 3]
                 categories = "Personbil, Varebil, Kombinertbil"
@@ -67,36 +63,33 @@ def search_function(request):
             # All cars of wanted Car Type
             filtered_cars = Car.objects.filter(car_type__in=searched_types)
 
-
-            cars = find_available_cars(inital_date, final_date, filtered_cars)
+            # Available cars.
+            cars = find_available_cars(initial_date, final_date, filtered_cars)
 
             # The chosen dates did not find any cars. Redirect back to front with an error.
             if not cars:
+                print("No Cars.")
                 message = "Fant ingen ledige biler av kategori: %s i oppgitt periopde. Prøv igjen med ny kategori / periode, eller kontakt oss." % (categories)
                 request.session['search_car_error_message'] = message
 
                 return redirect(index)
 
-
-
             dates = {
-                'initial_date': inital_date,
+                'initial_date': initial_date,
                 'final_date': final_date
             }
 
             context = {
                 'cars': cars,
-                'initial_date': inital_date,
                 'dates': dates,
                 'categories': categories
             }
             return render(request, 'cars/car_list.html', context)
 
+        # Non Valid form posted. Returns a general 'Information Missing, try again' error.
         else:
-            # TODO: Generate Error, same as booking input errors.
             message = "Informasjon mangler. Prøv å fyll ut begge dato feltene på nytt"
             request.session['search_car_error_message'] = message
-
             return redirect(index)
     else:
         return redirect('/')
