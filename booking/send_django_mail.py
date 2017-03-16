@@ -196,8 +196,8 @@ body{
 		  <li>Gå på Reservasjoner (Under 'BOOKING')</li>
 		  <li>Klikk på ID til gjeldene reservasjon. (Dette tilsvarer Reservasjonsnummer)</li>
 		  <li>Dobbelsjekk at dato, kunde og bil stemmer.</li>
-		  <li>Endre feltet Ordrestatus. En Ny ordre vil automatisk ha status Pending, her kan man velge enten Approved eller Declined. </li>
-		  <li>Save. </li>
+		  <li>Endre feltet Ordrestatus. En Ny ordre vil automatisk ha status Ny, her kan man velge enten Avslått eller Godkjent. </li>
+		  <li>Lagre. </li>
 		  <li>Gi beskjed til Kunde.</li>
 		</ol>
 
@@ -223,7 +223,7 @@ body{
             )
 
     alert_mail = send_mail(
-        'Reservasjon Registrert. Rustavrak. (Ønskes hentes om %s dager)' % str(days_until_deliver),  # Subject
+        'Rustavrak. Reservasjon %s Registrert. (Ønskes hentes om %s dager)' % (str(new_form.id), str(days_until_deliver)),  # Subject
         '',
         '',
         ['rusta.vrak@gmail.com'],
