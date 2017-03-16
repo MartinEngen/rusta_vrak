@@ -45,15 +45,15 @@ class Customer(models.Model):
 @python_2_unicode_compatible
 class Reservation(models.Model):
     #dates_reserved = models.ForeignKey(Dates_Reserved, related_name='booking', on_delete=models.CASCADE)
-    car = models.ForeignKey(Car, related_name='Bil', on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, related_name='Kunde', on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, verbose_name="Bil", related_name='Bil', on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, verbose_name='Kunde', related_name='Kunde', on_delete=models.CASCADE)
 
     # Additional information
     misc_info = models.CharField('Ekstra informasjon', max_length=255, blank=True, null=True)
 
     # Reservation Status
     status = models.PositiveSmallIntegerField('Ordrestatus',
-                                              choices={(1, 'Pending'), (2, 'Approved'), (3, 'Declined')})
+                                              choices={(1, 'Ny'), (2, 'Godkjent'), (3, 'Avslått')})
 
     initial_date = models.DateField('Hente Dato')
     final_date = models.DateField('Leverings Dato')

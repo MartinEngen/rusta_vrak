@@ -21,4 +21,4 @@ class CarAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(models.Car, CarAdmin)
-admin.site.register(models.CarImages)
+
