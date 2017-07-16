@@ -22,3 +22,19 @@ class lock_reservation_period(models.Model):
     class Meta:
         verbose_name = 'Låst Periode'
         verbose_name_plural = 'Låste Perioder'
+
+
+class lock_init_final_dates(models.Model):
+    from_date = models.DateField('Startdato for stopp av hente/levering periode')
+    to_date = models.DateField('Sluttdato for stopp av hente/levering periode')
+
+    created = models.DateTimeField(auto_now_add=True)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    def __str__(self):
+        return "Fra " + str(self.from_date) + " til " + str(self.to_date)
+
+
+    class Meta:
+        verbose_name = 'Låst hente/leverings periode'
+        verbose_name_plural = 'Låste hente/leverings perioder'

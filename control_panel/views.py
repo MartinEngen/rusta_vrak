@@ -38,8 +38,6 @@ def reservation_locks(request):
             posted_from_date = form.cleaned_data['from_date']
             posted_to_date = form.cleaned_data['to_date']
 
-            print posted_to_date
-
             # If the dates are in the wrong order, reorder.
             if posted_from_date > posted_to_date:
                 placeholder = posted_from_date

@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from booking.models import Reservation
 from control_panel.models import lock_reservation_period
-
+from control_panel.validation_cp import  check_locked_reservation_service_period
 import datetime
 
 
@@ -93,6 +93,11 @@ def validate_date(initial_date, final_date):
     # User tries to book from before today, this is illegal.
     if initial_date < datetime.date.today():
         message = "Kan ikke registerer en reservasjon tilbake i tid."
+        error = True
+
+    avaliablity = check_locked_reservation_service_period(initial_date, final_date)
+    if (avaliablity['error']):
+        message = avaliablity['message']
         error = True
 
     context = {
