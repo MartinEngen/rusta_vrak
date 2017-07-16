@@ -49,7 +49,7 @@ if os.getenv('SETTINGS_MODE') == 'local':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'rusta_vrak_local',
+            'NAME': 'rustadb',
             'USER': 'local_admin',
             'PASSWORD': local_post_sql_pw
         }

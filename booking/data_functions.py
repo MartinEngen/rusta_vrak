@@ -25,6 +25,10 @@ def generate_booked_dates(finalized_bookings):
             locked_date = locked_period.from_date + datetime.timedelta(days=i)
             data.append(locked_date.strftime('%d.%m.%Y'))
 
+    # Add the next two days.
+    data.append(datetime.datetime.now().strftime('%d.%m.%Y'))
+    data.append((datetime.datetime.now() +datetime.timedelta(days=1)).strftime('%d.%m.%Y'))
+
     json_data_string = json.dumps(data)
     return json_data_string
 

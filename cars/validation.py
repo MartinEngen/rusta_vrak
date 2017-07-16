@@ -67,7 +67,6 @@ def validate_availability(reserved_initial_date, reserved_final_date, registered
 def validate_date(initial_date, final_date):
     message = ''
     error = False
-
     # Less than 1 day booked, abort.
     if (final_date - initial_date).days < 1:
         logging.error("Less than 1 day, stop")
@@ -79,6 +78,10 @@ def validate_date(initial_date, final_date):
     if final_date < initial_date:
         logging.info("Final date is before initial date")
         message = "Leveringsdagen er satt før Hente dagen, Prøv på nytt."
+        error = True
+
+    if (initial_date < datetime.date.today()+ datetime.timedelta(days=2)):
+        message = "Kan ikke registrere en reservasjon såpass nærme hentedato. Ta kontakt på epost eller telefon for å gjennomføre denne reservasjonen"
         error = True
 
     # More than 30 days booked, tell user to contact instead.

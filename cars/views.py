@@ -166,7 +166,6 @@ def car_list(request):
 
 
 def specific_car(request, car_id):
-
     # Standard Abort function.
     def abort_function(current_car, error_message, current_car_reservations):
         calendar_data = generate_booked_dates(current_car_reservations)
@@ -185,6 +184,7 @@ def specific_car(request, car_id):
         car = get_object_or_404(Car, id=car_id)
 
         if booking_form.is_valid():
+            print("booking..")
             initial_date = booking_form.cleaned_data['initial_date']
             final_date = booking_form.cleaned_data['final_date']
 
@@ -224,7 +224,6 @@ def specific_car(request, car_id):
     # GET request
     else:
         car = get_object_or_404(Car, id=car_id)
-
         images = image_generator(car)
 
         selected_dates = request.GET.values()
